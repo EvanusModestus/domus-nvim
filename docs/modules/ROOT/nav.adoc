@@ -1,0 +1,11 @@
+* xref:index.adoc[Overview]
+* xref:installation.adoc[Installation]
+* xref:architecture.adoc[Architecture]
+* xref:keymaps.adoc[Keymaps Reference]
+* Features
+** xref:features/lsp.adoc[LSP]
+** xref:features/completion.adoc[Completion]
+** xref:features/formatting.adoc[Formatting]
+** xref:features/navigation.adoc[Navigation]
+** xref:features/git.adoc[Git]
+** xref:features/asciidoc.adoc[AsciiDoc]

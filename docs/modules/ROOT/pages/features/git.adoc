@@ -1,0 +1,100 @@
+= Git Integration
+:description: Git tools and workflows
+:navtitle: Git
+:icons: font
+
+== Fugitive
+
+Git commands in Neovim.
+
+[cols="1,2"]
+|===
+| Key/Command | Action
+
+| `{leader}gs`
+| Git status (`:Git`)
+
+| `{leader}gp`
+| Git push
+
+| `:Git blame`
+| Inline blame
+
+| `:Gvdiffsplit`
+| Vertical diff split
+|===
+
+== Gitsigns
+
+Git decorations and hunk operations.
+
+=== Signs
+
+[cols="1,2"]
+|===
+| Sign | Meaning
+
+| `+`
+| Added lines
+
+| `~`
+| Changed lines
+
+| `_`
+| Deleted lines
+|===
+
+=== Keybindings
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `]c`
+| Next hunk
+
+| `[c`
+| Previous hunk
+
+| `{leader}hs`
+| Stage hunk
+
+| `{leader}hr`
+| Reset hunk
+
+| `{leader}hS`
+| Stage buffer
+
+| `{leader}hu`
+| Undo stage hunk
+
+| `{leader}hp`
+| Preview hunk
+
+| `{leader}hb`
+| Blame line
+
+| `{leader}hd`
+| Diff this
+|===
+
+== LazyGit
+
+Full-featured Git TUI.
+
+`{leader}lg` - Open LazyGit
+
+== Diffview
+
+Professional diff viewing.
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `{leader}gd`
+| Open Diffview
+
+| `{leader}gh`
+| File history
+|===

@@ -1,0 +1,108 @@
+= Domus Instrumentum
+:description: Hierarchical, modular Neovim configuration
+:icons: font
+
+A modern, hierarchical Neovim configuration with embedded documentation.
+
+== Features
+
+* **Hierarchical Structure** - Organized by domain (config, core, plugins, features, ui)
+* **Separated Concerns** - Plugin specs vs configs
+* **Native ftplugin** - Filetype settings via Neovim's native mechanism
+* **Embedded Antora Docs** - Documentation as code
+
+== Quick Start
+
+[source,bash]
+----
+git clone https://github.com/EvanusModestus/domus-instrumentum ~/.config/nvim
+nvim
+----
+
+Or run alongside existing config:
+
+[source,bash]
+----
+git clone https://github.com/EvanusModestus/domus-instrumentum ~/.config/nvim-domus
+NVIM_APPNAME=nvim-domus nvim
+
+# Create an alias
+alias v='NVIM_APPNAME=nvim-domus nvim'
+----
+
+== Structure
+
+[source]
+----
+domus-instrumentum/
+├── init.lua                    # Entry point
+├── lua/domus/                  # Configuration layers
+│   ├── config/                 # User preferences
+│   │   ├── options.lua
+│   │   ├── keymaps.lua
+│   │   └── autocmds.lua
+│   ├── core/                   # Infrastructure
+│   │   ├── lazy.lua
+│   │   └── util.lua
+│   ├── plugins/                # Plugin system
+│   │   ├── specs/              # What to load
+│   │   │   ├── editor.lua
+│   │   │   ├── ui.lua
+│   │   │   ├── coding.lua
+│   │   │   ├── git.lua
+│   │   │   ├── tools.lua
+│   │   │   ├── debug.lua
+│   │   │   └── lang/
+│   │   └── config/             # How to configure
+│   │       ├── treesitter.lua
+│   │       ├── telescope.lua
+│   │       ├── lsp/
+│   │       ├── completion/
+│   │       └── dap/
+│   ├── features/               # Custom systems
+│   │   └── motd/
+│   └── ui/                     # Visual components
+├── ftplugin/                   # Filetype settings
+├── after/                      # Syntax overrides
+└── docs/                       # Antora documentation
+----
+
+== Key Bindings
+
+Leader: `<Space>`
+
+=== Navigation
+
+* `<Space>ff` - Find files
+* `<Space>fg` - Live grep
+* `<Space>e` - File browser (Oil)
+* `<C-e>` - Harpoon menu
+
+=== LSP
+
+* `gd` - Go to definition
+* `gr` - References
+* `K` - Hover docs
+* `<Space>ca` - Code action
+
+=== Git
+
+* `<Space>gs` - Git status
+* `<Space>lg` - LazyGit
+* `<Space>hs` - Stage hunk
+
+== Documentation
+
+Full documentation in `docs/` directory.
+
+=== Local Preview
+
+[source,bash]
+----
+cd docs && npx antora antora-playbook.yml
+# Open build/site/instrumentum/index.html
+----
+
+=== Aggregated Site
+
+This component integrates with `domus-docs` for the full documentation site.

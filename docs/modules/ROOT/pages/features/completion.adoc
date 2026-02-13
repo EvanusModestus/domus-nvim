@@ -1,0 +1,77 @@
+= Completion
+:description: Auto-completion configuration
+:navtitle: Completion
+:icons: font
+
+== Engine
+
+Domus uses **{completion-engine}** for completion - a fast, Rust-based completion engine.
+
+== Sources
+
+[cols="1,2"]
+|===
+| Source | Description
+
+| lsp
+| Language Server completions
+
+| path
+| File path completions
+
+| snippets
+| LuaSnip snippets
+
+| buffer
+| Words from current buffer
+
+| lazydev
+| Neovim Lua API completions
+|===
+
+== Keybindings
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `<C-Space>`
+| Show completion menu
+
+| `<C-e>`
+| Hide completion menu
+
+| `<Tab>`
+| Select next / snippet forward
+
+| `<S-Tab>`
+| Select previous / snippet backward
+
+| `<CR>`
+| Accept completion
+
+| `<C-y>`
+| Accept and insert
+
+| `<C-b>` / `<C-f>`
+| Scroll documentation
+|===
+
+== Snippets
+
+Snippets are provided by:
+
+* **{snippet-engine}** - Snippet engine
+* **friendly-snippets** - Pre-made snippet collection
+* Custom snippets in `{lua-dir}/plugins/config/lang/`
+
+=== Expanding Snippets
+
+Type trigger word, then press `<Tab>`:
+
+[source]
+----
+code<Tab>  →  [source,lang] block
+note<Tab>  →  NOTE: admonition
+xref<Tab>  →  xref:page.adoc[]
+----

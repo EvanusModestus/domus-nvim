@@ -1,0 +1,96 @@
+= Formatting & Linting
+:description: Code formatting and linting configuration
+:navtitle: Formatting
+:icons: font
+
+== Formatting (conform.nvim)
+
+Format on save is enabled by default.
+
+=== Formatters by Language
+
+[cols="1,2"]
+|===
+| Language | Formatter
+
+| Lua
+| stylua
+
+| Python
+| ruff
+
+| JavaScript/TypeScript
+| prettier
+
+| JSON/YAML
+| prettier
+
+| Rust
+| rustfmt
+
+| Shell
+| shfmt
+
+| C/C++
+| clang-format
+
+| SQL
+| sqlfluff
+
+| TOML
+| taplo
+|===
+
+=== Manual Format
+
+`{leader}cf` - Format buffer
+
+== Linting (nvim-lint)
+
+Linting runs on save and insert leave.
+
+=== Linters by Language
+
+[cols="1,2"]
+|===
+| Language | Linter
+
+| Python
+| ruff
+
+| JavaScript/TypeScript
+| eslint_d
+
+| Lua
+| luacheck
+
+| Shell
+| shellcheck
+
+| Markdown
+| markdownlint
+
+| YAML
+| yamllint
+
+| Dockerfile
+| hadolint
+
+| Go
+| golangci-lint
+|===
+
+== Disabling Format on Save
+
+For specific filetypes, edit `{lua-dir}/plugins/config/conform.lua`:
+
+[source,lua]
+----
+format_on_save = function(bufnr)
+    local ignore_filetypes = { "sql", "markdown" }
+    if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
+        return
+    end
+    return { timeout_ms = 500, lsp_fallback = true }
+end,
+----

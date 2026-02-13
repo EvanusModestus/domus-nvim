@@ -1,0 +1,169 @@
+= Keymaps Reference
+:description: Complete keybindings reference
+:navtitle: Keymaps
+:icons: font
+
+Leader key: `{leader}`
+
+== Navigation
+
+[cols="1,2,1"]
+|===
+| Key | Action | Plugin
+
+| `{leader}ff`
+| Find files
+| Telescope
+
+| `{leader}fg`
+| Live grep
+| Telescope
+
+| `{leader}fb`
+| Buffers
+| Telescope
+
+| `<C-p>`
+| Git files
+| Telescope
+
+| `{leader}e` or `-`
+| File browser
+| Oil
+
+| `<C-e>`
+| Harpoon menu
+| Harpoon
+
+| `{leader}1-4`
+| Harpoon files 1-4
+| Harpoon
+|===
+
+== Editing
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `J` (visual)
+| Move selection down
+
+| `K` (visual)
+| Move selection up
+
+| `{leader}y`
+| Yank to system clipboard
+
+| `{leader}p`
+| Paste without yanking
+
+| `{leader}d`
+| Delete to void register
+
+| `jk` or `jj`
+| Exit insert mode
+|===
+
+== LSP
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `gd`
+| Go to definition
+
+| `gr`
+| References
+
+| `K`
+| Hover documentation
+
+| `{leader}ca`
+| Code action
+
+| `{leader}rn`
+| Rename
+
+| `[d` / `]d`
+| Previous/next diagnostic
+|===
+
+== Git
+
+[cols="1,2,1"]
+|===
+| Key | Action | Plugin
+
+| `{leader}gs`
+| Git status
+| Fugitive
+
+| `{leader}lg`
+| LazyGit
+| LazyGit
+
+| `{leader}gd`
+| Diffview
+| Diffview
+
+| `{leader}hs`
+| Stage hunk
+| Gitsigns
+
+| `{leader}hr`
+| Reset hunk
+| Gitsigns
+
+| `]c` / `[c`
+| Next/prev hunk
+| Gitsigns
+|===
+
+== Debug (DAP)
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `<F5>`
+| Continue
+
+| `<F10>`
+| Step over
+
+| `<F11>`
+| Step into
+
+| `{leader}db`
+| Toggle breakpoint
+
+| `{leader}du`
+| Toggle DAP UI
+|===
+
+== AsciiDoc
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `{leader}a1-4`
+| Insert header level 1-4
+
+| `{leader}ab`
+| Bold word/selection
+
+| `{leader}ai`
+| Italic word/selection
+
+| `{leader}ac`
+| Monospace word/selection
+
+| `]-` / `[-`
+| Next/prev ---- block
+
+| `]]` / `[[`
+| Next/prev section
+|===

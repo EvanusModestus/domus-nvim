@@ -1,0 +1,19 @@
+# Local preview playbook for domus-instrumentum docs
+# For production, this component is aggregated via domus-docs
+
+site:
+  title: Domus Instrumentum
+  start_page: instrumentum::index.adoc
+
+content:
+  sources:
+    - url: ..
+      start_path: docs
+
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+
+output:
+  dir: ./build/site

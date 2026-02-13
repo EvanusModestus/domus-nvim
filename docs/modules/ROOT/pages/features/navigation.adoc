@@ -1,0 +1,113 @@
+= Navigation
+:description: File and code navigation
+:navtitle: Navigation
+:icons: font
+
+== Telescope
+
+Fuzzy finder for files, grep, and more.
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `{leader}ff`
+| Find files
+
+| `{leader}fg`
+| Live grep
+
+| `{leader}fb`
+| Buffers
+
+| `{leader}fo`
+| Recent files
+
+| `{leader}fh`
+| Help tags
+
+| `{leader}fw`
+| Find word under cursor
+
+| `{leader}fd`
+| Diagnostics
+
+| `{leader}fc`
+| Commands
+
+| `{leader}fk`
+| Keymaps
+
+| `<C-p>`
+| Git files
+|===
+
+== Harpoon
+
+Quick file switching for frequent files.
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `{leader}a`
+| Add file to Harpoon
+
+| `<C-e>`
+| Open Harpoon menu
+
+| `{leader}1`
+| Go to Harpoon file 1
+
+| `{leader}2`
+| Go to Harpoon file 2
+
+| `{leader}3`
+| Go to Harpoon file 3
+
+| `{leader}4`
+| Go to Harpoon file 4
+|===
+
+== Oil
+
+File browser as a buffer.
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `-` or `{leader}e`
+| Open Oil
+
+| `<CR>`
+| Open file/directory
+
+| `-`
+| Go to parent directory
+
+| `g.`
+| Toggle hidden files
+|===
+
+== LSP Navigation
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `gd`
+| Go to definition
+
+| `gD`
+| Glance definitions
+
+| `gR`
+| Glance references
+
+| `]f` / `[f`
+| Next/prev function
+
+| `]c` / `[c`
+| Next/prev class
+|===

@@ -1,0 +1,36 @@
+name: instrumentum
+title: Instrumentum Neovim
+version: ~
+start_page: ROOT:index.adoc
+
+nav:
+  - modules/ROOT/nav.adoc
+
+asciidoc:
+  attributes:
+    # Keybindings
+    leader: '<Space>'
+    localleader: '<Space>'
+
+    # Paths
+    config-dir: '~/.config/nvim'
+    config-backup: '~/.config/nvim.backup'
+    lua-dir: 'lua/domus'
+    ftplugin-dir: 'ftplugin'
+    docs-dir: 'docs'
+
+    # NVIM_APPNAME for side-by-side installs
+    appname: 'nvim-domus'
+    appname-dir: '~/.config/nvim-domus'
+
+    # Plugin names
+    completion-engine: 'blink.cmp'
+    fuzzy-finder: 'telescope.nvim'
+    file-browser: 'oil.nvim'
+    snippet-engine: 'LuaSnip'
+    plugin-manager: 'lazy.nvim'
+    lsp-installer: 'Mason'
+
+    # Repo info
+    repo-url: 'https://github.com/EvanusModestus/domus-instrumentum'
+    repo-name: 'domus-instrumentum'

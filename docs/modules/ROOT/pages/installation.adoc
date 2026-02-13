@@ -1,0 +1,53 @@
+= Installation
+:description: Installing Domus Instrumentum
+:navtitle: Installation
+:icons: font
+
+== Requirements
+
+* Neovim 0.10+ (0.11+ recommended)
+* Git
+* A Nerd Font (for icons)
+* ripgrep (for Telescope grep)
+* Node.js (for some LSP servers)
+
+NOTE: {completion-engine} uses prebuilt binaries - no Rust compilation needed.
+
+== Installation
+
+[source,bash,subs=attributes+]
+----
+# Backup existing config
+mv {config-dir} {config-backup}
+
+# Clone {repo-name}
+git clone {repo-url} {config-dir}
+
+# Start Neovim (plugins will auto-install)
+nvim
+----
+
+== Post-Install
+
+On first launch:
+
+1. {plugin-manager} installs all plugins
+2. {lsp-installer} installs LSP servers and tools
+3. Treesitter downloads parsers
+
+This may take a few minutes.
+
+== Alternative: NVIM_APPNAME
+
+To run alongside existing config:
+
+[source,bash,subs=attributes+]
+----
+git clone {repo-url} {appname-dir}
+
+# Run with NVIM_APPNAME
+NVIM_APPNAME={appname} nvim
+
+# Or create an alias
+alias v='NVIM_APPNAME={appname} nvim'
+----

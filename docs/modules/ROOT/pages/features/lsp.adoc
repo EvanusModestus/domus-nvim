@@ -1,0 +1,102 @@
+= LSP Configuration
+:description: Language Server Protocol setup
+:navtitle: LSP
+:icons: font
+
+== Overview
+
+LSP is managed through:
+
+* **{lsp-installer}** - LSP server installation
+* **mason-lspconfig** - Bridge between {lsp-installer} and lspconfig
+* **nvim-lspconfig** - LSP client configuration
+
+== Auto-Installed Servers
+
+[cols="1,2"]
+|===
+| Language | Server
+
+| Lua
+| lua_ls
+
+| Python
+| pyright
+
+| Rust
+| rust_analyzer
+
+| TypeScript/JavaScript
+| ts_ls
+
+| HTML/CSS
+| html, cssls
+
+| JSON
+| jsonls (with SchemaStore)
+
+| YAML
+| yamlls (with schemas)
+
+| Bash
+| bashls
+
+| Docker
+| dockerls
+|===
+
+== Keybindings
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `gd`
+| Go to definition
+
+| `gD`
+| Go to declaration
+
+| `gi`
+| Go to implementation
+
+| `gr`
+| References
+
+| `K`
+| Hover documentation
+
+| `<C-k>` (insert)
+| Signature help
+
+| `{leader}ca`
+| Code action
+
+| `{leader}rn`
+| Rename symbol
+
+| `{leader}ih`
+| Toggle inlay hints
+|===
+
+== Custom Server Config
+
+To customize an LSP server, edit `{lua-dir}/plugins/config/lsp/init.lua`:
+
+[source,lua]
+----
+-- In the handlers table:
+pyright = function()
+    require("lspconfig").pyright.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        settings = {
+            python = {
+                analysis = {
+                    typeCheckingMode = "strict",  -- or "basic" or "off"
+                },
+            },
+        },
+    })
+end,
+----

@@ -1,0 +1,58 @@
+= Domus Instrumentum
+:description: A hierarchical, modular Neovim configuration
+:navtitle: Overview
+:icons: font
+
+A modern, hierarchical Neovim configuration designed for maintainability and extensibility.
+
+== Philosophy
+
+* **Hierarchical Structure** - Organized by domain (config, core, plugins, features, ui)
+* **Separation of Concerns** - Plugin specs separate from configs
+* **Native Neovim** - Uses ftplugin/, leverages Neovim 0.11+ APIs
+* **Documentation First** - Embedded Antora docs
+
+== Quick Start
+
+[source,bash,subs=attributes+]
+----
+git clone {repo-url} {config-dir}
+nvim
+----
+
+== Key Features
+
+[cols="1,2"]
+|===
+| Feature | Implementation
+
+| Completion
+| {completion-engine}
+
+| Fuzzy Finding
+| {fuzzy-finder}
+
+| File Browser
+| {file-browser}
+
+| Snippets
+| {snippet-engine}
+|===
+
+== Structure
+
+[source,subs=attributes+]
+----
+{repo-name}/
+├── init.lua           # Entry point
+├── {lua-dir}/         # Configuration layers
+│   ├── config/        # User preferences
+│   ├── core/          # Infrastructure
+│   ├── plugins/       # Plugin system
+│   │   ├── specs/     # What to load
+│   │   └── config/    # How to configure
+│   ├── features/      # Custom systems
+│   └── ui/            # Visual components
+├── {ftplugin-dir}/    # Filetype settings
+└── {docs-dir}/        # Antora documentation
+----

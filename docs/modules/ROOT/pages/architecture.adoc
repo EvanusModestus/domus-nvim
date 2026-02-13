@@ -1,0 +1,106 @@
+= Architecture
+:description: Domus Instrumentum architecture
+:navtitle: Architecture
+:icons: font
+
+== Layer System
+
+Domus Instrumentum uses a layered architecture for clean separation of concerns.
+
+=== Layer 1: Config
+
+User preferences loaded first.
+
+* `{lua-dir}/config/options.lua` - vim.opt settings
+* `{lua-dir}/config/keymaps.lua` - Global keybindings
+* `{lua-dir}/config/autocmds.lua` - Autocommands
+
+=== Layer 2: Core
+
+Infrastructure and {plugin-manager} bootstrap.
+
+* `{lua-dir}/core/lazy.lua` - Plugin manager setup
+* `{lua-dir}/core/util.lua` - Shared utilities
+
+=== Layer 3: Plugins
+
+Plugin management with separated concerns.
+
+==== Specs (What to Load)
+
+[source,subs=attributes+]
+----
+{lua-dir}/plugins/specs/
+├── editor.lua     # Treesitter, autopairs, comment
+├── ui.lua         # Colorscheme, statusline, icons
+├── coding.lua     # LSP, completion, snippets
+├── git.lua        # Fugitive, gitsigns, lazygit
+├── tools.lua      # Telescope, harpoon, oil
+├── debug.lua      # DAP stack
+└── lang/          # Language-specific
+    ├── python.lua
+    ├── rust.lua
+    ├── asciidoc.lua
+    └── ...
+----
+
+==== Config (How to Configure)
+
+[source,subs=attributes+]
+----
+{lua-dir}/plugins/config/
+├── treesitter.lua
+├── telescope.lua
+├── lsp/
+│   └── init.lua
+├── completion/
+│   └── blink.lua
+├── dap/
+│   └── init.lua
+└── lang/
+    └── asciidoc.lua
+----
+
+=== Layer 4: Features
+
+Custom systems loaded after plugins.
+
+* `{lua-dir}/features/motd/` - Message of the Day
+* `{lua-dir}/features/regex-mastery/` - Regex training (optional)
+* `{lua-dir}/features/captures/` - Note capture systems (optional)
+
+=== Layer 5: UI
+
+Visual enhancements.
+
+* `{lua-dir}/ui/init.lua` - Post-plugin visual setup
+
+== Native Neovim
+
+=== ftplugin/
+
+Filetype-specific settings use Neovim's native ftplugin mechanism:
+
+[source,subs=attributes+]
+----
+{ftplugin-dir}/
+├── asciidoc.lua
+├── markdown.lua
+├── python.lua
+└── lua.lua
+----
+
+These load automatically when opening files of that type.
+
+=== after/
+
+Syntax overrides:
+
+[source]
+----
+after/
+└── syntax/
+    └── regex.vim   # Custom regex highlighting
+----
+
+NOTE: The `after/` directory is used for overriding built-in syntax files and is not parameterized as it follows Neovim conventions.

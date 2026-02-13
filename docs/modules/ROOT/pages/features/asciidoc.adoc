@@ -1,0 +1,161 @@
+= AsciiDoc Support
+:description: AsciiDoc editing features
+:navtitle: AsciiDoc
+:icons: font
+
+Comprehensive AsciiDoc editing support with snippets, navigation, and keymaps.
+
+== Snippets
+
+Type trigger word, then press `<Tab>`:
+
+=== Code Blocks
+
+[cols="1,2"]
+|===
+| Trigger | Result
+
+| `code`
+| Generic source block
+
+| `codea`
+| Source block with `subs=attributes+`
+
+| `bash`
+| Bash code block
+
+| `python`
+| Python code block
+
+| `yaml`
+| YAML code block
+|===
+
+=== Admonitions
+
+[cols="1,2"]
+|===
+| Trigger | Result
+
+| `note`
+| NOTE: inline
+
+| `tip`
+| TIP: inline
+
+| `warning`
+| WARNING: inline
+
+| `noteb`
+| NOTE block
+
+| `tipb`
+| TIP block
+|===
+
+=== Cross-References (Antora)
+
+[cols="1,2"]
+|===
+| Trigger | Result
+
+| `xref`
+| `xref:page.adoc[text]`
+
+| `xrefc`
+| `xref:component::page.adoc[text]`
+
+| `include`
+| `include::path[]`
+
+| `partial`
+| `include::partial$file[]`
+|===
+
+=== Formatting
+
+[cols="1,2"]
+|===
+| Trigger | Result
+
+| `bold`
+| `*text*`
+
+| `italic`
+| `_text_`
+
+| `mono`
+| `` `text` ``
+
+| `kbd`
+| `kbd:[Ctrl+C]`
+|===
+
+== Navigation
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `]-`
+| Next `----` block
+
+| `[-`
+| Previous `----` block
+
+| `]=`
+| Next `====` block
+
+| `[=`
+| Previous `====` block
+
+| `]]`
+| Next section header
+
+| `[[`
+| Previous section header
+|===
+
+== Keymaps
+
+All under `{leader}a` prefix:
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `{leader}a1-4`
+| Insert header level 1-4
+
+| `{leader}ab`
+| Bold word/selection
+
+| `{leader}ai`
+| Italic word/selection
+
+| `{leader}ac`
+| Monospace word/selection
+
+| `{leader}al`
+| Bullet list item
+
+| `{leader}an`
+| Numbered list item
+
+| `{leader}at`
+| Checklist item
+
+| `{leader}aN`
+| Insert NOTE:
+
+| `{leader}aT`
+| Insert TIP:
+
+| `{leader}aW`
+| Insert WARNING:
+|===
+
+== Commands
+
+`:AsciidocOutline`:: Show document structure (navigate with Enter)
+`:AsciidocCheckAttrs`:: Find undefined attributes
