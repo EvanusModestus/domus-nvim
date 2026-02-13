@@ -48,7 +48,7 @@ function M.setup()
         options = {
             icons_enabled = true,
             theme = "catppuccin",
-            component_separators = { left = "", right = "" },
+            component_separators = { left = "│", right = "│" },
             section_separators = { left = "", right = "" },
             globalstatus = true,
             disabled_filetypes = {
@@ -57,12 +57,7 @@ function M.setup()
         },
         sections = {
             lualine_a = {
-                {
-                    "mode",
-                    fmt = function(str)
-                        return str:sub(1, 3)
-                    end,
-                },
+                { "mode" },
             },
             lualine_b = {
                 { "branch", icon = "" },
@@ -107,7 +102,7 @@ function M.setup()
             },
             lualine_x = {
                 { lsp_clients, color = { fg = "#89b4fa" } },
-                { "filetype", icon_only = true, padding = { left = 1, right = 1 } },
+                { "filetype" },
             },
             lualine_y = {
                 { "encoding", fmt = string.upper },
@@ -118,7 +113,7 @@ function M.setup()
             },
             lualine_z = {
                 { "progress" },
-                { "location", padding = { left = 0, right = 1 } },
+                { "location" },
             },
         },
         inactive_sections = {
