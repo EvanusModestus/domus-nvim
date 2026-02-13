@@ -136,70 +136,13 @@ return {
         },
     },
 
-    -- Noice (command line, messages, popupmenu)
-    {
-        "folke/noice.nvim",
-        event = "VeryLazy",
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "rcarriga/nvim-notify",
-        },
-        config = function()
-            require("noice").setup({
-                lsp = {
-                    override = {
-                        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-                        ["vim.lsp.util.stylize_markdown"] = true,
-                        ["cmp.entry.get_documentation"] = true,
-                    },
-                    signature = { enabled = false }, -- using lsp_signature
-                },
-                presets = {
-                    bottom_search = true,
-                    command_palette = true,
-                    long_message_to_split = true,
-                    inc_rename = false,
-                    lsp_doc_border = true,
-                },
-                routes = {
-                    -- Skip "written" messages
-                    { filter = { event = "msg_show", kind = "", find = "written" }, opts = { skip = true } },
-                    -- Skip search count messages
-                    { filter = { event = "msg_show", kind = "search_count" }, opts = { skip = true } },
-                },
-                views = {
-                    cmdline_popup = {
-                        position = { row = "40%", col = "50%" },
-                        size = { width = 60, height = "auto" },
-                        border = { style = "rounded", padding = { 0, 1 } },
-                    },
-                    popupmenu = {
-                        relative = "editor",
-                        position = { row = "45%", col = "50%" },
-                        size = { width = 60, height = 10 },
-                        border = { style = "rounded", padding = { 0, 1 } },
-                    },
-                },
-            })
-            -- Notifications theme
-            require("notify").setup({
-                background_colour = "#1e1e2e",
-                fps = 60,
-                render = "compact",
-                stages = "fade",
-                timeout = 3000,
-                top_down = true,
-            })
-        end,
-    },
-
-    -- Better UI for vim.ui.select and vim.ui.input (fallback)
+    -- Better UI for vim.ui.select and vim.ui.input
     {
         "stevearc/dressing.nvim",
         event = "VeryLazy",
         config = function()
             require("dressing").setup({
-                select = { enabled = false }, -- noice handles this
+                select = { enabled = true, backend = { "telescope", "builtin" } },
                 input = { enabled = true, default_prompt = "> " },
             })
         end,
