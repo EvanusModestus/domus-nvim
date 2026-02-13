@@ -64,7 +64,7 @@ return {
         config = function()
             require("oil").setup({
                 default_file_explorer = true,
-                view_options = { show_hidden = true },
+                view_options = { show_hidden = false },
                 keymaps = {
                     ["g?"] = "actions.show_help",
                     ["<CR>"] = "actions.select",
