@@ -41,10 +41,20 @@ function M.setup()
         },
         color_overrides = {
             mocha = {
-                -- Slightly warmer background
-                base = "#1e1e2e",
-                mantle = "#181825",
-                crust = "#11111b",
+                -- Refined palette for better blending
+                base = "#1a1a26",      -- Slightly deeper, more blue-tinted
+                mantle = "#151520",    -- Darker mantle
+                crust = "#0f0f17",     -- Deep crust
+                surface0 = "#242435",  -- Lifted surface
+                surface1 = "#2e2e42",  -- More visible surface
+                surface2 = "#3a3a50",  -- Even more visible
+                overlay0 = "#5a5a72",  -- Softer overlay
+                overlay1 = "#6e6e88",
+                overlay2 = "#82829e",
+                blue = "#7aa2f7",      -- Softer, more blended blue (tokyo-night inspired)
+                sapphire = "#5eacd3",  -- Cyan-tinted sapphire
+                lavender = "#b4befe",  -- Softer lavender
+                sky = "#7dcfff",       -- Bright sky
             },
         },
         custom_highlights = function(colors)
@@ -249,6 +259,9 @@ function M.setup()
             rainbow_delimiters = true,
             semantic_tokens = true,
             which_key = true,
+            illuminate = { enabled = true, lsp = false },
+            headlines = true,
+            flash = true,
         },
     })
 

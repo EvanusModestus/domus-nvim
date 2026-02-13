@@ -34,25 +34,96 @@ return {
         end,
     },
 
-    -- Indent guides
+    -- Indent guides (with scope highlighting)
     {
         "lukas-reineke/indent-blankline.nvim",
         event = "BufReadPost",
         main = "ibl",
         config = function()
+            local hooks = require("ibl.hooks")
+            hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+                vim.api.nvim_set_hl(0, "IblScope", { fg = "#89b4fa" }) -- blue
+            end)
             require("ibl").setup({
-                indent = { char = "│" },
-                scope = { enabled = false },
+                indent = { char = "│", highlight = "IblIndent" },
+                scope = { enabled = true, show_start = false, show_end = false },
             })
         end,
     },
 
-    -- Colorizer (hex colors)
+    -- Colorizer (inline color preview)
     {
-        "norcalli/nvim-colorizer.lua",
+        "brenoprata10/nvim-highlight-colors",
         event = "BufReadPost",
         config = function()
-            require("colorizer").setup()
+            require("nvim-highlight-colors").setup({
+                render = "virtual",
+                virtual_symbol = "●",
+                enable_tailwind = true,
+            })
+        end,
+    },
+
+    -- Headlines (beautiful markdown/asciidoc headers)
+    {
+        "lukas-reineke/headlines.nvim",
+        ft = { "markdown", "asciidoc", "org" },
+        dependencies = "nvim-treesitter/nvim-treesitter",
+        config = function()
+            vim.api.nvim_set_hl(0, "Headline1", { bg = "#2a1f3d", fg = "#f38ba8", bold = true })
+            vim.api.nvim_set_hl(0, "Headline2", { bg = "#2d2a1f", fg = "#fab387", bold = true })
+            vim.api.nvim_set_hl(0, "Headline3", { bg = "#2a2d1f", fg = "#f9e2af", bold = true })
+            vim.api.nvim_set_hl(0, "Headline4", { bg = "#1f2d2a", fg = "#a6e3a1", bold = true })
+            vim.api.nvim_set_hl(0, "Headline5", { bg = "#1f2a2d", fg = "#89b4fa", bold = true })
+            vim.api.nvim_set_hl(0, "Headline6", { bg = "#2a1f2d", fg = "#cba6f7", bold = true })
+            vim.api.nvim_set_hl(0, "CodeBlock", { bg = "#181825" })
+            vim.api.nvim_set_hl(0, "Dash", { fg = "#6c7086" })
+            require("headlines").setup({
+                markdown = {
+                    headline_highlights = { "Headline1", "Headline2", "Headline3", "Headline4", "Headline5", "Headline6" },
+                    codeblock_highlight = "CodeBlock",
+                    dash_highlight = "Dash",
+                    fat_headlines = false,
+                },
+                asciidoc = {
+                    headline_highlights = { "Headline1", "Headline2", "Headline3", "Headline4", "Headline5", "Headline6" },
+                    codeblock_highlight = "CodeBlock",
+                    fat_headlines = false,
+                },
+            })
+        end,
+    },
+
+    -- Smooth scrolling
+    {
+        "karb94/neoscroll.nvim",
+        event = "VeryLazy",
+        config = function()
+            require("neoscroll").setup({
+                mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "zt", "zz", "zb" },
+                hide_cursor = true,
+                stop_eof = true,
+                respect_scrolloff = false,
+                cursor_scrolls_alone = true,
+                easing_function = "sine",
+                pre_hook = nil,
+                post_hook = nil,
+            })
+        end,
+    },
+
+    -- Window separators
+    {
+        "nvim-zh/colorful-winsep.nvim",
+        event = "WinNew",
+        config = function()
+            require("colorful-winsep").setup({
+                hi = { fg = "#89b4fa" },
+                smooth = true,
+                exponential_smoothing = true,
+                anchor = { left = { height = 1, x = -1, y = -1 }, right = { height = 1, x = -1, y = 0 }, up = { width = 0, x = -1, y = 0 }, bottom = { width = 0, x = 1, y = 0 } },
+                symbols = { "─", "│", "┌", "┐", "└", "┘" },
+            })
         end,
     },
 
