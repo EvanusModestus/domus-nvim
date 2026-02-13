@@ -337,3 +337,27 @@ aside.toc {
 .toc-menu > ul {
   padding-left: 0;
 }
+
+/* Footer */
+.dark-theme .footer {
+  background-color: #11111b;
+  color: #a6adc8;
+  border-top: 1px solid #313244;
+}
+
+.dark-theme .footer a {
+  color: #89b4fa;
+}
+
+.dark-theme .footer-text {
+  color: #6c7086;
+}
+
+/* Fix Features nav toggle */
+.nav-item-toggle {
+  cursor: pointer;
+}
+
+.nav-text {
+  cursor: pointer;
+}
