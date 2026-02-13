@@ -60,16 +60,16 @@ Type trigger word, then press `<Tab>`:
 | Trigger | Result
 
 | `xref`
-| `xref:page.adoc[text]`
+| `+xref:page.adoc[text]+`
 
 | `xrefc`
-| `xref:component::page.adoc[text]`
+| `+xref:component::page.adoc[text]+`
 
 | `include`
-| `include::path[]`
+| `+include::path[]+`
 
 | `partial`
-| `include::partial$file[]`
+| `+include::partial$file[]+`
 |===
 
 === Formatting
