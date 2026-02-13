@@ -2,6 +2,72 @@
 -- Core editing plugins: treesitter, autopairs, comment, etc.
 
 return {
+    -- Rainbow delimiters (colored brackets)
+    {
+        "HiPhish/rainbow-delimiters.nvim",
+        event = "BufReadPost",
+        config = function()
+            local rainbow = require("rainbow-delimiters")
+            vim.g.rainbow_delimiters = {
+                strategy = {
+                    [""] = rainbow.strategy["global"],
+                    vim = rainbow.strategy["local"],
+                },
+                query = {
+                    [""] = "rainbow-delimiters",
+                    lua = "rainbow-blocks",
+                },
+                highlight = {
+                    "RainbowDelimiterRed",
+                    "RainbowDelimiterYellow",
+                    "RainbowDelimiterBlue",
+                    "RainbowDelimiterOrange",
+                    "RainbowDelimiterGreen",
+                    "RainbowDelimiterViolet",
+                    "RainbowDelimiterCyan",
+                },
+            }
+        end,
+    },
+
+    -- Todo comments (highlight TODO, FIXME, etc)
+    {
+        "folke/todo-comments.nvim",
+        event = "BufReadPost",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        keys = {
+            { "]t", function() require("todo-comments").jump_next() end, desc = "Next todo" },
+            { "[t", function() require("todo-comments").jump_prev() end, desc = "Prev todo" },
+            { "<leader>ft", "<cmd>TodoTelescope<CR>", desc = "Find todos" },
+        },
+        config = function()
+            require("todo-comments").setup({
+                signs = true,
+                keywords = {
+                    FIX = { icon = " ", color = "error", alt = { "FIXME", "BUG", "ISSUE" } },
+                    TODO = { icon = " ", color = "info" },
+                    HACK = { icon = " ", color = "warning" },
+                    WARN = { icon = " ", color = "warning", alt = { "WARNING" } },
+                    PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE" } },
+                    NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+                },
+            })
+        end,
+    },
+
+    -- Highlight function arguments
+    {
+        "m-demare/hlargs.nvim",
+        event = "BufReadPost",
+        config = function()
+            require("hlargs").setup({
+                color = "#f2cdcd", -- flamingo
+                paint_arg_declarations = true,
+                paint_arg_usages = true,
+            })
+        end,
+    },
+
     -- Treesitter
     {
         "nvim-treesitter/nvim-treesitter",
