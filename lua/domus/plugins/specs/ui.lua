@@ -136,6 +136,42 @@ return {
         },
     },
 
+    -- Noice (messages, cmdline, notifications)
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "rcarriga/nvim-notify",
+        },
+        config = function()
+            require("noice").setup({
+                cmdline = { enabled = false }, -- keep native cmdline
+                messages = { enabled = true },
+                popupmenu = { enabled = false },
+                lsp = {
+                    override = {
+                        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                        ["vim.lsp.util.stylize_markdown"] = true,
+                    },
+                    signature = { enabled = false },
+                },
+                routes = {
+                    { filter = { event = "msg_show", kind = "", find = "written" }, opts = { skip = true } },
+                    { filter = { event = "msg_show", kind = "search_count" }, opts = { skip = true } },
+                    { filter = { event = "msg_show", find = "Press ENTER" }, opts = { skip = true } },
+                },
+            })
+            require("notify").setup({
+                background_colour = "#1a1a26",
+                fps = 60,
+                render = "compact",
+                stages = "fade",
+                timeout = 2000,
+            })
+        end,
+    },
+
     -- Better UI for vim.ui.select and vim.ui.input
     {
         "stevearc/dressing.nvim",
