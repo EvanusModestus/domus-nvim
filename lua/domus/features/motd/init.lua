@@ -14,12 +14,8 @@ function M.init()
         M.show()
     end, { desc = "Show MOTD" })
 
-    -- Show on startup (after delay)
-    vim.defer_fn(function()
-        if vim.fn.argc() == 0 and vim.bo.filetype == "" then
-            M.show()
-        end
-    end, 100)
+    -- Don't auto-show - we have alpha dashboard
+    -- Use :Motd to show manually
 end
 
 function M.show()
