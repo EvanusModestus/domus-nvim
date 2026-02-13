@@ -66,11 +66,10 @@ end, { desc = "Source file" })
 map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save" })
 map("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" })
 
--- Window navigation
+-- Window navigation (use <C-w> prefix to avoid conflicts)
 map("n", "<C-h>", "<C-w>h", { desc = "Window left" })
-map("n", "<C-j>", "<C-w>j", { desc = "Window down" })
-map("n", "<C-k>", "<C-w>k", { desc = "Window up" })
 map("n", "<C-l>", "<C-w>l", { desc = "Window right" })
+-- NOTE: <C-j>/<C-k> reserved for quickfix navigation above
 
 -- Window resize
 map("n", "<C-Up>", ":resize +2<CR>", { desc = "Increase height" })

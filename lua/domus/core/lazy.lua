@@ -18,6 +18,11 @@ vim.opt.rtp:prepend(lazypath)
 local specs = require("domus.plugins")
 
 require("lazy").setup(specs, {
+    -- Use HTTPS instead of SSH (works without SSH keys)
+    git = {
+        url_format = "https://github.com/%s.git",
+    },
+
     -- Performance
     performance = {
         cache = { enabled = true },
