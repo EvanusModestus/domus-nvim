@@ -8,6 +8,9 @@ nav:
 
 asciidoc:
   attributes:
+    # Page layout
+    page-toclevels: 3
+
     # Keybindings
     leader: '<Space>'
     localleader: '<Space>'

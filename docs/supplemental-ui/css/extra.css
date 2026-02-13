@@ -1,155 +1,237 @@
-/* Domus Instrumentum - Custom Theme */
+/* Domus Instrumentum Theme
+ * Catppuccin Mocha inspired colors
+ * Keep this file for all custom styles - external and mutable
+ */
 
-/* Dark theme colors (Catppuccin Mocha inspired) */
+:root {
+  /* Light theme defaults */
+  --domus-brand: #7c3aed;
+  --domus-brand-light: #8b5cf6;
+  --domus-link: #2563eb;
+  --domus-link-hover: #3b82f6;
+}
+
+/* ============================================
+   DARK THEME
+   ============================================ */
+
 .dark-theme {
-  --color-brand: #cba6f7;
-  --color-brand-light: #b4befe;
-  --color-link: #89b4fa;
-  --color-link-hover: #b4befe;
-  --body-background: #1a1a26;
-  --body-font-color: #cdd6f4;
-  --nav-background: #151520;
-  --nav-link-color: #cdd6f4;
-  --toc-background: #1e1e2e;
-  --panel-background: #181825;
-  --panel-border-color: #313244;
-  --code-background: #1e1e2e;
-  --code-font-color: #cdd6f4;
-  --scrollbar-track: #181825;
-  --scrollbar-thumb: #45475a;
+  /* Catppuccin Mocha palette */
+  --domus-base: #1e1e2e;
+  --domus-mantle: #181825;
+  --domus-crust: #11111b;
+  --domus-surface0: #313244;
+  --domus-surface1: #45475a;
+  --domus-surface2: #585b70;
+  --domus-text: #cdd6f4;
+  --domus-subtext: #a6adc8;
+  --domus-mauve: #cba6f7;
+  --domus-lavender: #b4befe;
+  --domus-blue: #89b4fa;
+  --domus-sapphire: #74c7ec;
+  --domus-green: #a6e3a1;
+  --domus-peach: #fab387;
+  --domus-red: #f38ba8;
+  --domus-yellow: #f9e2af;
 }
 
+/* Body */
 .dark-theme body {
-  background-color: var(--body-background);
-  color: var(--body-font-color);
+  background-color: var(--domus-base);
+  color: var(--domus-text);
 }
 
+/* Navbar */
 .dark-theme .navbar {
-  background-color: var(--nav-background);
+  background-color: var(--domus-crust);
+  border-bottom: 1px solid var(--domus-surface0);
 }
 
-/* Left sidebar nav */
+.dark-theme .navbar-item,
+.dark-theme .navbar-link {
+  color: var(--domus-text);
+}
+
+/* Left Navigation */
 .dark-theme .nav-container,
-.dark-theme .nav {
-  background-color: var(--nav-background);
-}
-
+.dark-theme .nav,
 .dark-theme .nav-menu {
-  background-color: var(--nav-background);
+  background-color: var(--domus-mantle);
 }
 
-.dark-theme .nav-menu .title {
-  color: var(--color-brand);
-}
-
+.dark-theme .nav-menu .title,
 .dark-theme .nav-menu .title a {
-  color: var(--color-brand);
+  color: var(--domus-mauve);
+  font-weight: 600;
 }
 
-.dark-theme .nav-link,
+.dark-theme .nav-link {
+  color: var(--domus-text) !important;
+}
+
 .dark-theme .nav-text {
-  color: var(--nav-link-color) !important;
-  opacity: 1 !important;
+  color: var(--domus-subtext) !important;
 }
 
 .dark-theme .nav-link:hover {
-  color: var(--color-link-hover) !important;
+  color: var(--domus-blue) !important;
 }
 
 .dark-theme .nav-item.is-current-page > .nav-link {
-  color: var(--color-brand) !important;
+  color: var(--domus-mauve) !important;
   font-weight: 600;
 }
 
 .dark-theme .nav-item-toggle::before {
-  background-color: var(--nav-link-color);
+  background-color: var(--domus-subtext);
 }
 
-/* Main content */
-.dark-theme .doc {
-  background-color: var(--body-background);
-  color: var(--body-font-color);
+/* Main Content */
+.dark-theme .doc,
+.dark-theme .doc-main {
+  background-color: var(--domus-base);
+  color: var(--domus-text);
 }
 
-/* Right sidebar TOC */
-.dark-theme .toc {
-  background-color: var(--toc-background);
-  border-left: 1px solid var(--panel-border-color);
+.dark-theme .doc h1,
+.dark-theme .doc h2,
+.dark-theme .doc h3,
+.dark-theme .doc h4,
+.dark-theme .doc h5,
+.dark-theme .doc h6 {
+  color: var(--domus-mauve);
 }
 
-.dark-theme .toc .toc-menu {
-  background-color: var(--toc-background);
+.dark-theme .doc a {
+  color: var(--domus-blue);
+}
+
+.dark-theme .doc a:hover {
+  color: var(--domus-lavender);
+}
+
+/* Right TOC (On This Page) */
+.dark-theme .toc,
+.dark-theme .toc-menu,
+.dark-theme aside.toc {
+  background-color: var(--domus-mantle);
+  border-left: 1px solid var(--domus-surface0);
 }
 
 .dark-theme .toc .toc-title {
-  color: var(--color-brand);
+  color: var(--domus-mauve);
   font-weight: 600;
 }
 
 .dark-theme .toc a {
-  color: var(--nav-link-color);
+  color: var(--domus-subtext);
 }
 
-.dark-theme .toc a:hover {
-  color: var(--color-link-hover);
-}
-
+.dark-theme .toc a:hover,
 .dark-theme .toc a.is-active {
-  color: var(--color-brand);
-  font-weight: 500;
+  color: var(--domus-blue);
 }
 
-/* Code blocks */
-.dark-theme code,
-.dark-theme pre {
-  background-color: var(--code-background);
-  color: var(--code-font-color);
+/* Code Blocks */
+.dark-theme code {
+  background-color: var(--domus-surface0);
+  color: var(--domus-peach);
+  padding: 0.125rem 0.25rem;
+  border-radius: 3px;
 }
 
-.dark-theme .listingblock pre {
-  background-color: var(--code-background);
-  border: 1px solid var(--panel-border-color);
+.dark-theme pre,
+.dark-theme .listingblock pre,
+.dark-theme .literalblock pre {
+  background-color: var(--domus-mantle) !important;
+  color: var(--domus-text) !important;
+  border: 1px solid var(--domus-surface0);
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.dark-theme pre code {
+  background-color: transparent;
+  color: var(--domus-text);
+  padding: 0;
 }
 
 .dark-theme .listingblock .title {
-  color: var(--color-brand-light);
-}
-
-/* Links */
-.dark-theme a {
-  color: var(--color-link);
-}
-
-.dark-theme a:hover {
-  color: var(--color-link-hover);
-}
-
-/* Headings */
-.dark-theme h1, .dark-theme h2, .dark-theme h3,
-.dark-theme h4, .dark-theme h5, .dark-theme h6 {
-  color: var(--color-brand);
+  color: var(--domus-subtext);
+  font-size: 0.85rem;
 }
 
 /* Tables */
 .dark-theme table {
-  background-color: var(--panel-background);
-  border-color: var(--panel-border-color);
+  background-color: var(--domus-mantle);
 }
 
 .dark-theme table th {
-  background-color: var(--nav-background);
-  color: var(--color-brand);
+  background-color: var(--domus-surface0);
+  color: var(--domus-mauve);
+  border-color: var(--domus-surface1);
 }
 
 .dark-theme table td {
-  border-color: var(--panel-border-color);
+  border-color: var(--domus-surface0);
+  color: var(--domus-text);
+}
+
+.dark-theme table tr:nth-child(even) {
+  background-color: var(--domus-crust);
 }
 
 /* Admonitions */
 .dark-theme .admonitionblock {
-  background-color: var(--panel-background);
-  border-color: var(--panel-border-color);
+  background-color: var(--domus-mantle);
 }
+
+.dark-theme .admonitionblock td.icon {
+  color: var(--domus-blue);
+}
+
+.dark-theme .admonitionblock.note td.icon {
+  color: var(--domus-blue);
+}
+
+.dark-theme .admonitionblock.tip td.icon {
+  color: var(--domus-green);
+}
+
+.dark-theme .admonitionblock.warning td.icon {
+  color: var(--domus-yellow);
+}
+
+.dark-theme .admonitionblock.caution td.icon {
+  color: var(--domus-peach);
+}
+
+.dark-theme .admonitionblock.important td.icon {
+  color: var(--domus-red);
+}
+
+/* Scrollbars */
+.dark-theme ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark-theme ::-webkit-scrollbar-track {
+  background: var(--domus-mantle);
+}
+
+.dark-theme ::-webkit-scrollbar-thumb {
+  background: var(--domus-surface1);
+  border-radius: 4px;
+}
+
+.dark-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--domus-surface2);
+}
+
+/* ============================================
+   COMPONENT STYLES (both themes)
+   ============================================ */
 
 /* Theme toggle button */
 #theme-toggle {
@@ -159,24 +241,23 @@
   cursor: pointer;
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #theme-toggle:hover {
-  background: rgba(255,255,255,0.1);
+  opacity: 0.8;
 }
 
-/* Clean navbar */
+/* Navbar branding */
 .navbar-brand .navbar-item {
   font-weight: 700;
   font-size: 1.1rem;
 }
 
-.navbar-end .navbar-item {
-  font-size: 0.9rem;
-}
-
-/* Right TOC styling */
-.toc {
+/* Right TOC layout */
+aside.toc {
   position: sticky;
   top: 4rem;
   max-height: calc(100vh - 5rem);
@@ -185,25 +266,29 @@
 }
 
 .toc .toc-title {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.75rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.dark-theme .toc .toc-title {
-  border-bottom-color: var(--panel-border-color);
+  border-bottom: 1px solid currentColor;
+  opacity: 0.6;
 }
 
 .toc-menu a {
   display: block;
-  padding: 0.25rem 0;
+  padding: 0.2rem 0;
   font-size: 0.85rem;
   line-height: 1.4;
+  text-decoration: none;
 }
 
 .toc-menu ul {
+  list-style: none;
   padding-left: 0.75rem;
+  margin: 0;
+}
+
+.toc-menu > ul {
+  padding-left: 0;
 }
