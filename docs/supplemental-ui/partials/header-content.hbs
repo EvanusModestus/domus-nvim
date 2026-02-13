@@ -1,0 +1,23 @@
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="{{or site.url (or siteRootPath '/')}}">{{site.title}}</a>
+      <button class="navbar-burger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="topbar-nav" data-toggle="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="{{siteRootPath}}/instrumentum/index.html">Docs</a>
+        <a class="navbar-item" href="https://github.com/EvanusModestus/domus-instrumentum" target="_blank">GitHub</a>
+        <div class="navbar-item">
+          <button id="theme-toggle" class="button is-small" title="Toggle dark mode">
+            <span class="icon"><i class="fas fa-moon"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

@@ -1,0 +1,94 @@
+/* Domus Instrumentum - Custom Theme */
+
+/* Dark theme colors (Catppuccin Mocha inspired) */
+.dark-theme {
+  --color-brand: #cba6f7;
+  --color-brand-light: #b4befe;
+  --color-link: #89b4fa;
+  --color-link-hover: #b4befe;
+  --body-background: #1a1a26;
+  --body-font-color: #cdd6f4;
+  --nav-background: #151520;
+  --nav-link-color: #cdd6f4;
+  --toc-background: #1e1e2e;
+  --panel-background: #181825;
+  --panel-border-color: #313244;
+  --code-background: #1e1e2e;
+  --code-font-color: #cdd6f4;
+  --scrollbar-track: #181825;
+  --scrollbar-thumb: #45475a;
+}
+
+.dark-theme body {
+  background-color: var(--body-background);
+  color: var(--body-font-color);
+}
+
+.dark-theme .navbar {
+  background-color: var(--nav-background);
+}
+
+.dark-theme .nav-container {
+  background-color: var(--nav-background);
+}
+
+.dark-theme .nav-link,
+.dark-theme .nav-text {
+  color: var(--nav-link-color);
+}
+
+.dark-theme .doc {
+  background-color: var(--body-background);
+  color: var(--body-font-color);
+}
+
+.dark-theme .toc {
+  background-color: var(--toc-background);
+}
+
+.dark-theme code,
+.dark-theme pre {
+  background-color: var(--code-background);
+  color: var(--code-font-color);
+}
+
+.dark-theme .listingblock pre {
+  background-color: var(--code-background);
+}
+
+.dark-theme a {
+  color: var(--color-link);
+}
+
+.dark-theme a:hover {
+  color: var(--color-link-hover);
+}
+
+.dark-theme h1, .dark-theme h2, .dark-theme h3,
+.dark-theme h4, .dark-theme h5, .dark-theme h6 {
+  color: var(--color-brand);
+}
+
+/* Theme toggle button */
+#theme-toggle {
+  background: transparent;
+  border: 1px solid currentColor;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+#theme-toggle:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* Clean navbar */
+.navbar-brand .navbar-item {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.navbar-end .navbar-item {
+  font-size: 0.9rem;
+}

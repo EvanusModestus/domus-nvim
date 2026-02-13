@@ -1,0 +1,27 @@
+<script>
+(function() {
+  const toggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  // Check saved preference or system preference
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+    html.classList.add('dark-theme');
+  }
+
+  if (toggle) {
+    toggle.addEventListener('click', function() {
+      html.classList.toggle('dark-theme');
+      const isDark = html.classList.contains('dark-theme');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      this.querySelector('i').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    });
+
+    // Set initial icon
+    const isDark = html.classList.contains('dark-theme');
+    toggle.querySelector('i').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+  }
+})();
+</script>
