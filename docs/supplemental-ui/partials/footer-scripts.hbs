@@ -1,9 +1,11 @@
+<script id="site-script" src="{{uiRootPath}}/js/site.js" data-ui-root-path="{{uiRootPath}}"></script>
+<script async src="{{uiRootPath}}/js/vendor/highlight.js"></script>
 <script>
 (function() {
+  // Theme toggle
   const toggle = document.getElementById('theme-toggle');
   const html = document.documentElement;
 
-  // Check saved preference or system preference
   const savedTheme = localStorage.getItem('theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -19,9 +21,10 @@
       this.querySelector('i').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
     });
 
-    // Set initial icon
     const isDark = html.classList.contains('dark-theme');
-    toggle.querySelector('i').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    if (toggle.querySelector('i')) {
+      toggle.querySelector('i').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    }
   }
 })();
 </script>

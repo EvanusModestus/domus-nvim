@@ -9,6 +9,7 @@ nav:
 asciidoc:
   attributes:
     # Page layout
+    toclevels: 3
     page-toclevels: 3
 
     # Keybindings
