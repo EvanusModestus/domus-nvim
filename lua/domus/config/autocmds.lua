@@ -28,7 +28,7 @@ autocmd("BufWritePre", {
     group = general,
     pattern = "*",
     callback = function()
-        if vim.bo.binary or vim.bo.filetype == "diff" then
+        if vim.bo.binary or vim.bo.filetype == "diff" or not vim.bo.modifiable then
             return
         end
         local save_cursor = vim.fn.getpos(".")
