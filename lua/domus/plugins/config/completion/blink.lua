@@ -8,11 +8,12 @@ function M.setup()
 
     blink.setup({
         keymap = {
-            preset = "default",
+            preset = "none",
             ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-            ["<C-e>"] = { "hide" },
+            ["<C-e>"] = { "hide", "fallback" },
+            ["<Esc>"] = { "hide", "fallback" },
             ["<C-y>"] = { "select_and_accept" },
-            ["<CR>"] = { "accept", "fallback" },
+            ["<CR>"] = { "fallback" },
             ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
             ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
             ["<C-p>"] = { "select_prev", "fallback" },
