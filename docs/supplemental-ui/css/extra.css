@@ -134,32 +134,42 @@
 
 /* Code Blocks */
 .dark-theme code {
-  background-color: var(--domus-surface0);
-  color: var(--domus-sapphire);
+  background-color: #313244 !important;
+  color: #74c7ec !important;
   padding: 0.125rem 0.25rem;
   border-radius: 3px;
 }
 
 .dark-theme pre,
 .dark-theme .listingblock pre,
-.dark-theme .literalblock pre {
-  background-color: var(--domus-mantle) !important;
-  color: var(--domus-text) !important;
-  border: 1px solid var(--domus-blue);
-  border-left: 3px solid var(--domus-blue);
+.dark-theme .literalblock pre,
+.dark-theme .listingblock .content pre,
+.dark-theme .literalblock .content pre {
+  background-color: #181825 !important;
+  color: #cdd6f4 !important;
+  border: 1px solid #89b4fa !important;
+  border-left: 3px solid #89b4fa !important;
   border-radius: 6px;
   padding: 1rem;
-  box-shadow: 0 2px 8px rgba(137, 180, 250, 0.1);
+  box-shadow: 0 2px 8px rgba(137, 180, 250, 0.15);
 }
 
-.dark-theme pre code {
-  background-color: transparent;
-  color: var(--domus-text);
+.dark-theme pre *,
+.dark-theme .listingblock pre *,
+.dark-theme .literalblock pre * {
+  color: #cdd6f4 !important;
+  opacity: 1 !important;
+}
+
+.dark-theme pre code,
+.dark-theme .listingblock pre code {
+  background-color: transparent !important;
+  color: #cdd6f4 !important;
   padding: 0;
 }
 
 .dark-theme .listingblock .title {
-  color: var(--domus-blue);
+  color: #89b4fa;
   font-size: 0.85rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
