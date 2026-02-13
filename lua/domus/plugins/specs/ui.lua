@@ -193,10 +193,18 @@ return {
             local alpha = require("alpha")
             local dashboard = require("alpha.themes.dashboard")
 
-            -- Minimal header
+            -- Header with MOTD
             dashboard.section.header.val = {
                 "",
                 "  domus instrumentum",
+                "",
+                "  ───────────────────────────",
+                "",
+                "  <Space>ff  find files",
+                "  <Space>fg  live grep",
+                "  <Space>e   file browser",
+                "  <C-p>      git files",
+                "  <C-e>      harpoon menu",
                 "",
             }
             dashboard.section.header.opts.hl = "AlphaHeader"
