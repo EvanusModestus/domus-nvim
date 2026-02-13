@@ -135,7 +135,7 @@
 /* Code Blocks */
 .dark-theme code {
   background-color: var(--domus-surface0);
-  color: var(--domus-peach);
+  color: var(--domus-sapphire);
   padding: 0.125rem 0.25rem;
   border-radius: 3px;
 }
@@ -145,9 +145,11 @@
 .dark-theme .literalblock pre {
   background-color: var(--domus-mantle) !important;
   color: var(--domus-text) !important;
-  border: 1px solid var(--domus-surface0);
+  border: 1px solid var(--domus-blue);
+  border-left: 3px solid var(--domus-blue);
   border-radius: 6px;
   padding: 1rem;
+  box-shadow: 0 2px 8px rgba(137, 180, 250, 0.1);
 }
 
 .dark-theme pre code {
@@ -157,8 +159,10 @@
 }
 
 .dark-theme .listingblock .title {
-  color: var(--domus-subtext);
+  color: var(--domus-blue);
   font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
 }
 
 /* Tables */
@@ -184,26 +188,57 @@
 /* Admonitions */
 .dark-theme .admonitionblock {
   background-color: var(--domus-mantle);
+  border-radius: 6px;
+  border: 1px solid var(--domus-surface0);
+  border-left: 3px solid var(--domus-blue);
+  box-shadow: 0 2px 8px rgba(137, 180, 250, 0.1);
+}
+
+.dark-theme .admonitionblock td.content {
+  color: var(--domus-text);
+  padding: 0.75rem 1rem;
 }
 
 .dark-theme .admonitionblock td.icon {
   color: var(--domus-blue);
+  padding: 0.75rem;
+  font-weight: 600;
+}
+
+.dark-theme .admonitionblock.note {
+  border-left-color: var(--domus-blue);
 }
 
 .dark-theme .admonitionblock.note td.icon {
   color: var(--domus-blue);
 }
 
+.dark-theme .admonitionblock.tip {
+  border-left-color: var(--domus-green);
+}
+
 .dark-theme .admonitionblock.tip td.icon {
   color: var(--domus-green);
+}
+
+.dark-theme .admonitionblock.warning {
+  border-left-color: var(--domus-yellow);
 }
 
 .dark-theme .admonitionblock.warning td.icon {
   color: var(--domus-yellow);
 }
 
+.dark-theme .admonitionblock.caution {
+  border-left-color: var(--domus-peach);
+}
+
 .dark-theme .admonitionblock.caution td.icon {
   color: var(--domus-peach);
+}
+
+.dark-theme .admonitionblock.important {
+  border-left-color: var(--domus-red);
 }
 
 .dark-theme .admonitionblock.important td.icon {
