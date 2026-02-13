@@ -134,7 +134,7 @@ return {
         end,
     },
 
-    -- Dashboard
+    -- Dashboard (minimal, clean)
     {
         "goolord/alpha-nvim",
         event = "VimEnter",
@@ -143,52 +143,59 @@ return {
             local alpha = require("alpha")
             local dashboard = require("alpha.themes.dashboard")
 
+            -- Minimal header
             dashboard.section.header.val = {
-                "                                                     ",
-                "  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ",
-                "  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ",
-                "  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ",
-                "  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║ ",
-                "  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║ ",
-                "  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ",
-                "                                                     ",
-                "          D O M U S   I N S T R U M E N T U M        ",
-                "                                                     ",
+                "",
+                "  domus instrumentum",
+                "",
             }
             dashboard.section.header.opts.hl = "AlphaHeader"
 
             dashboard.section.buttons.val = {
-                dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
-                dashboard.button("e", "  New file", ":ene <BAR> startinsert<CR>"),
-                dashboard.button("r", "  Recent files", ":Telescope oldfiles<CR>"),
-                dashboard.button("g", "  Find text", ":Telescope live_grep<CR>"),
-                dashboard.button("c", "  Config", ":e ~/.config/nvim-domus/lua/domus/init.lua<CR>"),
-                dashboard.button("l", "󰒲  Lazy", ":Lazy<CR>"),
-                dashboard.button("q", "  Quit", ":qa<CR>"),
+                dashboard.button("f", "  find file", ":Telescope find_files<CR>"),
+                dashboard.button("g", "  grep", ":Telescope live_grep<CR>"),
+                dashboard.button("r", "  recent", ":Telescope oldfiles<CR>"),
+                dashboard.button("e", "  new", ":ene<CR>"),
+                dashboard.button("q", "  quit", ":qa<CR>"),
             }
 
-            dashboard.section.footer.val = "Hierarchical. Modular. Documented."
+            for _, btn in ipairs(dashboard.section.buttons.val) do
+                btn.opts.hl = "AlphaButtons"
+                btn.opts.hl_shortcut = "AlphaShortcut"
+            end
+
+            dashboard.section.footer.val = ""
             dashboard.section.footer.opts.hl = "AlphaFooter"
 
-            -- Custom highlights
-            vim.api.nvim_set_hl(0, "AlphaHeader", { fg = "#cba6f7" }) -- mauve
+            -- Layout: tighter spacing
+            dashboard.config.layout = {
+                { type = "padding", val = vim.fn.max({ 2, vim.fn.floor(vim.fn.winheight(0) * 0.2) }) },
+                dashboard.section.header,
+                { type = "padding", val = 2 },
+                dashboard.section.buttons,
+                { type = "padding", val = 1 },
+                dashboard.section.footer,
+            }
+
+            -- Catppuccin colors
+            vim.api.nvim_set_hl(0, "AlphaHeader", { fg = "#cba6f7", bold = true }) -- mauve
+            vim.api.nvim_set_hl(0, "AlphaButtons", { fg = "#cdd6f4" }) -- text
+            vim.api.nvim_set_hl(0, "AlphaShortcut", { fg = "#f38ba8", bold = true }) -- red
             vim.api.nvim_set_hl(0, "AlphaFooter", { fg = "#6c7086", italic = true }) -- overlay0
 
-            alpha.setup(dashboard.opts)
+            alpha.setup(dashboard.config)
 
-            -- Disable statusline on dashboard
+            -- Hide statusline on dashboard
             vim.api.nvim_create_autocmd("User", {
                 pattern = "AlphaReady",
                 callback = function()
                     vim.opt.laststatus = 0
-                    vim.opt.showtabline = 0
                 end,
             })
             vim.api.nvim_create_autocmd("BufUnload", {
                 buffer = 0,
                 callback = function()
                     vim.opt.laststatus = 3
-                    vim.opt.showtabline = 2
                 end,
             })
         end,
