@@ -2,10 +2,10 @@
 -- Visual plugins: colorscheme, statusline, icons
 
 return {
-    -- Rose Pine (primary colorscheme)
+    -- Catppuccin (primary colorscheme)
     {
-        "rose-pine/neovim",
-        name = "rose-pine",
+        "catppuccin/nvim",
+        name = "catppuccin",
         priority = 1000,
         config = function()
             require("domus.plugins.config.colorscheme").setup()
@@ -13,11 +13,11 @@ return {
     },
 
     -- Alternative colorschemes (lazy loaded)
-    { "catppuccin/nvim", name = "catppuccin", lazy = true },
+    { "rose-pine/neovim", name = "rose-pine", lazy = true },
     { "folke/tokyonight.nvim", lazy = true },
     { "rebelot/kanagawa.nvim", lazy = true },
     { "sainnhe/gruvbox-material", lazy = true },
-    { "shaunsingh/nord.nvim", lazy = true },
+    { "EdenEast/nightfox.nvim", lazy = true },
 
     -- Icons
     {
@@ -65,14 +65,131 @@ return {
         },
     },
 
-    -- Better UI for vim.ui.select and vim.ui.input
+    -- Noice (command line, messages, popupmenu)
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "rcarriga/nvim-notify",
+        },
+        config = function()
+            require("noice").setup({
+                lsp = {
+                    override = {
+                        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                        ["vim.lsp.util.stylize_markdown"] = true,
+                        ["cmp.entry.get_documentation"] = true,
+                    },
+                    signature = { enabled = false }, -- using lsp_signature
+                },
+                presets = {
+                    bottom_search = true,
+                    command_palette = true,
+                    long_message_to_split = true,
+                    inc_rename = false,
+                    lsp_doc_border = true,
+                },
+                routes = {
+                    -- Skip "written" messages
+                    { filter = { event = "msg_show", kind = "", find = "written" }, opts = { skip = true } },
+                    -- Skip search count messages
+                    { filter = { event = "msg_show", kind = "search_count" }, opts = { skip = true } },
+                },
+                views = {
+                    cmdline_popup = {
+                        position = { row = "40%", col = "50%" },
+                        size = { width = 60, height = "auto" },
+                        border = { style = "rounded", padding = { 0, 1 } },
+                    },
+                    popupmenu = {
+                        relative = "editor",
+                        position = { row = "45%", col = "50%" },
+                        size = { width = 60, height = 10 },
+                        border = { style = "rounded", padding = { 0, 1 } },
+                    },
+                },
+            })
+            -- Notifications theme
+            require("notify").setup({
+                background_colour = "#1e1e2e",
+                fps = 60,
+                render = "compact",
+                stages = "fade",
+                timeout = 3000,
+                top_down = true,
+            })
+        end,
+    },
+
+    -- Better UI for vim.ui.select and vim.ui.input (fallback)
     {
         "stevearc/dressing.nvim",
         event = "VeryLazy",
         config = function()
             require("dressing").setup({
-                select = { enabled = true, backend = { "telescope", "builtin" } },
+                select = { enabled = false }, -- noice handles this
                 input = { enabled = true, default_prompt = "> " },
+            })
+        end,
+    },
+
+    -- Dashboard
+    {
+        "goolord/alpha-nvim",
+        event = "VimEnter",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        config = function()
+            local alpha = require("alpha")
+            local dashboard = require("alpha.themes.dashboard")
+
+            dashboard.section.header.val = {
+                "                                                     ",
+                "  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ",
+                "  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ",
+                "  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ",
+                "  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║ ",
+                "  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║ ",
+                "  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ",
+                "                                                     ",
+                "          D O M U S   I N S T R U M E N T U M        ",
+                "                                                     ",
+            }
+            dashboard.section.header.opts.hl = "AlphaHeader"
+
+            dashboard.section.buttons.val = {
+                dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
+                dashboard.button("e", "  New file", ":ene <BAR> startinsert<CR>"),
+                dashboard.button("r", "  Recent files", ":Telescope oldfiles<CR>"),
+                dashboard.button("g", "  Find text", ":Telescope live_grep<CR>"),
+                dashboard.button("c", "  Config", ":e ~/.config/nvim-domus/lua/domus/init.lua<CR>"),
+                dashboard.button("l", "󰒲  Lazy", ":Lazy<CR>"),
+                dashboard.button("q", "  Quit", ":qa<CR>"),
+            }
+
+            dashboard.section.footer.val = "Hierarchical. Modular. Documented."
+            dashboard.section.footer.opts.hl = "AlphaFooter"
+
+            -- Custom highlights
+            vim.api.nvim_set_hl(0, "AlphaHeader", { fg = "#cba6f7" }) -- mauve
+            vim.api.nvim_set_hl(0, "AlphaFooter", { fg = "#6c7086", italic = true }) -- overlay0
+
+            alpha.setup(dashboard.opts)
+
+            -- Disable statusline on dashboard
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "AlphaReady",
+                callback = function()
+                    vim.opt.laststatus = 0
+                    vim.opt.showtabline = 0
+                end,
+            })
+            vim.api.nvim_create_autocmd("BufUnload", {
+                buffer = 0,
+                callback = function()
+                    vim.opt.laststatus = 3
+                    vim.opt.showtabline = 2
+                end,
             })
         end,
     },
