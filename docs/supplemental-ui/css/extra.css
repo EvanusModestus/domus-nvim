@@ -28,24 +28,78 @@
   background-color: var(--nav-background);
 }
 
-.dark-theme .nav-container {
+/* Left sidebar nav */
+.dark-theme .nav-container,
+.dark-theme .nav {
   background-color: var(--nav-background);
+}
+
+.dark-theme .nav-menu {
+  background-color: var(--nav-background);
+}
+
+.dark-theme .nav-menu .title {
+  color: var(--color-brand);
+}
+
+.dark-theme .nav-menu .title a {
+  color: var(--color-brand);
 }
 
 .dark-theme .nav-link,
 .dark-theme .nav-text {
-  color: var(--nav-link-color);
+  color: var(--nav-link-color) !important;
+  opacity: 1 !important;
 }
 
+.dark-theme .nav-link:hover {
+  color: var(--color-link-hover) !important;
+}
+
+.dark-theme .nav-item.is-current-page > .nav-link {
+  color: var(--color-brand) !important;
+  font-weight: 600;
+}
+
+.dark-theme .nav-item-toggle::before {
+  background-color: var(--nav-link-color);
+}
+
+/* Main content */
 .dark-theme .doc {
   background-color: var(--body-background);
   color: var(--body-font-color);
 }
 
+/* Right sidebar TOC */
 .dark-theme .toc {
+  background-color: var(--toc-background);
+  border-left: 1px solid var(--panel-border-color);
+}
+
+.dark-theme .toc .toc-menu {
   background-color: var(--toc-background);
 }
 
+.dark-theme .toc .toc-title {
+  color: var(--color-brand);
+  font-weight: 600;
+}
+
+.dark-theme .toc a {
+  color: var(--nav-link-color);
+}
+
+.dark-theme .toc a:hover {
+  color: var(--color-link-hover);
+}
+
+.dark-theme .toc a.is-active {
+  color: var(--color-brand);
+  font-weight: 500;
+}
+
+/* Code blocks */
 .dark-theme code,
 .dark-theme pre {
   background-color: var(--code-background);
@@ -54,8 +108,14 @@
 
 .dark-theme .listingblock pre {
   background-color: var(--code-background);
+  border: 1px solid var(--panel-border-color);
 }
 
+.dark-theme .listingblock .title {
+  color: var(--color-brand-light);
+}
+
+/* Links */
 .dark-theme a {
   color: var(--color-link);
 }
@@ -64,9 +124,31 @@
   color: var(--color-link-hover);
 }
 
+/* Headings */
 .dark-theme h1, .dark-theme h2, .dark-theme h3,
 .dark-theme h4, .dark-theme h5, .dark-theme h6 {
   color: var(--color-brand);
+}
+
+/* Tables */
+.dark-theme table {
+  background-color: var(--panel-background);
+  border-color: var(--panel-border-color);
+}
+
+.dark-theme table th {
+  background-color: var(--nav-background);
+  color: var(--color-brand);
+}
+
+.dark-theme table td {
+  border-color: var(--panel-border-color);
+}
+
+/* Admonitions */
+.dark-theme .admonitionblock {
+  background-color: var(--panel-background);
+  border-color: var(--panel-border-color);
 }
 
 /* Theme toggle button */
@@ -91,4 +173,37 @@
 
 .navbar-end .navbar-item {
   font-size: 0.9rem;
+}
+
+/* Right TOC styling */
+.toc {
+  position: sticky;
+  top: 4rem;
+  max-height: calc(100vh - 5rem);
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.toc .toc-title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dark-theme .toc .toc-title {
+  border-bottom-color: var(--panel-border-color);
+}
+
+.toc-menu a {
+  display: block;
+  padding: 0.25rem 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.toc-menu ul {
+  padding-left: 0.75rem;
 }
