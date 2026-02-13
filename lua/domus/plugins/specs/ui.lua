@@ -193,22 +193,15 @@ return {
             local alpha = require("alpha")
             local dashboard = require("alpha.themes.dashboard")
 
-            -- Header with MOTD
+            -- Header
             dashboard.section.header.val = {
                 "",
                 "  domus instrumentum",
                 "",
-                "  ───────────────────────────",
-                "",
-                "  <Space>ff  find files",
-                "  <Space>fg  live grep",
-                "  <Space>e   file browser",
-                "  <C-p>      git files",
-                "  <C-e>      harpoon menu",
-                "",
             }
             dashboard.section.header.opts.hl = "AlphaHeader"
 
+            -- Buttons
             dashboard.section.buttons.val = {
                 dashboard.button("f", "  find file", ":Telescope find_files<CR>"),
                 dashboard.button("g", "  grep", ":Telescope live_grep<CR>"),
@@ -222,16 +215,34 @@ return {
                 btn.opts.hl_shortcut = "AlphaShortcut"
             end
 
-            dashboard.section.footer.val = ""
+            -- MOTD section
+            local motd = {
+                type = "text",
+                val = {
+                    "───────────────────────────",
+                    "",
+                    "  <Space>ff  find files",
+                    "  <Space>fg  live grep",
+                    "  <Space>e   file browser",
+                    "  <C-p>      git files",
+                    "  <C-e>      harpoon menu",
+                },
+                opts = { position = "center", hl = "AlphaFooter" },
+            }
+
+            -- Footer with version info
+            dashboard.section.footer.val = "domus instrumentum  │  :Motd for help"
             dashboard.section.footer.opts.hl = "AlphaFooter"
 
-            -- Layout: tighter spacing
+            -- Layout
             dashboard.config.layout = {
                 { type = "padding", val = vim.fn.max({ 2, vim.fn.floor(vim.fn.winheight(0) * 0.2) }) },
                 dashboard.section.header,
                 { type = "padding", val = 2 },
                 dashboard.section.buttons,
-                { type = "padding", val = 1 },
+                { type = "padding", val = 2 },
+                motd,
+                { type = "padding", val = 2 },
                 dashboard.section.footer,
             }
 
