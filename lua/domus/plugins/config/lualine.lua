@@ -26,6 +26,24 @@ function M.setup()
         return ""
     end
 
+    -- Clean filename (handles oil:// buffers)
+    local function clean_filename()
+        local bufname = vim.fn.bufname()
+        -- Oil buffer - show clean path
+        if bufname:match("^oil://") then
+            local path = bufname:gsub("^oil://", "")
+            -- Shorten home directory
+            path = path:gsub(vim.env.HOME, "~")
+            -- Get last 2 directories
+            local parts = vim.split(path, "/")
+            if #parts > 3 then
+                path = "…/" .. table.concat({ parts[#parts - 1], parts[#parts] }, "/")
+            end
+            return " " .. path
+        end
+        return nil -- Use default filename
+    end
+
     lualine.setup({
         options = {
             icons_enabled = true,
@@ -58,6 +76,20 @@ function M.setup()
                 {
                     "filename",
                     path = 1,
+                    fmt = function(str)
+                        -- Handle oil:// buffers
+                        local bufname = vim.fn.bufname()
+                        if bufname:match("^oil://") then
+                            local path = bufname:gsub("^oil://", "")
+                            path = path:gsub(vim.env.HOME, "~")
+                            local parts = vim.split(path, "/")
+                            if #parts > 3 then
+                                return " …/" .. parts[#parts - 1] .. "/" .. parts[#parts]
+                            end
+                            return " " .. path
+                        end
+                        return str
+                    end,
                     symbols = {
                         modified = " ●",
                         readonly = " ",
