@@ -1,5 +1,5 @@
 -- MOTD (Message of the Day)
--- Simplified version - expand as needed
+-- Shows as notification popup on startup
 
 local M = {}
 
@@ -14,28 +14,36 @@ function M.init()
         M.show()
     end, { desc = "Show MOTD" })
 
-    -- Don't auto-show - we have alpha dashboard
-    -- Use :Motd to show manually
+    -- Auto-show on startup (after plugins load)
+    vim.api.nvim_create_autocmd("VimEnter", {
+        callback = function()
+            vim.defer_fn(function()
+                M.show()
+            end, 100)
+        end,
+    })
 end
 
 function M.show()
     local lines = {
-        "",
-        "  Domus Instrumentum",
-        "  -------------------",
-        "",
-        "  Quick Keys:",
-        "    <Space>ff  Find files",
-        "    <Space>fg  Live grep",
-        "    <Space>e   File browser (Oil)",
-        "    <C-p>      Git files",
-        "    <C-e>      Harpoon menu",
-        "",
-        "  :Motd to show this again",
-        "",
+        "Quick Keys:",
+        "  <Space>ff  Find files",
+        "  <Space>fg  Live grep",
+        "  <Space>e   File browser",
+        "  <C-p>      Git files",
+        "  <C-e>      Harpoon menu",
     }
 
-    vim.api.nvim_echo({{table.concat(lines, "\n"), "Normal"}}, false, {})
+    -- Use notify if available, otherwise echo
+    local ok, notify = pcall(require, "notify")
+    if ok then
+        notify(table.concat(lines, "\n"), "info", {
+            title = "Domus Instrumentum",
+            timeout = 5000,
+        })
+    else
+        vim.api.nvim_echo({{table.concat(lines, "\n"), "Normal"}}, false, {})
+    end
 end
 
 return M

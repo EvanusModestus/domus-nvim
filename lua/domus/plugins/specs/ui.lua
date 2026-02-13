@@ -215,23 +215,8 @@ return {
                 btn.opts.hl_shortcut = "AlphaShortcut"
             end
 
-            -- MOTD section
-            local motd = {
-                type = "text",
-                val = {
-                    "───────────────────────────",
-                    "",
-                    "  <Space>ff  find files",
-                    "  <Space>fg  live grep",
-                    "  <Space>e   file browser",
-                    "  <C-p>      git files",
-                    "  <C-e>      harpoon menu",
-                },
-                opts = { position = "center", hl = "AlphaFooter" },
-            }
-
-            -- Footer with version info
-            dashboard.section.footer.val = "domus instrumentum  │  :Motd for help"
+            -- Footer
+            dashboard.section.footer.val = ""
             dashboard.section.footer.opts.hl = "AlphaFooter"
 
             -- Layout
@@ -240,9 +225,7 @@ return {
                 dashboard.section.header,
                 { type = "padding", val = 2 },
                 dashboard.section.buttons,
-                { type = "padding", val = 2 },
-                motd,
-                { type = "padding", val = 2 },
+                { type = "padding", val = 1 },
                 dashboard.section.footer,
             }
 
