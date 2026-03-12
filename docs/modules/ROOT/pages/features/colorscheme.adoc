@@ -1,0 +1,71 @@
+= Colorscheme
+:description: Catppuccin Mocha configuration and highlight customization
+:navtitle: Colorscheme
+
+Catppuccin Mocha with custom refinements for better readability and visual distinction.
+
+== Configuration Location
+
+[source]
+----
+lua/domus/plugins/config/colorscheme.lua
+----
+
+== Customizing Highlights
+
+All highlight overrides live in the `custom_highlights` function:
+
+[source,lua]
+----
+custom_highlights = function(colors)
+    return {
+        Visual = {
+            bg = "#454025",  -- muted yellow
+            bold = true,
+        },
+        -- ... other highlights
+    }
+end
+----
+
+=== Available Color Variables
+
+From `color_overrides.mocha`:
+
+[cols="2,2,3"]
+|===
+| Variable | Hex | Description
+
+| `colors.base` | #1a1a26 | Background
+| `colors.surface0` | #242435 | Subtle surface
+| `colors.surface1` | #2e2e42 | Medium surface
+| `colors.surface2` | #3a3a50 | Prominent surface
+| `colors.blue` | #7aa2f7 | Tokyo-night inspired
+| `colors.sapphire` | #5eacd3 | Cyan-tinted
+| `colors.lavender` | #b4befe | Soft purple
+| `colors.sky` | #7dcfff | Bright cyan
+|===
+
+Standard Catppuccin colors also available: `colors.mauve`, `colors.peach`, `colors.yellow`, `colors.green`, `colors.red`, `colors.teal`, `colors.pink`, `colors.flamingo`, `colors.rosewater`.
+
+=== Custom Hex Colors
+
+For precise control, use hex strings instead of color variables:
+
+[source,lua]
+----
+Visual = { bg = "#454025" },  -- muted yellow tint
+----
+
+Hex format: `#RRGGBB` - increase values to brighten, decrease to darken.
+
+=== Applying Changes
+
+After editing, reload the colorscheme:
+
+[source,vim]
+----
+:source %
+----
+
+Or restart Neovim.

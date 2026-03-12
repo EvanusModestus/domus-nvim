@@ -9,3 +9,4 @@
 ** xref:features/navigation.adoc[Navigation]
 ** xref:features/git.adoc[Git]
 ** xref:features/asciidoc.adoc[AsciiDoc]
+** xref:features/colorscheme.adoc[Colorscheme]
