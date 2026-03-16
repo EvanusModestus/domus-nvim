@@ -1,8 +1,57 @@
-= Domus Instrumentum
+= domus-nvim
 :description: Hierarchical, modular Neovim configuration
 :icons: font
 
 A modern, hierarchical Neovim configuration with embedded documentation.
+
+== Requirements
+
+[cols="1,2,3"]
+|===
+| Component | Version | Notes
+
+| **Neovim**
+| 0.11.0+
+| Required for `vim.lsp.config` API (mason-lspconfig)
+
+| **Git**
+| 2.19+
+| For plugin installation via lazy.nvim
+
+| **Node.js**
+| 18+
+| Optional - for LSP servers (pyright, tsserver, etc.)
+
+| **ripgrep**
+| Any
+| Optional - for Telescope live grep
+|===
+
+=== Neovim Installation
+
+Ubuntu/Debian (PPA for latest):
+
+[source,bash]
+----
+sudo add-apt-repository ppa:neovim-ppa/unstable
+sudo apt update && sudo apt install neovim
+----
+
+Arch Linux:
+
+[source,bash]
+----
+sudo pacman -S neovim
+----
+
+macOS:
+
+[source,bash]
+----
+brew install neovim
+----
+
+Build from source: https://github.com/neovim/neovim/blob/master/BUILD.md
 
 == Features
 
@@ -15,7 +64,7 @@ A modern, hierarchical Neovim configuration with embedded documentation.
 
 [source,bash]
 ----
-git clone https://github.com/EvanusModestus/domus-instrumentum ~/.config/nvim
+git clone https://github.com/EvanusModestus/domus-nvim ~/.config/nvim
 nvim
 ----
 
@@ -23,7 +72,7 @@ Or run alongside existing config:
 
 [source,bash]
 ----
-git clone https://github.com/EvanusModestus/domus-instrumentum ~/.config/nvim-domus
+git clone https://github.com/EvanusModestus/domus-nvim ~/.config/nvim-domus
 NVIM_APPNAME=nvim-domus nvim
 
 # Create an alias
@@ -34,7 +83,7 @@ alias v='NVIM_APPNAME=nvim-domus nvim'
 
 [source]
 ----
-domus-instrumentum/
+domus-nvim/
 ├── init.lua                    # Entry point
 ├── lua/domus/                  # Configuration layers
 │   ├── config/                 # User preferences
@@ -100,7 +149,7 @@ Full documentation in `docs/` directory.
 [source,bash]
 ----
 cd docs && npx antora antora-playbook.yml
-# Open build/site/instrumentum/index.html
+# Open build/site/nvim/index.html
 ----
 
 === Aggregated Site
