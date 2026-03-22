@@ -118,6 +118,7 @@ return {
             require("auto-session").setup({
                 log_level = "error",
                 auto_session_suppress_dirs = { "~/", "~/Downloads", "/tmp" },
+                bypass_session_save_file_types = { "alpha", "dashboard", "neo-tree" },
             })
         end,
     },

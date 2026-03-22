@@ -28,7 +28,8 @@ autocmd("BufWritePre", {
     group = general,
     pattern = "*",
     callback = function()
-        if vim.bo.binary or vim.bo.filetype == "diff" or not vim.bo.modifiable then
+        -- Skip special buffers (dashboard, terminal, etc.)
+        if vim.bo.binary or vim.bo.filetype == "diff" or not vim.bo.modifiable or vim.bo.buftype ~= "" then
             return
         end
         local save_cursor = vim.fn.getpos(".")
@@ -41,6 +42,10 @@ autocmd("BufWritePre", {
 autocmd("BufWritePre", {
     group = general,
     callback = function()
+        -- Skip special buffers
+        if vim.bo.buftype ~= "" then
+            return
+        end
         local dir = vim.fn.expand("<afile>:p:h")
         if vim.fn.isdirectory(dir) == 0 then
             vim.fn.mkdir(dir, "p")

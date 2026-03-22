@@ -5,6 +5,9 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Disable MOTD popup on startup
+vim.g.disable_motd = true
+
 -- Line numbers
 vim.opt.nu = true
 vim.opt.relativenumber = true
