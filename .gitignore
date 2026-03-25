@@ -1,0 +1,16 @@
+# Personal/private files
+CLAUDE.md
+domus-instrument-wsl-arch-bootstrap.adoc
+
+# Neovim
+.netrwhist
+spell/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
