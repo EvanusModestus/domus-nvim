@@ -1,10 +1,7 @@
 -- JavaScript/TypeScript Language Specs
+-- Note: typescript-tools.nvim is configured via LSP, prettier via conform
 
 return {
-    -- REPL integration
-    {
-        "Vigemus/iron.nvim",
-        ft = { "javascript", "typescript" },
-        -- Config shared with python.lua
-    },
+    -- JS/TS-specific tools can be added here
+    -- Currently handled by generic LSP/formatting setup
 }
