@@ -115,25 +115,6 @@ return {
         end,
     },
 
-    -- Inline diagnostics
-    {
-        "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-        event = "LspAttach",
-        config = function()
-            require("lsp_lines").setup()
-            -- Toggle between virtual text and lines
-            vim.keymap.set("n", "<leader>vl", function()
-                local lines_enabled = vim.diagnostic.config().virtual_lines
-                vim.diagnostic.config({
-                    virtual_lines = not lines_enabled,
-                    virtual_text = lines_enabled,
-                })
-            end, { desc = "Toggle diagnostic lines" })
-            -- Start with lines disabled
-            vim.diagnostic.config({ virtual_lines = false, virtual_text = true })
-        end,
-    },
-
     -- Refactoring
     {
         "theprimeagen/refactoring.nvim",
