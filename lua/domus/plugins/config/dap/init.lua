@@ -81,8 +81,8 @@ function M.setup()
         },
     }
 
-    dap.configurations.c = dap.configurations.rust
-    dap.configurations.cpp = dap.configurations.rust
+    dap.configurations.c = vim.deepcopy(dap.configurations.rust)
+    dap.configurations.cpp = vim.deepcopy(dap.configurations.rust)
 
     -- Signs
     vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DapBreakpoint" })

@@ -45,7 +45,10 @@ end
 
 -- Check if running in WSL
 function M.is_wsl()
-    return vim.fn.system("uname -r"):match("[Mm]icrosoft") ~= nil
+    if vim.fn.has("unix") == 0 then return false end
+    local ok, result = pcall(vim.fn.system, "uname -r")
+    if not ok or type(result) ~= "string" then return false end
+    return result:match("[Mm]icrosoft") ~= nil
 end
 
 -- Safe require (returns nil on failure)

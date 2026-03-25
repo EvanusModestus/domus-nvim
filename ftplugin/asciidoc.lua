@@ -28,13 +28,22 @@ vim.keymap.set("n", "gf", function()
     -- xref:page.adoc[]
     local xref = line:match("xref:([^%[]+)")
     if xref then
-        vim.cmd("edit " .. xref:gsub("#.*", ""))
+        local path = xref:gsub("#.*", "")
+        if vim.fn.filereadable(path) == 0 then
+            vim.notify("File not found: " .. path, vim.log.levels.WARN)
+            return
+        end
+        vim.cmd("edit " .. path)
         return
     end
 
     -- include::path[]
     local include = line:match("include::([^%[]+)")
     if include then
+        if vim.fn.filereadable(include) == 0 then
+            vim.notify("File not found: " .. include, vim.log.levels.WARN)
+            return
+        end
         vim.cmd("edit " .. include)
         return
     end
