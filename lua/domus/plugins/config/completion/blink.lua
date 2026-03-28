@@ -27,6 +27,8 @@ function M.setup()
             nerd_font_variant = "mono",
         },
 
+        snippets = { preset = "luasnip" },
+
         sources = {
             default = { "lsp", "path", "snippets", "buffer", "lazydev" },
             providers = {

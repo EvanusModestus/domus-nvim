@@ -88,6 +88,49 @@ function M.setup()
         s("kbd", { t("kbd:["), i(1, "Ctrl+C"), t("]") }),
         s("btn", { t("btn:["), i(1, "Submit"), t("]") }),
         s("menu", { t("menu:"), i(1, "File"), t("["), i(2, "Save"), t("]") }),
+
+        -- Collapsible blocks
+        s("collapse", { t({"."}), i(1, "Click to expand"), t({"", "[%collapsible]", "====", ""}), i(2), t({"", "===="}) }),
+        s("collapseo", { t({"."}), i(1, "Click to expand"), t({"", "[%collapsible%open]", "====", ""}), i(2), t({"", "===="}) }),
+
+        -- Sidebar block
+        s("sidebar", { t({"."}), i(1, "Sidebar Title"), t({"", "****", ""}), i(2), t({"", "****"}) }),
+
+        -- Quote block
+        s("quote", { t({"[quote, "}), i(1, "Author"), t({", "}), i(2, "Source"), t({"]", "____", ""}), i(3), t({"", "____"}) }),
+
+        -- Code callout block
+        s("callout", { t({"[source,"}), i(1, "bash"), t({"]", "----", ""}), i(2, "command  <1>"), t({"", "----", ""}), t("<1> "), i(3, "Explanation") }),
+
+        -- Table: AsciiDoc cell
+        s("atable", { t({'[cols="'}), i(1, "1h,3a"), t({'"]', "|===", "| "}), i(2, "Header"), t(" | "), i(3, "Header"), t({"", "", "| "}), i(4), t({"", "| "}), i(5), t({"", "|==="}) }),
+
+        -- CSV table
+        s("csvtable", { t({"[%header,format=csv]", "|===", ""}), i(1, "Col1,Col2,Col3"), t({"", ""}), i(2, "a,b,c"), t({"", "|==="}) }),
+
+        -- Description list (horizontal)
+        s("dlh", { t({"[horizontal]", ""}), i(1, "Term"), t(":: "), i(2, "Definition") }),
+
+        -- Q&A list
+        s("qanda", { t({"[qanda]", ""}), i(1, "Question"), t({"::"}), t({"", ""}), i(2, "Answer") }),
+
+        -- Discrete heading
+        s("discrete", { t({"[discrete]", "==== "}), i(1, "Heading (not in TOC)") }),
+
+        -- Lead paragraph
+        s("lead", { t({"[.lead]", ""}), i(1, "Lead paragraph text") }),
+
+        -- Footnote
+        s("fn", { t("footnote:["), i(1, "Footnote text"), t("]") }),
+
+        -- Counter
+        s("counter", { t("{counter:"), i(1, "step"), t("}") }),
+
+        -- Conditional (ifdef)
+        s("ifdef", { t("ifdef::"), i(1, "attribute"), t({"[]", ""}), i(2), t({"", "endif::[]"}) }),
+
+        -- Literal block
+        s("literal", { t({"....", ""}), i(1), t({"", "...."}) }),
     })
 
     ls.filetype_extend("asciidoctor", { "asciidoc" })
