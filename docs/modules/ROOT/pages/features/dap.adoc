@@ -1,0 +1,99 @@
+= Debug Adapter Protocol
+:description: Full debugging stack integration using {debugger}, DAP UI, virtual text, and Mason-managed adapters.
+:navtitle: DAP
+:icons: font
+
+== Overview
+
+The debugging stack combines four plugins into a seamless experience:
+
+* **{debugger}** -- core Debug Adapter Protocol client
+* **nvim-dap-ui** -- structured panels for scopes, breakpoints, stacks, watches, and REPL
+* **nvim-dap-virtual-text** -- inline variable values displayed next to source code
+* **mason-nvim-dap.nvim** -- automatic adapter installation through {lsp-installer}
+
+== Supported Languages
+
+=== Python
+
+Adapter:: `debugpy`
+
+The Python configuration auto-detects virtual environments by searching for a `python` binary in `venv/` and `.venv/` directories relative to the project root.
+If neither is found, it falls back to the system Python.
+
+The default launch configuration runs the current file with `justMyCode=false`, allowing you to step into library code.
+
+=== Rust / C / C++
+
+Adapter:: `codelldb`
+
+The launch configuration prompts for an executable path.
+For Rust projects it defaults to `target/debug/`, making the typical `cargo build` then debug cycle straightforward.
+
+== Keybindings
+
+[cols="1,3", options="header"]
+|===
+| Key | Action
+
+| `F5`
+| Continue / start debugging
+
+| `F10`
+| Step over
+
+| `F11`
+| Step into
+
+| `F12`
+| Step out
+
+| `{leader}db`
+| Toggle breakpoint
+
+| `{leader}dB`
+| Conditional breakpoint (prompts for condition)
+
+| `{leader}dr`
+| Open REPL
+
+| `{leader}du`
+| Toggle DAP UI
+
+| `{leader}dt`
+| Terminate session
+|===
+
+== DAP UI
+
+nvim-dap-ui provides a multi-panel debugging layout:
+
+* **Scopes** -- local variables and their current values
+* **Breakpoints** -- all set breakpoints across the project
+* **Stacks** -- call stack for each thread
+* **Watches** -- user-defined watch expressions
+* **Console / REPL** -- evaluate expressions during a debug session
+
+The UI auto-opens when a debug session starts and auto-closes when the session terminates.
+
+== Virtual Text
+
+nvim-dap-virtual-text renders variable values inline next to the corresponding source lines during an active debug session, eliminating the need to hover or check the scopes panel for simple inspections.
+
+== Installation
+
+All debug adapters are auto-installed through mason-nvim-dap.nvim.
+Ensure {lsp-installer} is functional by running `:Mason` and verifying that `debugpy` and `codelldb` appear in the installed list.
+
+== Configuration
+
+[cols="1,2", options="header"]
+|===
+| File | Purpose
+
+| `{lua-dir}/plugins/config/dap/init.lua`
+| Adapter setup, launch configurations, and DAP UI integration
+
+| `{lua-dir}/plugins/specs/debug.lua`
+| Plugin declarations and lazy-loading triggers
+|===

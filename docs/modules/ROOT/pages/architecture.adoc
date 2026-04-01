@@ -65,9 +65,7 @@ Plugin management with separated concerns.
 
 Custom systems loaded after plugins.
 
-* `{lua-dir}/features/motd/` - Message of the Day
-* `{lua-dir}/features/regex-mastery/` - Regex training (optional)
-* `{lua-dir}/features/captures/` - Note capture systems (optional)
+* `{lua-dir}/features/motd/` - Message of the Day with quick-key reference
 
 === Layer 5: UI
 

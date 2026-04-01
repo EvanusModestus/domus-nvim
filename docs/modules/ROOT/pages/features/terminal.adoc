@@ -1,0 +1,41 @@
+= Terminal Integration
+:description: Persistent terminal instances via toggleterm.nvim
+:navtitle: Terminal
+:icons: font
+
+{terminal} provides persistent terminal instances that can be toggled without losing state.
+Supports floating, horizontal, and vertical layouts.
+
+== Layouts
+
+Floating (centered overlay):: Default layout.
+Horizontal (bottom split):: Standard terminal below the editor.
+Vertical (right split):: Side-by-side terminal.
+
+== Terminal Mode Keymaps
+
+Defined in `{lua-dir}/config/autocmds.lua`:
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `Esc`
+| Exit terminal mode
+
+| `jk`
+| Exit terminal mode
+|===
+
+== LazyGit
+
+`{leader}lg` opens LazyGit in a floating terminal.
+See xref:features/git.adoc[Git] for details.
+
+== Tmux Sessionizer
+
+`Ctrl-f` launches a tmux sessionizer from within Neovim (defined in `{lua-dir}/config/keymaps.lua`).
+
+== Configuration
+
+Declared in `{lua-dir}/plugins/specs/tools.lua`.

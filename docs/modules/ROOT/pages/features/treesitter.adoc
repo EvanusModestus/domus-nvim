@@ -1,0 +1,120 @@
+= Treesitter Integration
+:description: Treesitter setup with text objects, context, playground, and companion plugins
+:navtitle: Treesitter
+:icons: font
+
+== Overview
+
+{treesitter} provides syntax-aware highlighting, code navigation, and structural editing.
+The configuration includes several companion plugins:
+
+* **nvim-treesitter-textobjects** - structural text objects and motions
+* **nvim-treesitter-context** - sticky scope header
+* **playground** - interactive query window
+* **rainbow-delimiters.nvim** - colored bracket pairs
+* **hlargs.nvim** - distinct highlighting for function arguments
+* **nvim-autopairs** - treesitter-aware auto-pairing
+* **nvim-ts-autotag** - auto-close and rename HTML/JSX tags
+
+== Ensured Parsers
+
+The following parsers are installed automatically:
+
+[.compact]
+`bash`, `c`, `css`, `csv`, `dockerfile`, `html`, `htmldjango`, `http`, `javascript`, `json`, `lua`, `markdown`, `markdown_inline`, `python`, `query`, `regex`, `rust`, `sql`, `toml`, `typescript`, `vim`, `vimdoc`, `xml`, `yaml`
+
+== Text Objects
+
+Provided by **nvim-treesitter-textobjects**.
+
+=== Selection
+
+[cols="1,2"]
+|===
+| Key | Selects
+
+| `af` / `if`
+| Outer / inner function
+
+| `ac` / `ic`
+| Outer / inner class
+
+| `aa` / `ia`
+| Outer / inner parameter
+
+| `ai` / `ii`
+| Outer / inner conditional
+
+| `al` / `il`
+| Outer / inner loop
+
+| `ab` / `ib`
+| Outer / inner block
+
+| `a/` / `i/`
+| Outer / inner comment
+|===
+
+=== Movement
+
+[cols="1,2"]
+|===
+| Key | Motion
+
+| `]m` / `[m`
+| Next / previous function start
+
+| `]M` / `[M`
+| Next / previous function end
+
+| `]c` / `[c`
+| Next / previous class start (overridden by gitsigns in git files)
+
+| `]a` / `[a`
+| Next / previous parameter
+|===
+
+=== Swap
+
+[cols="1,2"]
+|===
+| Key | Action
+
+| `{leader}sp`
+| Swap parameter forward
+
+| `{leader}sP`
+| Swap parameter backward
+|===
+
+== Treesitter Context
+
+**nvim-treesitter-context** displays a sticky header at the top of the window showing the current function, class, or block scope.
+This provides constant awareness of where you are in deeply nested code.
+
+== Playground
+
+`:TSPlaygroundToggle` opens an interactive split where you can write treesitter queries and see matched nodes highlighted in the source buffer in real time.
+
+== Companion Plugins
+
+[cols="1,2"]
+|===
+| Plugin | Purpose
+
+| rainbow-delimiters.nvim
+| Colors matching bracket pairs by nesting depth
+
+| hlargs.nvim
+| Highlights function arguments with a distinct color
+
+| nvim-autopairs
+| Treesitter-aware auto-pairing of brackets and quotes
+
+| nvim-ts-autotag
+| Auto-closes and auto-renames HTML/JSX tags
+|===
+
+== Configuration
+
+Treesitter is configured in `{lua-dir}/plugins/config/treesitter.lua` and declared as a plugin spec in `{lua-dir}/plugins/specs/editor.lua`.

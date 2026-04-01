@@ -1,2 +1,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="{{uiRootPath}}/css/extra.css">
+<script>
+// Apply dark theme immediately in <head> to prevent white flash (FOUC)
+(function(){var s=localStorage.getItem('theme'),d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(s==='dark'||(!s&&d))document.documentElement.classList.add('dark-theme')})();
+</script>

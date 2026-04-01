@@ -86,11 +86,68 @@
   background-color: var(--domus-subtext);
 }
 
-/* Main Content */
+/* Main Content + All Antora Wrapper Containers */
+.dark-theme .body,
+.dark-theme .main,
+.dark-theme .main-content,
+.dark-theme .content,
+.dark-theme .article,
 .dark-theme .doc,
 .dark-theme .doc-main {
   background-color: var(--domus-base);
   color: var(--domus-text);
+}
+
+/* Toolbar: breadcrumbs + edit-this-page bar */
+.dark-theme .toolbar {
+  background-color: var(--domus-base);
+  border-bottom: 1px solid var(--domus-surface0);
+}
+
+.dark-theme .breadcrumbs a {
+  color: var(--domus-subtext);
+}
+
+.dark-theme .breadcrumbs a:hover {
+  color: var(--domus-blue);
+}
+
+.dark-theme .breadcrumbs li::after {
+  color: var(--domus-surface2);
+}
+
+.dark-theme .edit-this-page a {
+  color: var(--domus-subtext);
+}
+
+.dark-theme .edit-this-page a:hover {
+  color: var(--domus-blue);
+}
+
+/* Home link */
+.dark-theme .home-link {
+  color: var(--domus-text);
+}
+
+/* Nav toggle (hamburger) */
+.dark-theme .nav-toggle .icon,
+.dark-theme .nav-toggle .icon::before,
+.dark-theme .nav-toggle .icon::after {
+  background-color: var(--domus-text);
+}
+
+/* Page version selector */
+.dark-theme .page-versions {
+  background-color: var(--domus-mantle);
+  color: var(--domus-text);
+}
+
+.dark-theme .page-versions .version {
+  color: var(--domus-subtext);
+}
+
+.dark-theme .page-versions .version.is-current {
+  color: var(--domus-mauve);
 }
 
 .dark-theme .doc h1,
@@ -202,6 +259,14 @@
   border: 1px solid var(--domus-surface0);
   border-left: 3px solid var(--domus-blue);
   box-shadow: 0 2px 8px rgba(137, 180, 250, 0.1);
+}
+
+.dark-theme .admonitionblock table,
+.dark-theme .admonitionblock table tbody,
+.dark-theme .admonitionblock table tr,
+.dark-theme .admonitionblock table td {
+  background-color: transparent !important;
+  border: none;
 }
 
 .dark-theme .admonitionblock td.content {
@@ -351,6 +416,39 @@ aside.toc {
 
 .dark-theme .footer-text {
   color: #6c7086;
+}
+
+/* Nav panel explore (component/version selector at bottom of sidebar) */
+.dark-theme .nav-panel-explore,
+.dark-theme .nav-panel-explore .context,
+.dark-theme .nav-panel-explore .context .title,
+.dark-theme .nav-panel-explore .context .version {
+  background-color: var(--domus-mantle);
+}
+
+.dark-theme .nav-panel-explore .context .title {
+  color: var(--domus-mauve);
+}
+
+.dark-theme .nav-panel-explore .context .version {
+  color: var(--domus-subtext);
+}
+
+.dark-theme .nav-panel-explore .components {
+  background-color: var(--domus-crust);
+  border: 1px solid var(--domus-surface0);
+}
+
+.dark-theme .nav-panel-explore .component .title {
+  color: var(--domus-text);
+}
+
+.dark-theme .nav-panel-explore .component .version a {
+  color: var(--domus-blue);
+}
+
+.dark-theme .nav-panel-explore .component .version a:hover {
+  color: var(--domus-lavender);
 }
 
 /* Fix Features nav toggle */

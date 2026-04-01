@@ -5,7 +5,7 @@
 --   domus.config   - User preferences (options, keymaps, autocmds)
 --   domus.core     - Infrastructure (lazy.nvim, utilities)
 --   domus.plugins  - Plugin system (specs + configs)
---   domus.features - Custom systems (MOTD, regex-mastery, captures)
+--   domus.features - Custom systems (MOTD)
 --   domus.ui       - Visual components (colorscheme, statusline)
 
 -- Version check: mason-lspconfig requires neovim 0.11+

@@ -35,6 +35,16 @@ asciidoc:
     plugin-manager: 'lazy.nvim'
     lsp-installer: 'Mason'
 
+    # Additional plugin names
+    treesitter: 'nvim-treesitter'
+    debugger: 'nvim-dap'
+    text-objects: 'mini.ai'
+    terminal: 'toggleterm.nvim'
+    database: 'vim-dadbod'
+    markdown-preview: 'markdown-preview.nvim'
+    session-manager: 'auto-session'
+    neovim-version: '0.11+'
+
     # Repo info
     repo-url: 'https://github.com/EvanusModestus/domus-instrumentum'
     repo-name: 'domus-instrumentum'

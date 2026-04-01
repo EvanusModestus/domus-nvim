@@ -1,0 +1,103 @@
+= Text Objects
+:description: Custom text objects for AsciiDoc, Markdown, and treesitter-based selections
+:navtitle: Text Objects
+:icons: font
+
+== Overview
+
+{text-objects} extends Neovim's text objects with custom patterns for AsciiDoc, Markdown, and treesitter-based selections.
+Works with all operators: `y` (yank), `d` (delete), `c` (change), `v` (visual select).
+
+== AsciiDoc Text Objects
+
+Custom patterns for AsciiDoc block delimiters:
+
+[cols="1,2,2"]
+|===
+| Object | Delimiter | Example
+
+| `i-` / `a-`
+| `----` (listing/code block)
+| `yi-` yanks inner code block
+
+| `i/` / `a/`
+| `////` (comment block)
+| `da/` deletes comment block
+
+| `i=` / `a=`
+| `====` (example/sidebar)
+| `ci=` changes example content
+
+| `i_`
+| `__` (italic inline)
+| `yi_` yanks italic text
+
+| `i*`
+| `**` (bold inline)
+| `di*` deletes bold text
+
+| `i+`
+| `++` (monospace inline)
+| `ci+` changes monospace text
+|===
+
+== Markdown Text Objects
+
+[cols="1,2,2"]
+|===
+| Object | Delimiter | Example
+
+| `i{backtick}` / `a{backtick}`
+| `{backtick}{backtick}{backtick}` (fenced code block)
+| `yi{backtick}` yanks fenced block content
+|===
+
+== Treesitter Text Objects
+
+From nvim-treesitter-textobjects (see xref:features/treesitter.adoc[Treesitter]):
+
+[cols="1,2"]
+|===
+| Object | Target
+
+| `if` / `af`
+| Inner/around function
+
+| `ic` / `ac`
+| Inner/around class
+
+| `ia` / `aa`
+| Inner/around parameter
+
+| `ii` / `ai`
+| Inner/around conditional
+
+| `il` / `al`
+| Inner/around loop
+
+| `ib` / `ab`
+| Inner/around block
+|===
+
+== Special Objects
+
+[cols="1,2"]
+|===
+| Object | Target
+
+| `ig`
+| Entire buffer
+|===
+
+== Usage Pattern
+
+All objects work with standard Vim operators:
+
+* `yi-` -- yank inside AsciiDoc code block
+* `da=` -- delete around example block (including delimiters)
+* `ci{backtick}` -- change inside markdown fenced block
+* `vaf` -- visually select around function
+
+== Configuration
+
+Located at `{lua-dir}/plugins/config/mini-ai.lua` and declared in `{lua-dir}/plugins/specs/editor.lua`.

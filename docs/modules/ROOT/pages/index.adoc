@@ -1,42 +1,103 @@
 = Domus Instrumentum
-:description: A hierarchical, modular Neovim configuration
+:description: A hierarchical, modular Neovim configuration with 90+ plugins, layered architecture, and embedded documentation
 :navtitle: Overview
 :icons: font
 
-A modern, hierarchical Neovim configuration designed for maintainability and extensibility.
+A modern, hierarchical Neovim configuration built on {neovim-version} with 90+ curated plugins, a 5-layer architecture, and full Antora documentation.
 
 == Philosophy
 
-* **Hierarchical Structure** - Organized by domain (config, core, plugins, features, ui)
-* **Separation of Concerns** - Plugin specs separate from configs
-* **Native Neovim** - Uses ftplugin/, leverages Neovim 0.11+ APIs
-* **Documentation First** - Embedded Antora docs
+* **Hierarchical Structure** - Organized by domain: config, core, plugins, features, UI
+* **Separation of Concerns** - Plugin specs (what to load) live apart from configs (how to configure)
+* **Native Neovim** - Uses `ftplugin/`, `after/`, and Neovim {neovim-version} APIs
+* **Documentation First** - Embedded Antora site you are reading right now
+* **Lazy Loading** - Fast startup via {plugin-manager} with event-driven loading
 
 == Quick Start
 
 [source,bash,subs=attributes+]
 ----
+# Backup existing config
+mv {config-dir} {config-backup}
+
+# Clone
 git clone {repo-url} {config-dir}
+
+# Launch (plugins auto-install on first start)
 nvim
 ----
 
-== Key Features
+TIP: For side-by-side installs, see xref:installation.adoc[Installation] for the `NVIM_APPNAME` method.
 
-[cols="1,2"]
+== Feature Overview
+
+[cols="1,2,2"]
 |===
-| Feature | Implementation
+| Category | Plugin | Highlights
 
 | Completion
 | {completion-engine}
+| Rust-based, LSP + snippets + path + buffer sources
 
 | Fuzzy Finding
 | {fuzzy-finder}
+| Files, grep, buffers, git, LSP symbols, undo history
 
 | File Browser
 | {file-browser}
+| Edit directories like buffers
 
 | Snippets
-| {snippet-engine}
+| {snippet-engine} + friendly-snippets
+| 50+ custom AsciiDoc snippets included
+
+| LSP
+| {lsp-installer} + nvim-lspconfig
+| 12+ servers auto-installed (Lua, Python, Rust, TypeScript, etc.)
+
+| Formatting
+| conform.nvim
+| Format-on-save with stylua, prettier, ruff, rustfmt, shfmt
+
+| Linting
+| nvim-lint
+| ruff, eslint_d, shellcheck, luacheck, yamllint, hadolint
+
+| Syntax
+| {treesitter}
+| 20+ parsers, text objects, context header, playground
+
+| Debugging
+| {debugger}
+| Python (debugpy), Rust/C++ (codelldb), full UI
+
+| Git
+| Fugitive + gitsigns + LazyGit + Diffview
+| Stage, blame, diff, history - terminal and buffer UIs
+
+| Navigation
+| Harpoon + {fuzzy-finder} + {file-browser}
+| Quick marks, fuzzy search, directory editing
+
+| Text Objects
+| {text-objects} + treesitter-textobjects
+| Custom AsciiDoc/Markdown block objects, function/class motions
+
+| Terminal
+| {terminal}
+| Floating, horizontal, vertical - persistent across toggles
+
+| Database
+| {database} + UI + completion
+| SQL client with schema-aware completion
+
+| Colorscheme
+| Catppuccin Mocha
+| Deep custom highlights, 5 alternative themes available
+
+| UI
+| noice + alpha + which-key + lualine
+| Enhanced cmdline, dashboard, key hints, status line
 |===
 
 == Structure
@@ -44,15 +105,32 @@ nvim
 [source,subs=attributes+]
 ----
 {repo-name}/
-├── init.lua           # Entry point
-├── {lua-dir}/         # Configuration layers
-│   ├── config/        # User preferences
-│   ├── core/          # Infrastructure
-│   ├── plugins/       # Plugin system
-│   │   ├── specs/     # What to load
-│   │   └── config/    # How to configure
-│   ├── features/      # Custom systems
-│   └── ui/            # Visual components
-├── {ftplugin-dir}/    # Filetype settings
-└── {docs-dir}/        # Antora documentation
+├── init.lua              # Entry point (version check + bootstrap)
+├── {lua-dir}/            # Configuration namespace
+│   ├── config/           # Layer 1: Options, keymaps, autocmds
+│   ├── core/             # Layer 2: lazy.nvim bootstrap, utilities
+│   ├── plugins/          # Layer 3: Plugin system
+│   │   ├── specs/        # Declarations (what to load)
+│   │   │   └── lang/     # Language-specific plugins
+│   │   └── config/       # Configurations (how to configure)
+│   │       └── lang/     # Language-specific configs
+│   ├── features/         # Layer 4: Custom systems (MOTD)
+│   └── ui/               # Layer 5: Visual enhancements
+├── {ftplugin-dir}/       # Native filetype settings
+├── after/syntax/         # Syntax overrides
+└── {docs-dir}/           # This Antora documentation
 ----
+
+See xref:architecture.adoc[Architecture] for the full layer breakdown.
+
+== Requirements
+
+* Neovim {neovim-version}
+* Git
+* A https://www.nerdfonts.com[Nerd Font] (for icons)
+* ripgrep (for Telescope grep)
+* Node.js (for some LSP servers)
+
+== License
+
+MIT -- see the repository for details.

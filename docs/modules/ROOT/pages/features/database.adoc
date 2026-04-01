@@ -1,0 +1,50 @@
+= Database Integration
+:description: SQL database client and browser inside Neovim
+:navtitle: Database
+:icons: font
+
+{database} provides a database client inside Neovim, combined with vim-dadbod-ui for a visual interface and vim-dadbod-completion for SQL autocompletion.
+
+== Components
+
+=== {database}
+
+Core database interaction engine.
+Supports PostgreSQL, MySQL, SQLite, SQL Server, MongoDB, Redis, and more.
+
+Run queries with the `:DB` command:
+
+[source,vim]
+----
+:DB postgresql://localhost/mydb SELECT * FROM users;
+----
+
+=== vim-dadbod-ui
+
+Visual database browser.
+
+[cols="1,2"]
+|===
+| Command | Action
+
+| `:DBUI`
+| Open database browser
+
+| `:DBUIToggle`
+| Toggle browser panel
+|===
+
+Features:
+
+* Browse schemas, tables, views
+* Execute queries from buffers
+* Save queries for reuse
+
+=== vim-dadbod-completion
+
+SQL keyword and schema-aware completion.
+Integrates with {completion-engine} for automatic suggestions while writing queries.
+
+== Configuration
+
+Declared in `{lua-dir}/plugins/specs/lang/misc.lua`.

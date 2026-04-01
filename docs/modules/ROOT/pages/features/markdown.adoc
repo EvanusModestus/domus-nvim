@@ -1,0 +1,58 @@
+= Markdown Support
+:description: Comprehensive Markdown editing, preview, and Obsidian vault integration in Neovim.
+:navtitle: Markdown
+:icons: font
+
+Comprehensive Markdown support with live preview, terminal rendering, auto-lists, table alignment, and Obsidian vault integration.
+
+== Plugins
+
+=== {markdown-preview}
+
+Browser-based live preview that auto-syncs scroll position with your editor cursor.
+
+`:MarkdownPreview`:: Open live preview in default browser.
+`:MarkdownPreviewStop`:: Close the preview window.
+
+=== glow.nvim
+
+Terminal-based Markdown rendering without leaving Neovim.
+
+`:Glow`:: Render the current buffer in a floating window.
+
+=== vim-markdown (preservim)
+
+Enhanced Markdown editing with syntax highlighting and concealment.
+Folding is disabled -- treesitter handles structural folding instead.
+Provides header-level navigation through the document.
+
+=== bullets.vim
+
+Automatic list continuation and management.
+
+* Auto-continue lists on `Enter`
+* Checkbox toggling (`- [ ]` / `- [x]`)
+* Nested list indentation with `>` and `<`
+* Works with `-`, `*`, and numbered list styles
+
+=== vim-table-mode
+
+Auto-align table columns as you type.
+
+`:TableModeToggle`:: Enable or disable table mode for the current buffer.
+
+Formats existing tables and keeps alignment consistent while editing.
+
+== Filetype Settings
+
+Defined in `{ftplugin-dir}/markdown.lua`:
+
+* Spell checking enabled (`en_us`)
+* Soft text wrapping with `linebreak`
+* Auto-comment continuation disabled
+* `gf` remapped to follow Markdown links (`[text](path)` format)
+
+== Configuration
+
+Plugin declarations live in `{lua-dir}/plugins/specs/lang/markdown.lua`.
+Filetype-specific settings are in `{ftplugin-dir}/markdown.lua`.

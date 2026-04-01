@@ -60,20 +60,4 @@ return {
 		end,
 	},
 
-	-- Obsidian integration
-	{
-		"epwalsh/obsidian.nvim",
-		version = "*",
-		lazy = true,
-		ft = "markdown",
-		cond = vim.fn.isdirectory("/data/data/com.termux") == 0, -- disable on Termux
-		dependencies = { "nvim-lua/plenary.nvim" },
-		opts = {
-			workspaces = {
-				{ name = "Aethelred-Codex", path = "~/.Aethelred-Codex" },
-			},
-			completion = { nvim_cmp = false, min_chars = 2 },
-			disable_frontmatter = true,
-		},
-	},
 }

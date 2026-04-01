@@ -1,0 +1,113 @@
+= UI Enhancements
+:description: Visual plugins that enhance Neovim's interface while maintaining performance through lazy loading.
+:navtitle: UI
+:icons: font
+
+== Overview
+
+A curated set of UI plugins that enhance Neovim's visual experience without sacrificing performance.
+All load lazily via {plugin-manager}.
+
+== Dashboard (alpha-nvim)
+
+Custom start screen with quick-action buttons on startup.
+Shows recent files and project shortcuts.
+
+== Status Line (lualine.nvim)
+
+Status line showing:
+
+* Current mode
+* Git branch and diff stats
+* Diagnostics count (errors, warnings)
+* Active LSP clients
+* Macro recording indicator
+* File type and encoding
+* Handles Oil buffer paths correctly
+
+== Command Line (noice.nvim)
+
+Replaces the built-in cmdline, messages, and popupmenu with a modern UI:
+
+* Floating cmdline input
+* Message notifications via nvim-notify
+* LSP progress in fidget.nvim
+* Search count virtualtext
+
+== Notifications (nvim-notify)
+
+Animated notification popups replacing `vim.notify()`.
+Used by noice.nvim, MOTD, and LSP progress.
+
+== Key Hints (which-key.nvim)
+
+Shows available keybindings in a popup after pressing a prefix key.
+Groups documented:
+
+[cols="1,2", options="header"]
+|===
+| Prefix | Group
+
+| `{leader}f`
+| Find (Telescope)
+
+| `{leader}g`
+| Git
+
+| `{leader}l`
+| LSP
+
+| `{leader}d`
+| Debug
+
+| `{leader}a`
+| AsciiDoc
+
+| `{leader}s`
+| Swap
+
+| `{leader}h`
+| Hunk (Gitsigns)
+|===
+
+== Indent Guides (indent-blankline.nvim)
+
+Visual indent guides with scope highlighting.
+Shows the current scope context.
+
+== Enhanced Selects (dressing.nvim)
+
+Replaces `vim.ui.select` and `vim.ui.input` with Telescope-powered interfaces.
+
+== Smooth Scrolling (neoscroll.nvim)
+
+Animated scrolling for `Ctrl-u`, `Ctrl-d`, and other scroll commands.
+
+== Window Separators (colorful-winsep.nvim)
+
+Colored borders on the active window for clear focus indication.
+
+== Zen Mode (zen-mode.nvim)
+
+Distraction-free writing mode.
+Toggle to hide all UI elements and center the buffer.
+
+== LSP Progress (fidget.nvim)
+
+Non-intrusive progress indicator for LSP operations (indexing, formatting, etc.).
+
+== Color Preview (nvim-highlight-colors)
+
+Inline color swatches next to hex codes, RGB values, and Tailwind classes.
+
+== Screenkey (screenkey.nvim)
+
+Displays pressed keys on screen -- useful for screencasts and teaching.
+
+== Cursor Animation (mini.animate)
+
+Subtle linear cursor animation (50ms) for visual tracking during jumps.
+
+== Configuration
+
+Declared in `{lua-dir}/plugins/specs/ui.lua` with configs in `{lua-dir}/plugins/config/`.

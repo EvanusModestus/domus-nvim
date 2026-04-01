@@ -1,6 +1,7 @@
 = Colorscheme
 :description: Catppuccin Mocha configuration and highlight customization
 :navtitle: Colorscheme
+:icons: font
 
 Catppuccin Mocha with custom refinements for better readability and visual distinction.
 
