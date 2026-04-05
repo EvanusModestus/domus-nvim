@@ -74,7 +74,7 @@ function M.setup()
 
         s("d2", {
             t({"."}), i(1, "Diagram Title"),
-            t({"", "[d2,format=svg,theme="]), i(2, "0"), t({"]", "----", ""}),
+            t({"", "[d2,format=svg,theme="}), i(2, "0"), t({"]", "----", ""}),
             i(3, "# D2 diagram here"),
             t({"", "----"}),
         }),
@@ -288,7 +288,7 @@ function M.setup()
             t({"", "[plantuml,format=svg]", "----", ""}),
             t({"@startuml", ""}),
             t({"nwdiag {", "  network "}), i(2, "dmz"), t({" {", "    address = \""}), i(3, "10.0.0.0/24"), t({"\""}),
-            t({"", "    "}), i(4, "server"), t({" [address = \""}), i(5, "10.0.0.1"), t({"\"]}"}),
+            t({"", "    "}), i(4, "server"), t({" [address = \""}), i(5, "10.0.0.1"), t({"\"]" .. "}"}),
             t({"", "  }", "}", "@enduml", "----"}),
         }),
 
@@ -348,9 +348,9 @@ function M.setup()
             t({"", "[graphviz,format=svg]", "----", ""}),
             t({"digraph states {", "  rankdir=LR;", "  node [shape=circle];", ""}),
             t({"  "}), i(2, "init"), t({" [shape=point];"}),
-            t({"", "  "}), i(3, "init -> S0 [label=\"start\"];"}),
-            t({"", "  "}), i(4, "S0 -> S1 [label=\"event\"];"}),
-            t({"", "  "}), i(5, "S1 -> S0 [label=\"reset\"];"}),
+            t({"", "  "}), i(3, "init -> S0 [label=\"start\"];"),
+            t({"", "  "}), i(4, "S0 -> S1 [label=\"event\"];"),
+            t({"", "  "}), i(5, "S1 -> S0 [label=\"reset\"];"),
             t({"", "}", "----"}),
         }),
 
