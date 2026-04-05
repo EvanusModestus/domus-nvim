@@ -12,7 +12,7 @@ function M.setup()
         typescript = { "eslint_d" },
         javascriptreact = { "eslint_d" },
         typescriptreact = { "eslint_d" },
-        lua = { "luacheck" },
+        lua = { "selene" },
         sh = { "shellcheck" },
         bash = { "shellcheck" },
         markdown = { "markdownlint" },

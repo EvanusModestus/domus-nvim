@@ -230,7 +230,7 @@ function M.setup()
 			}
 		end,
 		integrations = {
-			cmp = true,
+			cmp = false,
 			blink_cmp = true,
 			gitsigns = true,
 			nvimtree = true,

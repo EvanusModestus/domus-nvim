@@ -102,7 +102,7 @@ return {
         "dnlhc/glance.nvim",
         cmd = "Glance",
         keys = {
-            { "gD", "<cmd>Glance definitions<CR>", desc = "Glance definitions" },
+            { "gP", "<cmd>Glance definitions<CR>", desc = "Glance peek definitions" },
             { "gR", "<cmd>Glance references<CR>", desc = "Glance references" },
             { "gY", "<cmd>Glance type_definitions<CR>", desc = "Glance types" },
             { "gM", "<cmd>Glance implementations<CR>", desc = "Glance implementations" },
@@ -131,7 +131,11 @@ return {
         "github/copilot.vim",
         event = "InsertEnter",
         config = function()
-            vim.g.copilot_filetypes = { ["*"] = true }
+            vim.g.copilot_filetypes = {
+                ["*"] = true,
+                ["gitcommit"] = false,
+                ["DressingInput"] = false,
+            }
             vim.g.copilot_no_tab_map = false
         end,
     },

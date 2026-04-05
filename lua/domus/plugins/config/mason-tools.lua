@@ -40,7 +40,7 @@ function M.setup()
             -- Linters
             "eslint_d",
             "shellcheck",
-            "luacheck",
+            "selene",
             "markdownlint",
             "yamllint",
             "hadolint",
