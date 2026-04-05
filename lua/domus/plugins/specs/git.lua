@@ -26,22 +26,22 @@ return {
                     changedelete = { text = "~" },
                 },
                 on_attach = function(bufnr)
-                    local gs = package.loaded.gitsigns
+                    local gs = require("gitsigns")
                     local map = function(mode, l, r, desc)
                         vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
                     end
 
-                    -- Navigation
-                    map("n", "]c", function()
+                    -- Navigation (expr = true so return values are processed)
+                    vim.keymap.set("n", "]c", function()
                         if vim.wo.diff then return "]c" end
                         vim.schedule(function() gs.next_hunk() end)
                         return "<Ignore>"
-                    end, "Next hunk")
-                    map("n", "[c", function()
+                    end, { buffer = bufnr, expr = true, desc = "Next hunk" })
+                    vim.keymap.set("n", "[c", function()
                         if vim.wo.diff then return "[c" end
                         vim.schedule(function() gs.prev_hunk() end)
                         return "<Ignore>"
-                    end, "Previous hunk")
+                    end, { buffer = bufnr, expr = true, desc = "Previous hunk" })
 
                     -- Actions
                     map("n", "<leader>hs", gs.stage_hunk, "Stage hunk")

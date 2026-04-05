@@ -1,19 +1,14 @@
 -- Mason Tool Installer Configuration
 
 local M = {}
-
--- Detect Termux environment (Mason binaries not available)
-local function is_termux()
-    return vim.fn.getenv("TERMUX_VERSION") ~= vim.NIL
-        or vim.fn.isdirectory("/data/data/com.termux") == 1
-end
+local util = require("domus.core.util")
 
 function M.setup()
     local ok, mti = pcall(require, "mason-tool-installer")
     if not ok then return end
 
     -- Skip ensure_installed on Termux - use system packages instead
-    if is_termux() then
+    if util.is_termux() then
         mti.setup({
             ensure_installed = {},
             auto_update = false,

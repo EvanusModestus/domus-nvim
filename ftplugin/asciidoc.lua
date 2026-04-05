@@ -33,7 +33,7 @@ vim.keymap.set("n", "gf", function()
             vim.notify("File not found: " .. path, vim.log.levels.WARN)
             return
         end
-        vim.cmd("edit " .. path)
+        vim.cmd.edit(vim.fn.fnameescape(path))
         return
     end
 
@@ -44,7 +44,7 @@ vim.keymap.set("n", "gf", function()
             vim.notify("File not found: " .. include, vim.log.levels.WARN)
             return
         end
-        vim.cmd("edit " .. include)
+        vim.cmd.edit(vim.fn.fnameescape(include))
         return
     end
 

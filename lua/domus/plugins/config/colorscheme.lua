@@ -66,7 +66,7 @@ function M.setup()
 				CursorLineNr = { fg = colors.mauve, bold = true },
 				LineNr = { fg = colors.overlay0 },
 
-				-- Visual selection
+				-- Visual selection (muted gold: yellow + base blend for subtlety)
 				Visual = {
 					bg = "#454025",
 					bold = true,
@@ -267,7 +267,7 @@ function M.setup()
 			which_key = true,
 			illuminate = { enabled = true, lsp = false },
 			headlines = true,
-			flash = true,
+			flash = false,
 		},
 	})
 

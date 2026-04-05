@@ -152,7 +152,7 @@ function M.setup()
 	})
 
 	-- Termux fallback: setup LSPs using nvim 0.11 native API
-	if vim.fn.isdirectory("/data/data/com.termux") == 1 then
+	if require("domus.core.util").is_termux() then
 		-- lua_ls
 		vim.lsp.config.lua_ls = {
 			cmd = { "lua-language-server" },

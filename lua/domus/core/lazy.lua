@@ -79,7 +79,6 @@ vim.api.nvim_create_autocmd("User", {
         -- Load features after plugins are ready
         vim.defer_fn(function()
             require("domus.features")
-            require("domus.ui")
         end, 100)
     end,
 })

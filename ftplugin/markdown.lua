@@ -16,7 +16,7 @@ vim.keymap.set("n", "gf", function()
     local line = vim.api.nvim_get_current_line()
     local path = line:match("%[.-%]%((.-)%)")
     if path then
-        vim.cmd("edit " .. path)
+        vim.cmd.edit(vim.fn.fnameescape(path))
     else
         vim.cmd("normal! gf")
     end

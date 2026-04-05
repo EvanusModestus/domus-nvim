@@ -7,6 +7,10 @@ function M.setup()
     local ok, lualine = pcall(require, "lualine")
     if not ok then return end
 
+    -- Catppuccin palette for consistent colors
+    local palette_ok, palettes = pcall(require, "catppuccin.palettes")
+    local colors = palette_ok and palettes.get_palette("mocha") or {}
+
     -- Custom components
     local function lsp_clients()
         local clients = vim.lsp.get_clients({ bufnr = 0 })
@@ -24,24 +28,6 @@ function M.setup()
             return "󰑋 @" .. reg
         end
         return ""
-    end
-
-    -- Clean filename (handles oil:// buffers)
-    local function clean_filename()
-        local bufname = vim.fn.bufname()
-        -- Oil buffer - show clean path
-        if bufname:match("^oil://") then
-            local path = bufname:gsub("^oil://", "")
-            -- Shorten home directory
-            path = path:gsub(vim.env.HOME, "~")
-            -- Get last 2 directories
-            local parts = vim.split(path, "/")
-            if #parts > 3 then
-                path = "…/" .. table.concat({ parts[#parts - 1], parts[#parts] }, "/")
-            end
-            return " " .. path
-        end
-        return nil -- Use default filename
     end
 
     lualine.setup({
@@ -98,10 +84,10 @@ function M.setup()
                     symbols = { error = " ", warn = " ", info = " ", hint = " " },
                     colored = true,
                 },
-                { macro_recording, color = { fg = "#f38ba8" } },
+                { macro_recording, color = { fg = colors.red or "#f38ba8" } },
             },
             lualine_x = {
-                { lsp_clients, color = { fg = "#89b4fa" } },
+                { lsp_clients, color = { fg = colors.blue or "#89b4fa" } },
                 { "filetype" },
             },
             lualine_y = {

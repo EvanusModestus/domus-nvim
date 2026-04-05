@@ -32,9 +32,9 @@ autocmd("BufWritePre", {
         if vim.bo.binary or vim.bo.filetype == "diff" or not vim.bo.modifiable or vim.bo.buftype ~= "" then
             return
         end
-        local save_cursor = vim.fn.getpos(".")
+        local view = vim.fn.winsaveview()
         vim.cmd([[%s/\s\+$//e]])
-        vim.fn.setpos(".", save_cursor)
+        vim.fn.winrestview(view)
     end,
 })
 

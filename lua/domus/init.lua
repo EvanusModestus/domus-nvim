@@ -10,5 +10,4 @@ require("domus.core")
 -- Layer 3: Plugin system (loads via lazy.nvim)
 -- Handled by domus.core.lazy
 
--- Layer 4: Features
-require("domus.features.motd").init()
+-- Layer 4: Features (loaded via VeryLazy event in core/lazy.lua)
