@@ -4,7 +4,14 @@
 
 A modern, hierarchical Neovim configuration with embedded documentation.
 
-== Requirements
+== Features
+
+* **Hierarchical Structure** - Organized by domain (config, core, plugins, features, ui)
+* **Separated Concerns** - Plugin specs vs configs
+* **Native ftplugin** - Filetype settings via Neovim's native mechanism
+* **Embedded Antora Docs** - Documentation as code
+
+== Prerequisites
 
 [cols="1,2,3"]
 |===
@@ -16,18 +23,42 @@ A modern, hierarchical Neovim configuration with embedded documentation.
 
 | **Git**
 | 2.19+
-| For plugin installation via lazy.nvim
+| Plugin installation via lazy.nvim
+
+| **C compiler**
+| gcc or clang
+| Required — telescope-fzf-native and LuaSnip jsregexp build natively
+
+| **make**
+| Any
+| Required — same build steps as above
+
+| **Nerd Font**
+| Any https://www.nerdfonts.com/[Nerd Font]
+| Required — icons in statusline, file browser, dashboard, which-key
 
 | **Node.js**
 | 18+
-| Optional - for LSP servers (pyright, tsserver, etc.)
+| Optional — for LSP servers (pyright, ts_ls, etc.)
 
 | **ripgrep**
 | Any
-| Optional - for Telescope live grep
+| Recommended — Telescope live grep
+
+| **fd**
+| Any
+| Recommended — faster Telescope file finding
+
+| **lazygit**
+| Any
+| Optional — `<Space>lg` integration
+
+| **tmux**
+| Any
+| Optional — `<C-f>` tmux-sessionizer binding
 |===
 
-=== Neovim Installation
+=== Installing Neovim
 
 Ubuntu/Debian (PPA for latest):
 
@@ -53,14 +84,21 @@ brew install neovim
 
 Build from source: https://github.com/neovim/neovim/blob/master/BUILD.md
 
-== Features
+== Installation
 
-* **Hierarchical Structure** - Organized by domain (config, core, plugins, features, ui)
-* **Separated Concerns** - Plugin specs vs configs
-* **Native ftplugin** - Filetype settings via Neovim's native mechanism
-* **Embedded Antora Docs** - Documentation as code
+=== Back up existing config
 
-== Quick Start
+If you have an existing Neovim configuration, move it out of the way first:
+
+[source,bash]
+----
+mv ~/.config/nvim ~/.config/nvim.bak
+mv ~/.local/share/nvim ~/.local/share/nvim.bak
+mv ~/.local/state/nvim ~/.local/state/nvim.bak
+mv ~/.cache/nvim ~/.cache/nvim.bak
+----
+
+=== Clone and launch
 
 [source,bash]
 ----
@@ -68,15 +106,48 @@ git clone https://github.com/EvanusModestus/domus-nvim ~/.config/nvim
 nvim
 ----
 
-Or run alongside existing config:
+Or run alongside an existing config using `NVIM_APPNAME`:
 
 [source,bash]
 ----
 git clone https://github.com/EvanusModestus/domus-nvim ~/.config/nvim-domus
 NVIM_APPNAME=nvim-domus nvim
 
-# Create an alias
+# Create an alias for convenience
 alias v='NVIM_APPNAME=nvim-domus nvim'
+----
+
+=== First launch
+
+On the first run:
+
+1. **lazy.nvim** bootstraps itself automatically (cloned from GitHub)
+2. **~90 plugins** are downloaded and installed — this takes a minute or two
+3. **Mason** installs LSP servers, formatters, and linters in the background
+4. **TreeSitter** parsers compile on first encounter of each filetype
+
+Let the initial install complete before editing files. You can check Mason progress with `:Mason` and lazy.nvim status with `:Lazy`.
+
+=== Uninstall
+
+Remove the configuration and all associated data:
+
+[source,bash]
+----
+rm -rf ~/.config/nvim
+rm -rf ~/.local/share/nvim
+rm -rf ~/.local/state/nvim
+rm -rf ~/.cache/nvim
+----
+
+If installed with `NVIM_APPNAME=nvim-domus`:
+
+[source,bash]
+----
+rm -rf ~/.config/nvim-domus
+rm -rf ~/.local/share/nvim-domus
+rm -rf ~/.local/state/nvim-domus
+rm -rf ~/.cache/nvim-domus
 ----
 
 == Structure
