@@ -58,31 +58,77 @@ A modern, hierarchical Neovim configuration with embedded documentation.
 | Optional — `<C-f>` tmux-sessionizer binding
 |===
 
-=== Installing Neovim
+=== Installing prerequisites
 
-Ubuntu/Debian (PPA for latest):
+==== Arch Linux
 
 [source,bash]
 ----
+sudo pacman -S neovim git base-devel ripgrep fd lazygit tmux npm python ipython
+----
+
+Install a Nerd Font (e.g., JetBrainsMono):
+
+[source,bash]
+----
+sudo pacman -S ttf-jetbrains-mono-nerd
+----
+
+==== Ubuntu/Debian
+
+[source,bash]
+----
+# Neovim (PPA for 0.11+)
 sudo add-apt-repository ppa:neovim-ppa/unstable
-sudo apt update && sudo apt install neovim
+sudo apt update
+sudo apt install neovim git build-essential ripgrep fd-find nodejs npm python3 python3-pip
+
+# fd is installed as fdfind on Debian/Ubuntu — alias it
+sudo ln -sf $(which fdfind) /usr/local/bin/fd
 ----
 
-Arch Linux:
-
-[source,bash]
-----
-sudo pacman -S neovim
-----
-
-macOS:
+lazygit (not in default repos):
 
 [source,bash]
 ----
-brew install neovim
+LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+tar xf lazygit.tar.gz lazygit
+sudo install lazygit /usr/local/bin
 ----
 
-Build from source: https://github.com/neovim/neovim/blob/master/BUILD.md
+Nerd Font — download from https://www.nerdfonts.com/font-downloads[nerdfonts.com] and install to `~/.local/share/fonts/`, then run `fc-cache -fv`.
+
+==== macOS
+
+[source,bash]
+----
+brew install neovim git ripgrep fd lazygit tmux node python ipython
+brew install --cask font-jetbrains-mono-nerd-font
+----
+
+==== Language toolchains
+
+Mason auto-installs most LSP servers and formatters, but some languages require their own toolchain installed first.
+
+**Rust** — rust-analyzer, rustfmt, and clippy all come from rustup:
+
+[source,bash]
+----
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+rustup component add rust-analyzer clippy
+----
+
+**Python** — pyright is installed by Mason, but you need the runtime and optionally ipython for the REPL (`<Space>sc` to send code):
+
+[source,bash]
+----
+pip install ipython
+----
+
+**Node.js** — required by several Mason-installed servers (ts_ls, html, cssls, jsonls, yamlls). Install via your package manager (shown above) or https://github.com/nvm-sh/nvm[nvm].
+
+Build Neovim from source: https://github.com/neovim/neovim/blob/master/BUILD.md
 
 == Installation
 
