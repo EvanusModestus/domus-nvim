@@ -65,7 +65,7 @@ TIP: For side-by-side installs, see xref:installation.adoc[Installation] for the
 
 | Syntax
 | {treesitter}
-| 20+ parsers, text objects, context header, playground
+| 20+ parsers, text objects, context header
 
 | Debugging
 | {debugger}

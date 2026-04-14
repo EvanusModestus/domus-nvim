@@ -108,24 +108,6 @@ return {
 		end,
 	},
 
-	-- Smooth scrolling
-	{
-		"karb94/neoscroll.nvim",
-		event = "VeryLazy",
-		config = function()
-			require("neoscroll").setup({
-				mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "zt", "zz", "zb" },
-				hide_cursor = true,
-				stop_eof = true,
-				respect_scrolloff = false,
-				cursor_scrolls_alone = true,
-				easing_function = "sine",
-				pre_hook = nil,
-				post_hook = nil,
-			})
-		end,
-	},
-
 	-- Window separators
 	{
 		"nvim-zh/colorful-winsep.nvim",
@@ -187,18 +169,6 @@ return {
 				render = "compact",
 				stages = "fade",
 				timeout = 2000,
-			})
-		end,
-	},
-
-	-- Better UI for vim.ui.select and vim.ui.input
-	{
-		"stevearc/dressing.nvim",
-		event = "VeryLazy",
-		config = function()
-			require("dressing").setup({
-				select = { enabled = true, backend = { "telescope", "builtin" } },
-				input = { enabled = true, default_prompt = "> " },
 			})
 		end,
 	},

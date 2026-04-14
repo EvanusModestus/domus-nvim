@@ -16,13 +16,6 @@ return {
 		end,
 	},
 
-	-- Glow (terminal markdown viewer)
-	{
-		"ellisonleao/glow.nvim",
-		cmd = "Glow",
-		config = true,
-	},
-
 	-- vim-markdown
 	{
 		"preservim/vim-markdown",

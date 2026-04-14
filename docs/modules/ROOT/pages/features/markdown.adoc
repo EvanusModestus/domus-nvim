@@ -14,12 +14,6 @@ Browser-based live preview that auto-syncs scroll position with your editor curs
 `:MarkdownPreview`:: Open live preview in default browser.
 `:MarkdownPreviewStop`:: Close the preview window.
 
-=== glow.nvim
-
-Terminal-based Markdown rendering without leaving Neovim.
-
-`:Glow`:: Render the current buffer in a floating window.
-
 === vim-markdown (preservim)
 
 Enhanced Markdown editing with syntax highlighting and concealment.

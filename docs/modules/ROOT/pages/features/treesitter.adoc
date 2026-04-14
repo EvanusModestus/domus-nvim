@@ -1,5 +1,5 @@
 = Treesitter Integration
-:description: Treesitter setup with text objects, context, playground, and companion plugins
+:description: Treesitter setup with text objects, context, and companion plugins
 :navtitle: Treesitter
 :icons: font
 
@@ -10,7 +10,6 @@ The configuration includes several companion plugins:
 
 * **nvim-treesitter-textobjects** - structural text objects and motions
 * **nvim-treesitter-context** - sticky scope header
-* **playground** - interactive query window
 * **rainbow-delimiters.nvim** - colored bracket pairs
 * **hlargs.nvim** - distinct highlighting for function arguments
 * **nvim-autopairs** - treesitter-aware auto-pairing
@@ -91,10 +90,6 @@ Provided by **nvim-treesitter-textobjects**.
 
 **nvim-treesitter-context** displays a sticky header at the top of the window showing the current function, class, or block scope.
 This provides constant awareness of where you are in deeply nested code.
-
-== Playground
-
-`:TSPlaygroundToggle` opens an interactive split where you can write treesitter queries and see matched nodes highlighted in the source buffer in real time.
 
 == Companion Plugins
 

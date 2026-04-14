@@ -90,11 +90,6 @@ return {
         dependencies = { "nvim-treesitter/nvim-treesitter" },
     },
     {
-        "nvim-treesitter/playground",
-        cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
-    },
-    {
         "nvim-treesitter/nvim-treesitter-context",
         event = "BufReadPost",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
@@ -132,15 +127,6 @@ return {
         event = "VeryLazy",
         config = function()
             require("domus.plugins.config.mini-ai").setup()
-        end,
-    },
-
-    -- Highlighted yank
-    {
-        "machakann/vim-highlightedyank",
-        event = "TextYankPost",
-        config = function()
-            vim.g.highlightedyank_highlight_duration = 200
         end,
     },
 

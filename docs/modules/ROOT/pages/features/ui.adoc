@@ -75,14 +75,6 @@ Groups documented:
 Visual indent guides with scope highlighting.
 Shows the current scope context.
 
-== Enhanced Selects (dressing.nvim)
-
-Replaces `vim.ui.select` and `vim.ui.input` with Telescope-powered interfaces.
-
-== Smooth Scrolling (neoscroll.nvim)
-
-Animated scrolling for `Ctrl-u`, `Ctrl-d`, and other scroll commands.
-
 == Window Separators (colorful-winsep.nvim)
 
 Colored borders on the active window for clear focus indication.

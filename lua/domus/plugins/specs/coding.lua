@@ -134,7 +134,7 @@ return {
             vim.g.copilot_filetypes = {
                 ["*"] = true,
                 ["gitcommit"] = false,
-                ["DressingInput"] = false,
+                ["noice"] = false,
             }
             vim.g.copilot_no_tab_map = false
         end,
