@@ -6,17 +6,23 @@ return {
     {
         "HiPhish/rainbow-delimiters.nvim",
         event = "BufReadPost",
-        config = function()
-            local rainbow = require("rainbow-delimiters")
+        init = function()
+            -- Set before plugin loads to prevent nil parser crash (Neovim 0.11+)
             vim.g.rainbow_delimiters = {
                 strategy = {
-                    [""] = rainbow.strategy["global"],
-                    vim = rainbow.strategy["local"],
+                    [""] = "rainbow-delimiters.strategy.global",
+                    vim = "rainbow-delimiters.strategy.local",
                 },
                 query = {
                     [""] = "rainbow-delimiters",
                     lua = "rainbow-blocks",
                 },
+                condition = function(bufnr)
+                    local lang = vim.treesitter.language.get_lang(vim.bo[bufnr].ft)
+                    if not lang then return false end
+                    local ok, parser = pcall(vim.treesitter.get_parser, bufnr, lang)
+                    return ok and parser ~= nil
+                end,
                 highlight = {
                     "RainbowDelimiterRed",
                     "RainbowDelimiterYellow",
