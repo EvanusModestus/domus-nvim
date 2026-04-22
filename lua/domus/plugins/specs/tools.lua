@@ -125,5 +125,5 @@ return {
 
     -- Vim skill games
     { "ThePrimeagen/vim-be-good", cmd = "VimBeGood" },
-    { "vuciv/golf", cmd = { "Golf", "GolfToday", "GolfRandom" } },
+    { "vuciv/golf", cmd = { "Golf", "GolfToday" } },
 }

@@ -96,6 +96,12 @@ function M.setup()
 								typeCheckingMode = "basic",
 								autoSearchPaths = true,
 								useLibraryCodeForTypes = true,
+								diagnosticSeverityOverrides = {
+									-- Let ruff own these — avoids duplicate diagnostics
+									reportUnusedImport = "none",
+									reportUnusedVariable = "none",
+									reportUnusedExpression = "none",
+								},
 							},
 						},
 					},
@@ -132,18 +138,30 @@ function M.setup()
 				})
 			end,
 
-			-- YAML (with schemas)
+			-- YAML (with SchemaStore + explicit overrides)
 			yamlls = function()
+				local ss_ok, schemastore = pcall(require, "schemastore")
 				require("lspconfig").yamlls.setup({
 					on_attach = on_attach,
 					capabilities = capabilities,
 					settings = {
 						yaml = {
-							schemas = {
+							schemaStore = {
+								-- Disable built-in schemaStore — we supply via schemastore.nvim
+								enable = false,
+								url = "",
+							},
+							schemas = ss_ok and vim.tbl_deep_extend("force",
+								schemastore.yaml.schemas(),
+								{
+									kubernetes = "*.k8s.yaml",
+								}
+							) or {
 								kubernetes = "*.k8s.yaml",
 								["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
 								["http://json.schemastore.org/ansible-playbook"] = "playbooks/*.{yml,yaml}",
 							},
+							validate = true,
 						},
 					},
 				})

@@ -34,6 +34,7 @@ function M.setup()
 
             -- Linters
             "eslint_d",
+            "jsonlint",
             "shellcheck",
             "selene",
             "markdownlint",

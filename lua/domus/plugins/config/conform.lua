@@ -29,15 +29,27 @@ function M.setup()
             toml = { "taplo" },
         },
 
+        formatters = {
+            shfmt = {
+                prepend_args = { "-i", "2", "-ci", "-bn" },
+            },
+        },
+
         format_on_save = function(bufnr)
             -- Disable for certain filetypes
             local ignore_filetypes = { "sql", "markdown" }
             if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
                 return
             end
+            -- Skip formatting when the buffer has errors — avoids popup on broken syntax
+            local diagnostics = vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.ERROR })
+            if #diagnostics > 0 then
+                return
+            end
             return {
                 timeout_ms = 500,
                 lsp_fallback = true,
+                quiet = true,
             }
         end,
     })
