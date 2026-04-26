@@ -132,9 +132,9 @@ Build Neovim from source: https://github.com/neovim/neovim/blob/master/BUILD.md
 
 == Installation
 
-=== Back up existing config
+=== 1. Back Up Existing Config
 
-If you have an existing Neovim configuration, move it out of the way first:
+If you already have a Neovim configuration:
 
 [source,bash]
 ----
@@ -144,39 +144,61 @@ mv ~/.local/state/nvim ~/.local/state/nvim.bak
 mv ~/.cache/nvim ~/.cache/nvim.bak
 ----
 
-=== Clone and launch
+=== 2. Clone and Launch
 
 [source,bash]
 ----
-git clone https://github.com/EvanusModestus/domus-nvim ~/.config/nvim
+git clone https://github.com/EvanusModestus/domus-nvim.git ~/.config/nvim
 nvim
 ----
 
-Or run alongside an existing config using `NVIM_APPNAME`:
+On first launch:
 
-[source,bash]
-----
-git clone https://github.com/EvanusModestus/domus-nvim ~/.config/nvim-domus
-NVIM_APPNAME=nvim-domus nvim
-
-# Create an alias for convenience
-alias v='NVIM_APPNAME=nvim-domus nvim'
-----
-
-=== First launch
-
-On the first run:
-
-1. **lazy.nvim** bootstraps itself automatically (cloned from GitHub)
-2. **~90 plugins** are downloaded and installed — this takes a minute or two
+1. **lazy.nvim** bootstraps itself (cloned from GitHub)
+2. **~90 plugins** download and install — takes 1-2 minutes
 3. **Mason** installs LSP servers, formatters, and linters in the background
 4. **TreeSitter** parsers compile on first encounter of each filetype
 
-Let the initial install complete before editing files. You can check Mason progress with `:Mason` and lazy.nvim status with `:Lazy`.
+Let the initial install complete before editing files.
+
+=== 3. Verify
+
+[source,bash]
+----
+for cmd in nvim git gcc rg fd lazygit tmux node python3; do
+  printf "%-10s %s\n" "$cmd" "$(command -v $cmd >/dev/null 2>&1 && echo 'OK' || echo 'MISSING')"
+done
+----
+
+Inside nvim:
+
+* `:Lazy` — all plugins loaded?
+* `:Mason` — LSP servers installed?
+* `:checkhealth` — any errors?
+
+=== Troubleshooting
+
+[cols="1,2"]
+|===
+| Problem | Fix
+
+| Plugins fail to clone
+| Check SSH key: `ssh -T git@github.com`. If no key, lazy.nvim uses HTTPS automatically.
+
+| Mason installs fail
+| `:Mason` → check for errors. Most need `npm` or `python3` installed.
+
+| No icons / broken characters
+| Nerd Font not installed or terminal not using it. Set terminal font to JetBrainsMono Nerd Font.
+
+| TreeSitter parser errors
+| Need `gcc` or `clang`: `sudo pacman -S base-devel` (Arch) or `sudo apt install build-essential` (Ubuntu).
+
+| "E5108: Error executing lua"
+| Neovim too old. Need 0.11.0+: `nvim --version`.
+|===
 
 === Uninstall
-
-Remove the configuration and all associated data:
 
 [source,bash]
 ----
@@ -184,16 +206,6 @@ rm -rf ~/.config/nvim
 rm -rf ~/.local/share/nvim
 rm -rf ~/.local/state/nvim
 rm -rf ~/.cache/nvim
-----
-
-If installed with `NVIM_APPNAME=nvim-domus`:
-
-[source,bash]
-----
-rm -rf ~/.config/nvim-domus
-rm -rf ~/.local/share/nvim-domus
-rm -rf ~/.local/state/nvim-domus
-rm -rf ~/.cache/nvim-domus
 ----
 
 == Structure

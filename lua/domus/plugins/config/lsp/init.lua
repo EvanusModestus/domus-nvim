@@ -59,6 +59,7 @@ function M.setup()
 			"ansiblels",
 			"marksman",
 			"taplo",
+			"clangd",
 		},
 		handlers = {
 			-- Default handler
