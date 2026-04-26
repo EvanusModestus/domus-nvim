@@ -78,26 +78,44 @@ sudo pacman -S ttf-jetbrains-mono-nerd
 
 [source,bash]
 ----
-# Neovim (PPA for 0.11+)
+# Add Neovim PPA (0.11+)
 sudo add-apt-repository ppa:neovim-ppa/unstable
 sudo apt update
-sudo apt install neovim git build-essential ripgrep fd-find nodejs npm python3 python3-pip
-
-# fd is installed as fdfind on Debian/Ubuntu — alias it
-sudo ln -sf $(which fdfind) /usr/local/bin/fd
 ----
-
-lazygit (not in default repos):
 
 [source,bash]
 ----
-LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-tar xf lazygit.tar.gz lazygit
-sudo install lazygit /usr/local/bin
+# Core packages
+sudo apt install -y neovim git build-essential ripgrep fd-find nodejs npm python3 python3-pip
 ----
 
-Nerd Font — download from https://www.nerdfonts.com/font-downloads[nerdfonts.com] and install to `~/.local/share/fonts/`, then run `fc-cache -fv`.
+[source,bash]
+----
+# fd is installed as fdfind on Ubuntu — symlink it
+sudo ln -sf $(which fdfind) /usr/local/bin/fd
+----
+
+[source,bash]
+----
+# lazygit (not in default repos)
+LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+curl -Lo /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+tar xf /tmp/lazygit.tar.gz -C /tmp lazygit
+sudo install /tmp/lazygit /usr/local/bin
+----
+
+Nerd Font (CLI install):
+
+[source,bash]
+----
+mkdir -p ~/.local/share/fonts
+curl -fLo /tmp/JetBrainsMono.tar.xz \
+  https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz
+tar xf /tmp/JetBrainsMono.tar.xz -C ~/.local/share/fonts/
+fc-cache -fv
+----
+
+Then set your terminal emulator's font to "JetBrainsMono Nerd Font".
 
 ==== macOS
 
@@ -123,7 +141,11 @@ rustup component add rust-analyzer clippy
 
 [source,bash]
 ----
+# Arch
 pip install ipython
+
+# Ubuntu/Debian (pip is blocked — use apt)
+sudo apt install python3-ipython
 ----
 
 **Node.js** — required by several Mason-installed servers (ts_ls, html, cssls, jsonls, yamlls). Install via your package manager (shown above) or https://github.com/nvm-sh/nvm[nvm].
