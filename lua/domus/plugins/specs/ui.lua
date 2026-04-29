@@ -151,6 +151,7 @@ return {
 					override = {
 						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
 						["vim.lsp.util.stylize_markdown"] = true,
+						["cmp.entry.get_documentation"] = true,
 					},
 				},
 				presets = {
@@ -160,8 +161,18 @@ return {
 					lsp_doc_border = true,
 				},
 				routes = {
+					-- Short informational messages → mini (non-intrusive, bottom-right)
+					{ filter = { event = "msg_show", kind = "", find = "yanked" }, view = "mini" },
+					{ filter = { event = "msg_show", kind = "", find = "fewer lines" }, view = "mini" },
+					{ filter = { event = "msg_show", kind = "", find = "more lines" }, view = "mini" },
+					{ filter = { event = "msg_show", kind = "", find = "change;" }, view = "mini" },
+					{ filter = { event = "msg_show", kind = "", find = "line less" }, view = "mini" },
+					{ filter = { event = "msg_show", kind = "", find = "already at" }, view = "mini" },
+					-- Skip noise entirely
 					{ filter = { event = "msg_show", kind = "", find = "written" }, opts = { skip = true } },
 					{ filter = { event = "msg_show", kind = "search_count" }, opts = { skip = true } },
+					-- Structured output → popup
+					{ filter = { event = "msg_show", kind = "list_cmd" }, view = "popup" },
 				},
 			})
 			require("notify").setup({
