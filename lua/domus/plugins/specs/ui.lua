@@ -147,6 +147,10 @@ return {
 		},
 		config = function()
 			require("noice").setup({
+				-- Let Neovim handle all messages natively — consistent yank, :ls, Ctrl+w feedback
+				messages = {
+					enabled = false,
+				},
 				lsp = {
 					override = {
 						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
@@ -157,29 +161,14 @@ return {
 				presets = {
 					bottom_search = true,
 					command_palette = true,
-					long_message_to_split = true,
 					lsp_doc_border = true,
-				},
-				routes = {
-					-- Short informational messages → mini (non-intrusive, bottom-right)
-					{ filter = { event = "msg_show", kind = "", find = "yanked" }, view = "mini" },
-					{ filter = { event = "msg_show", kind = "", find = "fewer lines" }, view = "mini" },
-					{ filter = { event = "msg_show", kind = "", find = "more lines" }, view = "mini" },
-					{ filter = { event = "msg_show", kind = "", find = "change;" }, view = "mini" },
-					{ filter = { event = "msg_show", kind = "", find = "line less" }, view = "mini" },
-					{ filter = { event = "msg_show", kind = "", find = "already at" }, view = "mini" },
-					-- Skip noise entirely
-					{ filter = { event = "msg_show", kind = "", find = "written" }, opts = { skip = true } },
-					{ filter = { event = "msg_show", kind = "search_count" }, opts = { skip = true } },
-					-- Structured output → popup
-					{ filter = { event = "msg_show", kind = "list_cmd" }, view = "popup" },
 				},
 			})
 			require("notify").setup({
 				background_colour = "#1a1a26",
 				render = "compact",
 				stages = "fade",
-				timeout = 2000,
+				timeout = 5000,
 			})
 		end,
 	},
