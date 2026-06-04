@@ -153,7 +153,7 @@ return {
         end,
     },
     {
-        "CopilotC-Nx/CopilotChat.nvim",
+        "CopilotC-Nvim/CopilotChat.nvim",
         branch = "main",
         dependencies = { "zbirenbaum/copilot.lua", "nvim-lua/plenary.nvim" },
         cmd = { "CopilotChat", "CopilotChatExplain", "CopilotChatTests", "CopilotChatFix", "CopilotChatOptimize", "CopilotChatReview", "CopilotChatDocs" },
