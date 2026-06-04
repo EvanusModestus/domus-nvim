@@ -62,10 +62,15 @@ function M.setup()
         { "<leader>ls", desc = "Symbols" },
         { "<leader>lw", desc = "Workspace symbols" },
 
-        -- Code — conform.lua, lsp/init.lua
-        { "<leader>c", group = "Code" },
+        -- Code & Copilot — conform.lua, lsp/init.lua, coding.lua
+        { "<leader>c", group = "Code/Copilot" },
         { "<leader>ca", desc = "Action" },
-        { "<leader>cf", desc = "Format" },
+        { "<leader>cc", desc = "Copilot chat" },
+        { "<leader>ce", desc = "Explain code" },
+        { "<leader>ct", desc = "Generate tests" },
+        { "<leader>cf", desc = "Fix code" },
+        { "<leader>cr", desc = "Review code" },
+        { "<leader>cd", desc = "Generate docs" },
 
         -- Debug — debug.lua
         { "<leader>d", group = "Debug" },
