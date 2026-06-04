@@ -160,4 +160,25 @@ return {
             { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "Toggle undotree" },
         },
     },
+
+    -- Surround (add/delete/replace surroundings)
+    {
+        "echasnovski/mini.surround",
+        event = "VeryLazy",
+        config = function()
+            require("mini.surround").setup({})
+        end,
+    },
+
+    -- Flash (labeled jumps and treesitter selection)
+    {
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        keys = {
+            { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+            { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash treesitter" },
+            { "r", mode = "o", function() require("flash").remote() end, desc = "Remote flash" },
+        },
+        opts = {},
+    },
 }

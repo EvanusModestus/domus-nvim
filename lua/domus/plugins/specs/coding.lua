@@ -154,4 +154,18 @@ return {
         "b0o/schemastore.nvim",
         lazy = true,
     },
+
+    -- Trouble (structured diagnostics, todos, quickfix)
+    {
+        "folke/trouble.nvim",
+        cmd = "Trouble",
+        keys = {
+            { "<leader>xx", "<cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
+            { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer diagnostics" },
+            { "<leader>xs", "<cmd>Trouble symbols toggle focus=false<CR>", desc = "Symbols (Trouble)" },
+            { "<leader>xt", "<cmd>Trouble todo toggle<CR>", desc = "Todos (Trouble)" },
+            { "<leader>xq", "<cmd>Trouble qflist toggle<CR>", desc = "Quickfix (Trouble)" },
+        },
+        opts = {},
+    },
 }

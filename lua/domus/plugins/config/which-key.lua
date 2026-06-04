@@ -91,6 +91,14 @@ function M.setup()
         -- AsciiDoc — lang/asciidoc.lua (buffer-local, ft=asciidoc)
         { "<leader>a", group = "AsciiDoc" },
 
+        -- Trouble — coding.lua
+        { "<leader>x", group = "Trouble" },
+        { "<leader>xx", desc = "Diagnostics" },
+        { "<leader>xX", desc = "Buffer diagnostics" },
+        { "<leader>xs", desc = "Symbols" },
+        { "<leader>xt", desc = "Todos" },
+        { "<leader>xq", desc = "Quickfix" },
+
         -- Standalone keys
         { "<leader>rn", desc = "Rename symbol" },
         { "<leader>re", desc = "Refactor" },
