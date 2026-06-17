@@ -69,6 +69,7 @@ function M.setup()
         { "<leader>ce", desc = "Explain code" },
         { "<leader>ct", desc = "Generate tests" },
         { "<leader>cf", desc = "Fix code" },
+        { "<leader>cF", desc = "Format" },
         { "<leader>cr", desc = "Review code" },
         { "<leader>cd", desc = "Generate docs" },
 
