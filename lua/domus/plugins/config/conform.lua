@@ -55,7 +55,7 @@ function M.setup()
     })
 
     -- Manual format keymap
-    vim.keymap.set({ "n", "v" }, "<leader>cf", function()
+    vim.keymap.set({ "n", "v" }, "<leader>cF", function()
         conform.format({ async = true, lsp_fallback = true })
     end, { desc = "Format buffer" })
 end

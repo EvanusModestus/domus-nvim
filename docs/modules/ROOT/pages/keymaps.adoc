@@ -198,7 +198,7 @@ Press `{leader}` and wait for which-key to display available continuations.
 | `[d` / `]d`
 | Previous / next diagnostic
 
-| `{leader}cf`
+| `{leader}cF`
 | Format buffer (conform)
 
 | `{leader}re`

@@ -5,6 +5,7 @@ domus-instrument-wsl-arch-bootstrap.adoc
 # Neovim
 .netrwhist
 spell/
+.luarc.json
 
 # OS
 .DS_Store

@@ -72,6 +72,7 @@ if vim.fn.executable("win32yank.exe") == 1 then
         },
         cache_enabled = 0,
     }
+else
+    -- Native Linux: neovim auto-detects xclip/xsel
+    vim.opt.clipboard = "unnamedplus"
 end
--- Native Linux: neovim auto-detects xclip/xsel
-vim.opt.clipboard = "unnamedplus"
