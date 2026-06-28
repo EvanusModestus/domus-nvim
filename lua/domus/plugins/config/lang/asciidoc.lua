@@ -435,7 +435,7 @@ function M.setup()
         s("ifndef", { t("ifndef::"), i(1, "attribute"), t({"[]", ""}), i(2), t({"", "endif::[]"}) }),
 
         -- ----------------------------------------------------------------
-        -- ADMONITIONS
+        -- ADMONITIONS: Inline
         -- ----------------------------------------------------------------
 
         s("note",      { t("NOTE: "), i(1) }),
@@ -444,17 +444,63 @@ function M.setup()
         s("caution",   { t("CAUTION: "), i(1) }),
         s("important", { t("IMPORTANT: "), i(1) }),
 
-        -- Block admonitions
+        -- ----------------------------------------------------------------
+        -- ADMONITIONS: Block
+        -- ----------------------------------------------------------------
+
         s("noteb",     { t({"[NOTE]", "====", ""}), i(1), t({"", "===="}) }),
         s("tipb",      { t({"[TIP]", "====", ""}), i(1), t({"", "===="}) }),
         s("warnb",     { t({"[WARNING]", "====", ""}), i(1), t({"", "===="}) }),
         s("cautb",     { t({"[CAUTION]", "====", ""}), i(1), t({"", "===="}) }),
         s("impb",      { t({"[IMPORTANT]", "====", ""}), i(1), t({"", "===="}) }),
 
-        -- Titled block admonition
+        -- ----------------------------------------------------------------
+        -- ADMONITIONS: Titled block (all types)
+        -- ----------------------------------------------------------------
+
         s("notet", {
-            t({"."}), i(1, "Admonition Title"),
+            t({"."}), i(1, "Title"),
             t({"", "[NOTE]", "====", ""}), i(2), t({"", "===="}),
+        }),
+        s("tipt", {
+            t({"."}), i(1, "Title"),
+            t({"", "[TIP]", "====", ""}), i(2), t({"", "===="}),
+        }),
+        s("warnt", {
+            t({"."}), i(1, "Title"),
+            t({"", "[WARNING]", "====", ""}), i(2), t({"", "===="}),
+        }),
+        s("cautt", {
+            t({"."}), i(1, "Title"),
+            t({"", "[CAUTION]", "====", ""}), i(2), t({"", "===="}),
+        }),
+        s("impt", {
+            t({"."}), i(1, "Title"),
+            t({"", "[IMPORTANT]", "====", ""}), i(2), t({"", "===="}),
+        }),
+
+        -- Admonition block with icon override
+        s("admon", {
+            t({"["}),
+            c(1, {
+                t("NOTE"), t("TIP"), t("WARNING"), t("CAUTION"), t("IMPORTANT"),
+            }),
+            t({"]", "====", ""}), i(2), t({"", "===="}),
+        }),
+
+        -- ----------------------------------------------------------------
+        -- ADMONITIONS: Complex (multi-paragraph, nested content)
+        -- ----------------------------------------------------------------
+
+        s("notecomplex", {
+            t({"."}), i(1, "Title"),
+            t({"", "[NOTE]", "====", ""}),
+            i(2, "First paragraph."),
+            t({"", "", ""}),
+            i(3, "Second paragraph with continuation."),
+            t({"", "", "[source,"}), i(4, "bash"), t({"]", "----", ""}),
+            i(5, "# code inside admonition"),
+            t({"", "----", "===="}),
         }),
 
         -- ----------------------------------------------------------------
@@ -515,6 +561,31 @@ function M.setup()
             t({"", "|==="}),
         }),
 
+        -- Table with header option
+        s("tableh", {
+            t({'[cols="'}), i(1, "1,2"), t({'", options="header"]', "|===", "| "}),
+            i(2, "Header 1"), t(" | "), i(3, "Header 2"),
+            t({"", "", "| "}), i(4), t(" | "), i(5),
+            t({"", "|==="}),
+        }),
+
+        -- Table 3 columns
+        s("table3", {
+            t({'[cols="'}), i(1, "1,2,2"), t({'", options="header"]', "|===", "| "}),
+            i(2, "H1"), t(" | "), i(3, "H2"), t(" | "), i(4, "H3"),
+            t({"", "", "| "}), i(5), t(" | "), i(6), t(" | "), i(7),
+            t({"", "|==="}),
+        }),
+
+        -- Table with title
+        s("tablet", {
+            t({"."}), i(1, "Table Title"),
+            t({"", '[cols="'}), i(2, "1,2"), t({'", options="header"]', "|===", "| "}),
+            i(3, "Header 1"), t(" | "), i(4, "Header 2"),
+            t({"", "", "| "}), i(5), t(" | "), i(6),
+            t({"", "|==="}),
+        }),
+
         -- AsciiDoc cell table (for complex content in cells)
         s("atable", {
             t({'[cols="'}), i(1, "1h,3a"), t({'"]', "|===", "| "}),
@@ -523,11 +594,28 @@ function M.setup()
             t({"", "|==="}),
         }),
 
+        -- Autowidth table
+        s("tableauto", {
+            t({'[%autowidth, options="header"]', "|===", "| "}),
+            i(1, "H1"), t(" | "), i(2, "H2"),
+            t({"", "", "| "}), i(3), t(" | "), i(4),
+            t({"", "|==="}),
+        }),
+
         -- CSV table
         s("csvtable", {
             t({"[%header,format=csv]", "|===", ""}),
             i(1, "Col1,Col2,Col3"),
             t({"", ""}), i(2, "a,b,c"),
+            t({"", "|==="}),
+        }),
+
+        -- Table with footer
+        s("tablef", {
+            t({'[cols="'}), i(1, "1,1"), t({'", options="header,footer"]', "|===", "| "}),
+            i(2, "H1"), t(" | "), i(3, "H2"),
+            t({"", "", "| "}), i(4), t(" | "), i(5),
+            t({"", "", "| "}), i(6, "Total"), t(" | "), i(7),
             t({"", "|==="}),
         }),
 
@@ -542,8 +630,34 @@ function M.setup()
         s("check",  { t("* ["), c(1, { t(" "), t("x") }), t("] "), i(2) }),
         s("qanda",  { t({"[qanda]", ""}), i(1, "Question"), t({"::"}), t({"", ""}), i(2, "Answer") }),
 
+        -- Description list with complex content
+        s("dlc", {
+            i(1, "Term"), t({"::"}),
+            t({"", "+", ""}), i(2, "Paragraph continuation under term."),
+        }),
+
+        -- Nested list
+        s("uln", {
+            t("* "), i(1, "Item"),
+            t({"", "** "}), i(2, "Nested item"),
+            t({"", "*** "}), i(3, "Deep nested"),
+        }),
+
+        -- Ordered list with custom start
+        s("ols", {
+            t({"[start="}), i(1, "1"), t({"]", ". "}), i(2),
+        }),
+
+        -- Step list (ordered with titles)
+        s("steps", {
+            t({"."}), i(1, "Step 1 title"), t({"", ""}),
+            i(2, "Step 1 content."),
+            t({"", "", "."}), i(3, "Step 2 title"), t({"", ""}),
+            i(4, "Step 2 content."),
+        }),
+
         -- ----------------------------------------------------------------
-        -- BLOCKS: Collapsible, Sidebar, Quote, Example
+        -- BLOCKS: Collapsible, Sidebar, Quote, Example, Open, Verse
         -- ----------------------------------------------------------------
 
         s("collapse",  {
@@ -563,6 +677,87 @@ function M.setup()
         }),
 
         s("example", { t({"====", ""}), i(1), t({"", "===="}) }),
+
+        -- Titled example block
+        s("examplet", {
+            t({"."}), i(1, "Example Title"),
+            t({"", "====", ""}), i(2), t({"", "===="}),
+        }),
+
+        -- Open block (anonymous container — can hold any content)
+        s("open", { t({"--", ""}), i(1), t({"", "--"}) }),
+
+        -- Open block with role
+        s("openr", {
+            t({"[."}), i(1, "role"), t({"]", "--", ""}),
+            i(2), t({"", "--"}),
+        }),
+
+        -- Verse block (preserves line breaks)
+        s("verse", {
+            t({"[verse, "}), i(1, "Author"), t({", "}), i(2, "Source"),
+            t({"]", "____", ""}), i(3), t({"", "____"}),
+        }),
+
+        -- Stem / mathematical notation
+        s("stem", { t({"[stem]", "++++", ""}), i(1, "x = (-b +- sqrt(b^2 - 4ac)) / 2a"), t({"", "++++"}) }),
+        s("stemi", { t("stem:["), i(1, "expression"), t("]") }),
+
+        -- ----------------------------------------------------------------
+        -- TABS (Antora tabs extension — @asciidoctor/tabs)
+        -- ----------------------------------------------------------------
+
+        s("tabs", {
+            t({"[tabs]", "====", ""}),
+            i(1, "Tab 1"), t({"::"}),
+            t({"", "+", "--", ""}), i(2, "Content for tab 1"),
+            t({"", "--", "", ""}),
+            i(3, "Tab 2"), t({"::"}),
+            t({"", "+", "--", ""}), i(4, "Content for tab 2"),
+            t({"", "--", "===="}),
+        }),
+
+        -- Tabs with code blocks (common pattern)
+        s("tabscode", {
+            t({"[tabs]", "====", ""}),
+            i(1, "Bash"), t({"::"}),
+            t({"", "+", "--", "[source,"}), i(2, "bash"), t({"]", "----", ""}),
+            i(3),
+            t({"", "----", "--", "", ""}),
+            i(4, "Python"), t({"::"}),
+            t({"", "+", "--", "[source,"}), i(5, "python"), t({"]", "----", ""}),
+            i(6),
+            t({"", "----", "--", "===="}),
+        }),
+
+        -- ----------------------------------------------------------------
+        -- ANCHORS & CROSS-REFERENCES
+        -- ----------------------------------------------------------------
+
+        -- Block anchor (ID for cross-referencing)
+        s("anchor",  { t("[["), i(1, "id"), t("]]") }),
+        -- Inline anchor
+        s("anchori", { t("[#"), i(1, "id"), t("]") }),
+        -- Internal cross-reference to anchor
+        s("ref",     { t("<<"), i(1, "id"), t(","), i(2, "display text"), t(">>") }),
+
+        -- ----------------------------------------------------------------
+        -- ICONS
+        -- ----------------------------------------------------------------
+
+        s("icon", {
+            t("icon:"),
+            c(1, {
+                t("check"), t("times"), t("exclamation-triangle"),
+                t("info-circle"), t("question-circle"), t("cog"),
+                t("file"), t("folder"), t("terminal"),
+                t("lock"), t("unlock"), t("key"),
+                t("shield"), t("bug"), t("wrench"),
+            }),
+            t("["),
+            c(2, { t(""), t("role=green"), t("role=red"), t("role=yellow"), t("size=2x") }),
+            t("]"),
+        }),
 
         -- ----------------------------------------------------------------
         -- FORMATTING INLINE
