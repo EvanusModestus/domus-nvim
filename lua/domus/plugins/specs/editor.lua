@@ -11,15 +11,15 @@ return {
             vim.g.rainbow_delimiters = {
                 strategy = {
                     [""] = "rainbow-delimiters.strategy.global",
-                    -- Disable for vim: local strategy crashes on nil treesitter
-                    -- nodes in regex-heavy syntax files (regex.vim)
-                    vim = "rainbow-delimiters.strategy.noop",
                 },
                 query = {
                     [""] = "rainbow-delimiters",
                     lua = "rainbow-blocks",
                 },
                 condition = function(bufnr)
+                    -- Disable for vim: treesitter produces nil nodes in
+                    -- regex-heavy syntax files, crashing local strategy
+                    if vim.bo[bufnr].ft == "vim" then return false end
                     local lang = vim.treesitter.language.get_lang(vim.bo[bufnr].ft)
                     if not lang then return false end
                     local ok, parser = pcall(vim.treesitter.get_parser, bufnr, lang)
