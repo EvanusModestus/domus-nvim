@@ -1,13 +1,76 @@
 = Navigation
-:description: File and code navigation
+:description: File and code navigation in domus-nvim with Telescope fuzzy finding, Harpoon quick marks, Oil file browsing, and Flash labeled jumps.
 :navtitle: Navigation
 :icons: font
 
+== Overview
+
+domus-nvim provides four navigation systems, each optimized for a different access pattern:
+
+* **{fuzzy-finder}** -- fuzzy finding across files, grep, buffers, and more
+* **Harpoon** -- persistent quick marks for frequently accessed files
+* **{file-browser}** -- file system browsing as an editable buffer
+* **Flash** -- labeled character jumps for rapid in-buffer movement
+
 == Telescope
 
-Fuzzy finder for files, grep, and more.
+{fuzzy-finder} is the primary search interface, extended with fzf-native for compiled C fuzzy matching performance.
 
-[cols="1,2"]
+=== Ripgrep Configuration
+
+Telescope's live grep uses these ripgrep defaults:
+
+* `--no-config` -- ignores user ripgrep config to ensure consistent behavior
+* `--smart-case` -- case-insensitive unless the query contains uppercase
+* `--hidden` -- includes hidden files (dotfiles)
+* `--glob=!.git/` -- excludes the `.git` directory
+
+=== Layout
+
+Telescope uses a flex layout that adapts between horizontal and vertical orientation based on window dimensions.
+
+=== Picker Mappings
+
+Inside Telescope pickers:
+
+[cols="1,3", options="header"]
+|===
+| Key | Action
+
+| `<C-j>` / `<C-k>`
+| Move selection down / up
+
+| `<C-q>`
+| Send results to quickfix list
+
+| `<C-x>`
+| Open in horizontal split
+|===
+
+=== Extensions
+
+[cols="1,2", options="header"]
+|===
+| Extension | Purpose
+
+| `fzf`
+| Compiled C fuzzy matcher (replaces default Lua matcher)
+
+| `file_browser`
+| Full file system browser within Telescope
+
+| `project`
+| Project switching and management
+
+| `undo`
+| Visual undo tree browser
+|===
+
+=== Keybindings
+
+==== File Pickers
+
+[cols="1,3", options="header"]
 |===
 | Key | Action
 
@@ -15,19 +78,22 @@ Fuzzy finder for files, grep, and more.
 | Find files
 
 | `{leader}fg`
-| Live grep
+| Live grep (search file contents)
 
 | `{leader}fb`
-| Buffers
-
-| `{leader}fo`
-| Recent files
+| Open buffers
 
 | `{leader}fh`
 | Help tags
 
+| `{leader}fo`
+| Recently opened files
+
+| `{leader}fr`
+| Resume last picker
+
 | `{leader}fw`
-| Find word under cursor
+| Grep word under cursor
 
 | `{leader}fd`
 | Diagnostics
@@ -42,72 +108,137 @@ Fuzzy finder for files, grep, and more.
 | Git files
 |===
 
+==== Git Pickers
+
+[cols="1,3", options="header"]
+|===
+| Key | Action
+
+| `{leader}gc`
+| Git commits
+
+| `{leader}gb`
+| Git branches
+|===
+
+==== LSP Pickers
+
+[cols="1,3", options="header"]
+|===
+| Key | Action
+
+| `{leader}lr`
+| LSP references
+
+| `{leader}ls`
+| Document symbols
+
+| `{leader}lw`
+| Workspace symbols
+|===
+
+==== Extension Pickers
+
+[cols="1,3", options="header"]
+|===
+| Key | Action
+
+| `{leader}fe`
+| File browser
+
+| `{leader}fp`
+| Projects
+
+| `{leader}fu`
+| Undo tree
+|===
+
 == Harpoon
 
-Quick file switching for frequent files.
+Harpoon provides persistent quick marks -- a short list of files you return to constantly during a session.
+Unlike buffers or recent files, Harpoon marks survive across Neovim restarts and are project-scoped.
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
 | Key | Action
 
 | `{leader}a`
-| Add file to Harpoon
+| Add current file to Harpoon list
 
 | `<C-e>`
-| Open Harpoon menu
+| Open Harpoon menu (reorder, remove)
 
 | `{leader}1`
-| Go to Harpoon file 1
+| Navigate to Harpoon file 1
 
 | `{leader}2`
-| Go to Harpoon file 2
+| Navigate to Harpoon file 2
 
 | `{leader}3`
-| Go to Harpoon file 3
+| Navigate to Harpoon file 3
 
 | `{leader}4`
-| Go to Harpoon file 4
+| Navigate to Harpoon file 4
 |===
 
 == Oil
 
-File browser as a buffer.
+{file-browser} presents the file system as an editable Neovim buffer.
+Renaming, moving, and deleting files is done through normal buffer editing operations -- change text, then save the buffer to apply the file system mutations.
 
-[cols="1,2"]
+Oil buffers are excluded from {session-manager} to prevent stale directory listings from being restored.
+
+[cols="1,3", options="header"]
 |===
 | Key | Action
 
 | `-` or `{leader}e`
-| Open Oil
+| Open Oil in the current file's directory
 
 | `<CR>`
-| Open file/directory
+| Open file or enter directory
 
 | `-`
-| Go to parent directory
+| Navigate to parent directory
 
 | `g.`
 | Toggle hidden files
 |===
 
-== LSP Navigation
+== Flash
 
-[cols="1,2"]
+Flash provides labeled character jumps -- type a search character, and Flash labels every match on screen with a unique key.
+Press the label key to jump directly, eliminating the need for repeated `f`/`t` or `w` presses.
+
+[cols="1,3", options="header"]
 |===
 | Key | Action
 
-| `gd`
-| Go to definition
+| `s`
+| Flash jump (normal mode)
 
-| `gD`
-| Glance definitions
+| `S`
+| Flash treesitter select (select a treesitter node by label)
 
-| `gR`
-| Glance references
+| `r`
+| Remote operator (operator-pending mode -- apply an operator to a labeled location without moving the cursor)
+|===
 
-| `]f` / `[f`
-| Next/prev function
+== Configuration
 
-| `]c` / `[c`
-| Next/prev class
+[cols="1,2", options="header"]
+|===
+| File | Purpose
+
+| `{lua-dir}/plugins/config/telescope.lua`
+| Telescope setup, picker mappings, extensions, ripgrep args
+
+| `{lua-dir}/plugins/config/harpoon.lua`
+| Harpoon keymaps and settings
+
+| `{lua-dir}/plugins/config/oil.lua`
+| Oil configuration and session exclusion
+
+| `{lua-dir}/plugins/specs/navigation.lua`
+| Plugin declarations for all navigation plugins
 |===

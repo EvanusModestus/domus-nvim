@@ -1,96 +1,157 @@
 = Formatting & Linting
-:description: Code formatting and linting configuration
+:description: Code formatting with conform.nvim and linting with nvim-lint in domus-nvim, covering 10+ languages with format-on-save and auto-lint.
 :navtitle: Formatting
 :icons: font
 
+== Overview
+
+domus-nvim separates formatting and linting into two dedicated plugins:
+
+* **conform.nvim** -- formatting with per-filetype formatter configuration
+* **nvim-lint** -- asynchronous linting with per-filetype linter configuration
+
+All formatters and linters are auto-installed through {lsp-installer}, so no manual binary management is needed.
+
 == Formatting (conform.nvim)
 
-Format on save is enabled by default.
+=== Formatters by Filetype
 
-=== Formatters by Language
-
-[cols="1,2"]
+[cols="1,2,2", options="header"]
 |===
-| Language | Formatter
+| Filetype | Formatter | Notes
 
 | Lua
-| stylua
+| `stylua`
+| Standard Lua formatter
 
 | Python
-| ruff
+| `ruff_format` + `ruff_fix`
+| Format first, then apply auto-fixes (import sorting, etc.)
 
-| JavaScript/TypeScript
-| prettier
+| JavaScript / TypeScript / JSX / TSX
+| `prettier`
+| Standard web formatter
 
-| JSON/YAML
-| prettier
+| JSON
+| `prettier`
+| Standard JSON formatter
+
+| YAML
+| `prettier`
+| Standard YAML formatter
+
+| Markdown
+| `prettier`
+| Standard Markdown formatter
+
+| HTML
+| `prettier`
+| Standard HTML formatter
+
+| CSS
+| `prettier`
+| Standard CSS formatter
+
+| Shell (sh / bash / zsh)
+| `shfmt`
+| Flags: `-i 2` (2-space indent), `-ci` (indent case), `-bn` (binary ops start line)
 
 | Rust
-| rustfmt
+| `rustfmt`
+| Standard Rust formatter
 
-| Shell
-| shfmt
-
-| C/C++
-| clang-format
+| C / C++
+| `clang-format`
+| Standard C/C++ formatter
 
 | SQL
-| sqlfluff
+| `sqlfluff`
+| SQL linter and formatter
 
 | TOML
-| taplo
+| `taplo`
+| Schema-aware TOML formatter
 |===
+
+=== Format on Save
+
+Format-on-save is enabled by default with two exceptions:
+
+* **SQL** -- excluded because sqlfluff can be slow on large queries
+* **Markdown** -- excluded to preserve intentional formatting choices
+
+Additionally, format-on-save is skipped when the buffer contains error-level diagnostics, preventing the formatter from mangling code that does not parse correctly.
 
 === Manual Format
 
-`{leader}cf` - Format buffer
+`{leader}cf` -- Format the current buffer on demand, regardless of filetype exclusions.
 
 == Linting (nvim-lint)
 
-Linting runs on save and insert leave.
+=== Linters by Filetype
 
-=== Linters by Language
-
-[cols="1,2"]
+[cols="1,2", options="header"]
 |===
-| Language | Linter
+| Filetype | Linter
 
 | Python
-| ruff
+| `ruff`
 
-| JavaScript/TypeScript
-| eslint_d
+| JavaScript / TypeScript
+| `eslint_d`
 
 | Lua
-| luacheck
-
-| Shell
-| shellcheck
+| `selene`
 
 | Markdown
-| markdownlint
+| `markdownlint`
 
 | YAML
-| yamllint
+| `yamllint`
+
+| JSON
+| `jsonlint`
 
 | Dockerfile
-| hadolint
+| `hadolint`
 
 | Go
-| golangci-lint
+| `golangci-lint`
+
+| Terraform
+| `tflint`
+
+| AsciiDoc
+| Custom `asciidoctor` parser
 |===
 
-== Disabling Format on Save
+=== Auto-Lint Triggers
 
-For specific filetypes, edit `{lua-dir}/plugins/config/conform.lua`:
+Linting runs automatically on two events:
 
-[source,lua]
-----
-format_on_save = function(bufnr)
-    local ignore_filetypes = { "sql", "markdown" }
-    if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
-        return
-    end
-    return { timeout_ms = 500, lsp_fallback = true }
-end,
-----
+* **BufWritePost** -- after saving a file
+* **InsertLeave** -- after exiting insert mode
+
+This provides near-real-time lint feedback without blocking the editor during typing.
+
+== Mason Auto-Installation
+
+All formatters and linters listed above are managed by {lsp-installer}.
+On first launch, {lsp-installer} downloads and installs every configured tool.
+Run `:Mason` to view installation status and manage tools manually.
+
+== Configuration
+
+[cols="1,2", options="header"]
+|===
+| File | Purpose
+
+| `{lua-dir}/plugins/config/conform.lua`
+| Formatter-to-filetype mapping, format-on-save logic, shfmt flags
+
+| `{lua-dir}/plugins/config/lint.lua`
+| Linter-to-filetype mapping, auto-lint autocommands
+
+| `{lua-dir}/plugins/specs/coding.lua`
+| Plugin declarations for conform.nvim and nvim-lint
+|===

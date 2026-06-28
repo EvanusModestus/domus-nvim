@@ -1,17 +1,32 @@
-= Domus Instrumentum
-:description: A hierarchical, modular Neovim configuration with 90+ plugins, layered architecture, and embedded documentation
+= Domus Neovim
+:description: A modular, layered Neovim configuration with 90+ plugins, 5-layer architecture, and embedded Antora documentation
 :navtitle: Overview
 :icons: font
 
-A modern, hierarchical Neovim configuration built on {neovim-version} with 90+ curated plugins, a 5-layer architecture, and full Antora documentation.
+A modular, layered Neovim configuration built on {neovim-version} with 90+ curated plugins and full Antora documentation.
+Designed for polyglot development — Lua, Python, Rust, C/C++, TypeScript, shell, infrastructure-as-code, and technical writing in AsciiDoc and Markdown.
 
-== Philosophy
+== Design Principles
 
-* **Hierarchical Structure** - Organized by domain: config, core, plugins, features, UI
-* **Separation of Concerns** - Plugin specs (what to load) live apart from configs (how to configure)
-* **Native Neovim** - Uses `ftplugin/`, `after/`, and Neovim {neovim-version} APIs
-* **Documentation First** - Embedded Antora site you are reading right now
-* **Lazy Loading** - Fast startup via {plugin-manager} with event-driven loading
+Separation of concerns::
+Plugin _specs_ (what to load) live apart from plugin _configs_ (how to configure).
+Adding a plugin never touches configuration logic and vice versa.
+
+Layered boot sequence::
+Five layers load in strict order: config -> core -> plugins -> features -> UI.
+Each layer has a single responsibility and a clean boundary.
+
+Native Neovim first::
+Filetype settings use `ftplugin/`, syntax overrides use `after/`, and LSP configuration uses the Neovim {neovim-version} `vim.lsp.config` API.
+Plugins extend — they don't replace — built-in mechanisms.
+
+Lazy by default::
+Every plugin loads on demand via {plugin-manager} — by event, filetype, command, or keymap.
+Startup is fast regardless of the total plugin count.
+
+Documentation as code::
+This Antora site is embedded in the repository.
+Documentation stays in sync with the configuration it describes.
 
 == Quick Start
 
@@ -23,21 +38,24 @@ mv {config-dir} {config-backup}
 # Clone
 git clone {repo-url} {config-dir}
 
-# Launch (plugins auto-install on first start)
-nvim
+# Launch with NVIM_APPNAME
+NVIM_APPNAME={appname} nvim
 ----
 
-TIP: For side-by-side installs, see xref:installation.adoc[Installation] for the `NVIM_APPNAME` method.
+On first launch, {plugin-manager} bootstraps itself, downloads ~90 plugins, {lsp-installer} installs LSP servers and formatters, and {treesitter} compiles parsers.
+Let the initial install complete before editing files.
+
+TIP: For side-by-side installs or platform-specific setup, see xref:installation.adoc[Installation].
 
 == Feature Overview
 
-[cols="1,2,2"]
+[cols="1,2,2", options="header"]
 |===
 | Category | Plugin | Highlights
 
 | Completion
 | {completion-engine}
-| Rust-based, LSP + snippets + path + buffer sources
+| Rust-based engine — LSP, snippets, path, buffer sources
 
 | Fuzzy Finding
 | {fuzzy-finder}
@@ -45,59 +63,63 @@ TIP: For side-by-side installs, see xref:installation.adoc[Installation] for the
 
 | File Browser
 | {file-browser}
-| Edit directories like buffers
+| Edit directories as buffers
 
 | Snippets
 | {snippet-engine} + friendly-snippets
-| 50+ custom AsciiDoc snippets included
+| 100+ custom AsciiDoc snippets, diagram block templates
 
 | LSP
 | {lsp-installer} + nvim-lspconfig
-| 12+ servers auto-installed (Lua, Python, Rust, TypeScript, etc.)
+| 14 servers auto-installed (lua_ls, pyright, rust_analyzer, clangd, ts_ls, bashls, and more)
 
 | Formatting
 | conform.nvim
-| Format-on-save with stylua, prettier, ruff, rustfmt, shfmt
+| Format-on-save — stylua, prettier, ruff, rustfmt, shfmt, clang-format
 
 | Linting
 | nvim-lint
-| ruff, eslint_d, shellcheck, luacheck, yamllint, hadolint
+| ruff, eslint_d, shellcheck, selene, yamllint, hadolint, custom asciidoctor parser
 
 | Syntax
 | {treesitter}
-| 20+ parsers, text objects, context header
+| 24 parsers, text objects, context header, rainbow delimiters
 
 | Debugging
 | {debugger}
-| Python (debugpy), Rust/C++ (codelldb), full UI
+| Python (debugpy), Rust/C/C++ (codelldb), full DAP UI with virtual text
 
 | Git
 | Fugitive + gitsigns + LazyGit + Diffview
-| Stage, blame, diff, history - terminal and buffer UIs
+| Stage, blame, diff, history — terminal and buffer UIs
 
 | Navigation
-| Harpoon + {fuzzy-finder} + {file-browser}
-| Quick marks, fuzzy search, directory editing
+| Harpoon + Flash
+| Quick marks, labeled jumps, treesitter selection
 
 | Text Objects
 | {text-objects} + treesitter-textobjects
-| Custom AsciiDoc/Markdown block objects, function/class motions
+| Custom AsciiDoc/Markdown block objects, function/class/parameter motions
 
 | Terminal
 | {terminal}
-| Floating, horizontal, vertical - persistent across toggles
+| Floating, horizontal, vertical — persistent across toggles
 
 | Database
 | {database} + UI + completion
 | SQL client with schema-aware completion
 
+| AI
+| Copilot + CopilotChat
+| Inline suggestions, code explanations, review, refactoring
+
 | Colorscheme
 | Catppuccin Mocha
-| Deep custom highlights, 5 alternative themes available
+| Deep custom highlights, 5 alternative themes
 
 | UI
-| noice + alpha + which-key + lualine
-| Enhanced cmdline, dashboard, key hints, status line
+| noice + alpha + which-key + lualine + Trouble
+| Enhanced cmdline, dashboard, key hints, status line, diagnostics list
 |===
 
 == Structure
@@ -113,6 +135,9 @@ TIP: For side-by-side installs, see xref:installation.adoc[Installation] for the
 │   │   ├── specs/        # Declarations (what to load)
 │   │   │   └── lang/     # Language-specific plugins
 │   │   └── config/       # Configurations (how to configure)
+│   │       ├── lsp/      # LSP server setup
+│   │       ├── completion/
+│   │       ├── dap/      # Debug adapter setup
 │   │       └── lang/     # Language-specific configs
 │   ├── features/         # Layer 4: Custom systems (MOTD)
 │   └── ui/               # Layer 5: Visual enhancements
@@ -121,16 +146,43 @@ TIP: For side-by-side installs, see xref:installation.adoc[Installation] for the
 └── {docs-dir}/           # This Antora documentation
 ----
 
-See xref:architecture.adoc[Architecture] for the full layer breakdown.
+See xref:architecture.adoc[Architecture] for the full layer breakdown and design rationale.
 
 == Requirements
 
-* Neovim {neovim-version}
-* Git
-* A https://www.nerdfonts.com[Nerd Font] (for icons)
-* ripgrep (for Telescope grep)
-* Node.js (for some LSP servers)
+[cols="1,1,2", options="header"]
+|===
+| Component | Version | Notes
+
+| Neovim
+| {neovim-version}
+| Required — `vim.lsp.config` API
+
+| Git
+| 2.19+
+| Plugin installation via {plugin-manager}
+
+| C compiler
+| gcc or clang
+| Required — telescope-fzf-native and LuaSnip jsregexp build natively
+
+| Nerd Font
+| Any https://www.nerdfonts.com[Nerd Font]
+| Required — icons in statusline, file browser, dashboard, which-key
+
+| Node.js
+| 18+
+| Optional — for LSP servers (pyright, ts_ls, jsonls, yamlls, etc.)
+
+| ripgrep
+| Any
+| Recommended — Telescope live grep
+
+| fd
+| Any
+| Recommended — faster file finding
+|===
 
 == License
 
-MIT -- see the repository for details.
+MIT — see the repository for details.

@@ -6,7 +6,7 @@
 ** xref:features/lsp.adoc[LSP]
 ** xref:features/completion.adoc[Completion]
 ** xref:features/treesitter.adoc[Treesitter]
-** xref:features/formatting.adoc[Formatting]
+** xref:features/formatting.adoc[Formatting & Linting]
 ** xref:features/navigation.adoc[Navigation]
 ** xref:features/text-objects.adoc[Text Objects]
 ** xref:features/git.adoc[Git]

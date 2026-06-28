@@ -1,5 +1,5 @@
-name: instrumentum
-title: Instrumentum Neovim
+name: nvim
+title: Domus Neovim
 version: ~
 start_page: ROOT:index.adoc
 
@@ -8,6 +8,16 @@ nav:
 
 asciidoc:
   attributes:
+    # Sidebar ordering and categorization
+    nav_order: '60'
+    category: 'Development'
+
+    # AsciiDoc rendering
+    icons: font
+    source-highlighter: highlight.js
+    sectanchors: ''
+    sectlinks: ''
+
     # Page layout
     toclevels: 3
     page-toclevels: 3
@@ -17,15 +27,15 @@ asciidoc:
     localleader: '<Space>'
 
     # Paths
-    config-dir: '~/.config/nvim'
+    config-dir: '~/.config/domus-nvim'
     config-backup: '~/.config/nvim.backup'
     lua-dir: 'lua/domus'
     ftplugin-dir: 'ftplugin'
     docs-dir: 'docs'
 
     # NVIM_APPNAME for side-by-side installs
-    appname: 'nvim-domus'
-    appname-dir: '~/.config/nvim-domus'
+    appname: 'domus-nvim'
+    appname-dir: '~/.config/domus-nvim'
 
     # Plugin names
     completion-engine: 'blink.cmp'
@@ -46,5 +56,5 @@ asciidoc:
     neovim-version: '0.11+'
 
     # Repo info
-    repo-url: 'https://github.com/EvanusModestus/domus-instrumentum'
-    repo-name: 'domus-instrumentum'
+    repo-url: 'https://github.com/EvanusModestus/domus-nvim'
+    repo-name: 'domus-nvim'

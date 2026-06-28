@@ -1,77 +1,102 @@
 = Completion
-:description: Auto-completion configuration
+:description: Auto-completion in domus-nvim powered by blink.cmp, a Rust-based completion engine with LuaSnip snippets and multi-source support.
 :navtitle: Completion
 :icons: font
 
-== Engine
+== Overview
 
-Domus uses **{completion-engine}** for completion - a fast, Rust-based completion engine.
+domus-nvim uses **{completion-engine}** as its completion engine.
+Unlike nvim-cmp (written in Lua), {completion-engine} has its core implemented in Rust, resulting in measurably faster fuzzy matching and reduced frame drops during completion in large files.
 
 == Sources
 
-[cols="1,2"]
+[cols="1,2,1", options="header"]
 |===
-| Source | Description
+| Source | Description | Priority
 
-| lsp
-| Language Server completions
+| `lsp`
+| Completions from attached language servers
+| Default
 
-| path
-| File path completions
+| `path`
+| File system path completions
+| Default
 
-| snippets
-| LuaSnip snippets
+| `snippets`
+| {snippet-engine} snippet triggers
+| Default
 
-| buffer
-| Words from current buffer
+| `buffer`
+| Words from the current buffer
+| Default
 
-| lazydev
-| Neovim Lua API completions
+| `lazydev`
+| Neovim Lua API completions (vim.*, vim.api.*, etc.)
+| +100 (boosted above all other sources)
 |===
+
+The lazydev source receives a priority boost of +100, ensuring Neovim API completions always appear at the top when editing Lua files within a Neovim configuration.
 
 == Keybindings
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
 | Key | Action
 
 | `<C-Space>`
-| Show completion menu
+| Show completion menu manually
 
 | `<C-e>`
 | Hide completion menu
 
-| `<Tab>`
-| Select next / snippet forward
-
-| `<S-Tab>`
-| Select previous / snippet backward
-
-| `<CR>`
-| Accept completion
+| `<Esc>`
+| Hide completion menu
 
 | `<C-y>`
-| Accept and insert
+| Accept selected completion
 
-| `<C-b>` / `<C-f>`
-| Scroll documentation
+| `<Tab>`
+| Select next item
+
+| `<S-Tab>`
+| Select previous item
+
+| `<C-n>`
+| Select next item
+
+| `<C-p>`
+| Select previous item
+
+| `<C-b>`
+| Scroll documentation window backward
+
+| `<C-f>`
+| Scroll documentation window forward
 |===
+
+== Features
+
+Auto-brackets:: {completion-engine} automatically inserts matching brackets after function completions, saving a keystroke on every function call.
+
+Documentation auto-show:: The documentation window appears automatically after a 200ms delay when a completion item is highlighted, without requiring a manual trigger.
+
+Signature help:: Function signature information displays inline as you type arguments, showing parameter types and positions.
 
 == Snippets
 
-Snippets are provided by:
+{snippet-engine} serves as the snippet expansion backend, with **friendly-snippets** providing a large pre-made collection covering most languages and frameworks.
 
-* **{snippet-engine}** - Snippet engine
-* **friendly-snippets** - Pre-made snippet collection
-* Custom snippets in `{lua-dir}/plugins/config/lang/`
+Snippet navigation uses `<Tab>` to jump forward through placeholders and `<S-Tab>` to jump backward.
 
-=== Expanding Snippets
+== Configuration
 
-Type trigger word, then press `<Tab>`:
+[cols="1,2", options="header"]
+|===
+| File | Purpose
 
-[source]
-----
-code<Tab>  →  [source,lang] block
-note<Tab>  →  NOTE: admonition
-xref<Tab>  →  xref:page.adoc[]
-----
+| `{lua-dir}/plugins/config/completion/blink.lua`
+| {completion-engine} setup: sources, keymaps, appearance, snippet integration
+
+| `{lua-dir}/plugins/specs/coding.lua`
+| Plugin declarations for {completion-engine}, {snippet-engine}, and friendly-snippets
+|===

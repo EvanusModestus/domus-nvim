@@ -1,22 +1,23 @@
 = AsciiDoc Support
-:description: AsciiDoc editing features
+:description: Extensive AsciiDoc editing environment with 80+ snippets, structural navigation, editing keymaps, custom commands, text objects, and filetype settings.
 :navtitle: AsciiDoc
 :icons: font
 
-Comprehensive AsciiDoc editing support with snippets, navigation, and keymaps.
+Comprehensive AsciiDoc editing support spanning 1100+ lines of configuration.
+Provides snippets for every common construct, structural navigation, editing keymaps, custom commands for document analysis, and text objects for block-level selections.
 
 == Snippets
 
-Type trigger word, then press `<Tab>`:
+Type the trigger word, then press `Tab` to expand.
 
 === Code Blocks
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
 | Trigger | Result
 
 | `code`
-| Generic source block
+| Generic `[source]` block
 
 | `codea`
 | Source block with `subs=attributes+`
@@ -27,35 +28,116 @@ Type trigger word, then press `<Tab>`:
 | `python`
 | Python code block
 
+| `lua`
+| Lua code block
+
 | `yaml`
 | YAML code block
+
+| `json`
+| JSON code block
+
+| `sql`
+| SQL code block
+
+| `toml`
+| TOML code block
+
+| `rust`
+| Rust code block
+
+| `go`
+| Go code block
+
+| `xml`
+| XML code block
+
+| `nix`
+| Nix code block
+
+| `vyos`
+| VyOS code block
+
+| `cisco`
+| Cisco IOS code block
+
+| `nginx`
+| Nginx code block
 |===
 
-=== Admonitions
+=== Diagram Blocks
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
 | Trigger | Result
 
-| `note`
-| NOTE: inline
+| `d2`
+| D2 diagram block
 
-| `tip`
-| TIP: inline
+| `mermaid`
+| Mermaid flowchart block
 
-| `warning`
-| WARNING: inline
+| `mermaid-seq`
+| Mermaid sequence diagram
 
-| `noteb`
-| NOTE block
+| `mermaid-er`
+| Mermaid ER diagram
 
-| `tipb`
-| TIP block
+| `mermaid-gantt`
+| Mermaid Gantt chart
+
+| `mermaid-state`
+| Mermaid state diagram
+
+| `mermaid-pie`
+| Mermaid pie chart
+
+| `mermaid-class`
+| Mermaid class diagram
+
+| `mermaid-c4`
+| Mermaid C4 diagram
+
+| `plantuml`
+| PlantUML sequence diagram
+
+| `plantuml-comp`
+| PlantUML component diagram
+
+| `plantuml-act`
+| PlantUML activity diagram
+
+| `plantuml-class`
+| PlantUML class diagram
+
+| `plantuml-net`
+| PlantUML network diagram
+
+| `graphviz`
+| Graphviz directed graph (dot)
+
+| `graphviz-undir`
+| Graphviz undirected graph
+
+| `graphviz-net`
+| Graphviz network diagram
+
+| `graphviz-cluster`
+| Graphviz cluster diagram
+
+| `graphviz-state`
+| Graphviz state diagram
+
+| `kroki`
+| Kroki diagram block
+
+| `bpmn`
+| BPMN diagram block
 |===
 
-=== Cross-References (Antora)
+=== Antora Cross-References
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
 | Trigger | Result
 
@@ -63,99 +145,330 @@ Type trigger word, then press `<Tab>`:
 | `+xref:page.adoc[text]+`
 
 | `xrefc`
-| `+xref:component::page.adoc[text]+`
+| `+xref:component::page.adoc[text]+` (cross-component)
 
 | `include`
 | `+include::path[]+`
 
 | `partial`
 | `+include::partial$file[]+`
+
+| `example`
+| `+include::example$file[]+`
+
+| `attachment`
+| Attachment link macro
+
+| `page-header`
+| Full page header template with attributes
+
+| `ifdef`
+| Conditional inclusion block
+|===
+
+=== Admonitions
+
+[cols="1,3", options="header"]
+|===
+| Trigger | Result
+
+| `note`
+| `NOTE:` inline admonition
+
+| `tip`
+| `TIP:` inline admonition
+
+| `warning`
+| `WARNING:` inline admonition
+
+| `caution`
+| `CAUTION:` inline admonition
+
+| `important`
+| `IMPORTANT:` inline admonition
+
+| `noteb`
+| NOTE block (delimited)
+
+| `tipb`
+| TIP block (delimited)
+
+| `warningb`
+| WARNING block (delimited)
+
+| `cautionb`
+| CAUTION block (delimited)
+
+| `importantb`
+| IMPORTANT block (delimited)
 |===
 
 === Formatting
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
 | Trigger | Result
 
 | `bold`
-| `*text*`
+| `+*text*+`
 
 | `italic`
-| `_text_`
+| `+_text_+`
 
 | `mono`
-| `` `text` ``
+| `++`text`++`
+
+| `mark`
+| `+#text#+` (highlight)
+
+| `sub`
+| Subscript
+
+| `sup`
+| Superscript
+
+| `role`
+| Role attribute
+
+| `footnote`
+| Footnote macro
 
 | `kbd`
-| `kbd:[Ctrl+C]`
+| `+kbd:[Ctrl+C]+`
+
+| `btn`
+| `+btn:[Save]+`
+
+| `menu`
+| `+menu:File[Save]+`
 |===
 
-== Navigation
+=== Structure
 
-[cols="1,2"]
+[cols="1,3", options="header"]
+|===
+| Trigger | Result
+
+| `h1` -- `h5`
+| Section headers (levels 1--5)
+
+| `link`
+| URL link macro
+
+| `image`
+| Image macro
+
+| `table`
+| Table scaffold
+
+| `list`
+| Unordered list
+
+| `pagebreak`
+| Page break
+
+| `hr`
+| Horizontal rule (`'''`)
+|===
+
+== Navigation Keymaps
+
+Jump between structural elements in AsciiDoc documents:
+
+[cols="1,3", options="header"]
 |===
 | Key | Action
 
-| `]-`
-| Next `----` block
+| `]-` / `[-`
+| Next / previous `----` block (listing/code)
 
-| `[-`
-| Previous `----` block
+| `]=` / `[=`
+| Next / previous `====` block (example/sidebar)
 
-| `]=`
-| Next `====` block
+| `]]` / `[[`
+| Next / previous section header
 
-| `[=`
-| Previous `====` block
+| `]i` / `[i`
+| Next / previous `include::` directive
 
-| `]]`
-| Next section header
+| `]x` / `[x`
+| Next / previous `xref:` reference
 
-| `[[`
-| Previous section header
+| `]d` / `[d`
+| Next / previous diagram block
 |===
 
-== Keymaps
+== Editing Keymaps
 
-All under `{leader}a` prefix:
+All under the `{leader}a` prefix.
+Work in both normal and visual mode where noted.
 
-[cols="1,2"]
+=== Headers
+
+[cols="1,3", options="header"]
 |===
 | Key | Action
 
-| `{leader}a1-4`
-| Insert header level 1-4
+| `{leader}a1`
+| Insert level-1 header (`=`)
+
+| `{leader}a2`
+| Insert level-2 header (`==`)
+
+| `{leader}a3`
+| Insert level-3 header (`===`)
+
+| `{leader}a4`
+| Insert level-4 header (`====`)
+|===
+
+=== Inline Formatting
+
+[cols="1,3", options="header"]
+|===
+| Key | Action
 
 | `{leader}ab`
-| Bold word/selection
+| Bold word under cursor or visual selection
 
 | `{leader}ai`
-| Italic word/selection
+| Italic word under cursor or visual selection
 
 | `{leader}ac`
-| Monospace word/selection
+| Monospace word under cursor or visual selection
+|===
+
+=== Lists
+
+[cols="1,3", options="header"]
+|===
+| Key | Action
 
 | `{leader}al`
-| Bullet list item
+| Insert bullet list item (`*`)
 
 | `{leader}an`
-| Numbered list item
+| Insert numbered list item (`.`)
 
 | `{leader}at`
-| Checklist item
+| Insert checklist item (`* [ ]`)
+
+| `{leader}ax`
+| Toggle checklist state (`[ ]` / `[x]`)
+|===
+
+=== Admonitions
+
+[cols="1,3", options="header"]
+|===
+| Key | Action
 
 | `{leader}aN`
-| Insert NOTE:
+| Insert `NOTE:` admonition
 
 | `{leader}aT`
-| Insert TIP:
+| Insert `TIP:` admonition
 
 | `{leader}aW`
-| Insert WARNING:
+| Insert `WARNING:` admonition
+
+| `{leader}aC`
+| Insert `CAUTION:` admonition
+
+| `{leader}aI`
+| Insert `IMPORTANT:` admonition
+|===
+
+=== Attribute Insertion
+
+[cols="1,3", options="header"]
+|===
+| Key | Action
+
+| `Alt-{`
+| Insert `+{attr}+` template at cursor position
 |===
 
 == Commands
 
-`:AsciidocOutline`:: Show document structure (navigate with Enter)
-`:AsciidocCheckAttrs`:: Find undefined attributes
+Custom commands for document analysis and navigation:
+
+`:AsciidocOutline`::
+Opens a floating window showing the document's section structure.
+Navigate to any section with `Enter`.
+Includes a preview of each section's first line.
+
+`:AsciidocWordCount`::
+Counts words in the document, excluding AsciiDoc syntax (attributes, directives, delimiters).
+Displays the count in a notification.
+
+`:AsciidocFindBrokenXrefs`::
+Checks all `xref:` targets against files on disk.
+Broken references are listed in a floating window with their line numbers.
+
+`:AsciidocCheckAttrs`::
+Finds undefined `+{attribute}+` references in the document.
+Knows built-in AsciiDoc attributes and skips them -- only reports genuinely missing definitions.
+
+`:AsciidocPreviewAttrs`::
+Displays all `:attribute:` definitions found in the current document in a floating window.
+
+`:AsciidocListDiagrams`::
+Lists all diagram blocks (d2, mermaid, plantuml, graphviz, kroki, bpmn) with their titles and line numbers.
+
+== Text Objects
+
+Provided by {text-objects} integration.
+See xref:features/text-objects.adoc[Text Objects] for the full reference.
+
+[cols="1,3", options="header"]
+|===
+| Object | Target
+
+| `i-` / `a-`
+| Inside / around `----` blocks (listing/code)
+
+| `i/` / `a/`
+| Inside / around `////` blocks (comment)
+
+| `i=` / `a=`
+| Inside / around `====` blocks (example/sidebar)
+
+| `i_`
+| Inside `+__+` (italic)
+
+| `i*`
+| Inside `+**+` (bold)
+
+| `i+`
+| Inside `++` (passthrough)
+|===
+
+== Filetype Settings
+
+Defined in `{ftplugin-dir}/asciidoc.lua`:
+
+[cols="1,3", options="header"]
+|===
+| Setting | Behavior
+
+| Spell checking
+| Enabled with `en_us` dictionary
+
+| Text wrapping
+| Soft wrap with `linebreak`
+
+| Conceal
+| Level 2, concealment cursor set to empty string
+
+| Folding
+| Indent-based folding available (disabled by default)
+
+| `gf` mapping
+| Follows `xref:` and `include::` directives to their target files
+|===
+
+== Configuration
+
+Plugin config at `{lua-dir}/plugins/config/lang/asciidoc.lua`.
+Filetype settings at `{ftplugin-dir}/asciidoc.lua`.

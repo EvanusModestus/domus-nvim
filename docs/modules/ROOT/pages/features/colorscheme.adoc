@@ -1,16 +1,141 @@
 = Colorscheme
-:description: Catppuccin Mocha configuration and highlight customization
+:description: Catppuccin Mocha with Tokyo Night-inspired palette overrides, 50+ custom highlight groups, and 5 alternative themes.
 :navtitle: Colorscheme
 :icons: font
 
-Catppuccin Mocha with custom refinements for better readability and visual distinction.
+Catppuccin Mocha serves as the primary theme with deep customization -- refined base colors inspired by Tokyo Night's blue palette, 50+ custom highlight groups, and tight integration with every major plugin.
 
-== Configuration Location
+== Custom Palette
 
-[source]
-----
-lua/domus/plugins/config/colorscheme.lua
-----
+The default Catppuccin Mocha palette is overridden with Tokyo Night-inspired blues for a cooler, more refined aesthetic.
+
+=== Color Overrides
+
+[cols="2,1,3", options="header"]
+|===
+| Variable | Hex | Description
+
+| `colors.base`
+| `#1a1a26`
+| Refined background (darker, blue-tinted)
+
+| `colors.surface0`
+| `#242435`
+| Subtle surface (UI panels, sidebars)
+
+| `colors.surface1`
+| `#2e2e42`
+| Medium surface (active selections)
+
+| `colors.surface2`
+| `#3a3a50`
+| Prominent surface (borders, separators)
+
+| `colors.blue`
+| `#7aa2f7`
+| Primary accent (Tokyo Night blue)
+
+| `colors.sapphire`
+| `#5eacd3`
+| Cyan-tinted accent
+
+| `colors.lavender`
+| `#b4befe`
+| Soft purple accent
+
+| `colors.sky`
+| `#7dcfff`
+| Bright cyan accent
+|===
+
+Standard Catppuccin colors remain available: `colors.mauve`, `colors.peach`, `colors.yellow`, `colors.green`, `colors.red`, `colors.teal`, `colors.pink`, `colors.flamingo`, `colors.rosewater`.
+
+== Custom Highlight Groups
+
+Over 50 highlight groups are customized across these categories:
+
+Treesitter nodes:: Keywords, functions, strings, types, operators, and comments with distinct color assignments for visual parsing.
+
+Markup:: Bold, italic, inline code, links, and heading levels 1--6 each have unique styling.
+
+Diff:: Added, removed, and changed lines use green, red, and blue respectively for clear Git integration.
+
+Rainbow delimiters:: Nested brackets and parentheses cycle through distinct colors for depth tracking.
+
+LSP diagnostics:: Error, warning, info, and hint each have foreground, underline, and virtual text styles.
+
+UI elements:: Cursor line, line numbers, sign column, floating windows, and popup menus.
+
+Plugin integrations:: Highlight overrides for plugin-specific highlight groups ensuring visual consistency.
+
+== Plugin Integrations
+
+The colorscheme enables native integration with:
+
+[cols="2,2", options="header"]
+|===
+| Category | Plugins
+
+| Completion
+| blink_cmp
+
+| Git
+| gitsigns
+
+| Syntax
+| treesitter, semantic_tokens, rainbow_delimiters
+
+| Fuzzy finding
+| telescope
+
+| Utilities
+| mini, illuminate
+
+| Markup
+| headlines
+
+| Progress
+| fidget
+
+| Keymaps
+| which-key
+
+| Diagnostics
+| lsp_trouble
+
+| Debugging
+| dap, dap_ui
+
+| Navigation
+| harpoon
+
+| Notifications
+| notify
+|===
+
+== Alternative Themes
+
+Five additional themes are available as alternatives:
+
+[cols="1,3", options="header"]
+|===
+| Theme | Character
+
+| rose-pine
+| Soft, muted palette with a warm undertone
+
+| tokyonight
+| Cool blue palette (the inspiration for the Catppuccin overrides)
+
+| kanagawa
+| Muted Japanese-inspired palette
+
+| gruvbox-material
+| Warm retro palette with softer contrast than original gruvbox
+
+| nightfox
+| Dark blue palette with vibrant accents
+|===
 
 == Customizing Highlights
 
@@ -21,52 +146,19 @@ All highlight overrides live in the `custom_highlights` function:
 custom_highlights = function(colors)
     return {
         Visual = {
-            bg = "#454025",  -- muted yellow
+            bg = "#454025",  -- muted yellow tint
             bold = true,
         },
-        -- ... other highlights
+        -- add overrides here
     }
 end
 ----
 
-=== Available Color Variables
+Use `colors.<name>` for palette variables or hex strings (`#RRGGBB`) for precise control.
+Increase hex values to brighten, decrease to darken.
 
-From `color_overrides.mocha`:
+After editing, reload the colorscheme with `:source %` or restart Neovim.
 
-[cols="2,2,3"]
-|===
-| Variable | Hex | Description
+== Configuration
 
-| `colors.base` | #1a1a26 | Background
-| `colors.surface0` | #242435 | Subtle surface
-| `colors.surface1` | #2e2e42 | Medium surface
-| `colors.surface2` | #3a3a50 | Prominent surface
-| `colors.blue` | #7aa2f7 | Tokyo-night inspired
-| `colors.sapphire` | #5eacd3 | Cyan-tinted
-| `colors.lavender` | #b4befe | Soft purple
-| `colors.sky` | #7dcfff | Bright cyan
-|===
-
-Standard Catppuccin colors also available: `colors.mauve`, `colors.peach`, `colors.yellow`, `colors.green`, `colors.red`, `colors.teal`, `colors.pink`, `colors.flamingo`, `colors.rosewater`.
-
-=== Custom Hex Colors
-
-For precise control, use hex strings instead of color variables:
-
-[source,lua]
-----
-Visual = { bg = "#454025" },  -- muted yellow tint
-----
-
-Hex format: `#RRGGBB` - increase values to brighten, decrease to darken.
-
-=== Applying Changes
-
-After editing, reload the colorscheme:
-
-[source,vim]
-----
-:source %
-----
-
-Or restart Neovim.
+Located at `{lua-dir}/plugins/config/colorscheme.lua`.

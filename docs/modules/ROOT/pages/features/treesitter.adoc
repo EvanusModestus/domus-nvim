@@ -1,34 +1,36 @@
 = Treesitter Integration
-:description: Treesitter setup with text objects, context, and companion plugins
+:description: Treesitter configuration in domus-nvim with 24 parsers, structural text objects, context headers, rainbow delimiters, and companion plugins.
 :navtitle: Treesitter
 :icons: font
 
 == Overview
 
-{treesitter} provides syntax-aware highlighting, code navigation, and structural editing.
-The configuration includes several companion plugins:
+{treesitter} provides syntax-aware highlighting, code navigation, and structural editing through incremental parsing.
+domus-nvim extends the base treesitter installation with several companion plugins:
 
-* **nvim-treesitter-textobjects** - structural text objects and motions
-* **nvim-treesitter-context** - sticky scope header
-* **rainbow-delimiters.nvim** - colored bracket pairs
-* **hlargs.nvim** - distinct highlighting for function arguments
-* **nvim-autopairs** - treesitter-aware auto-pairing
-* **nvim-ts-autotag** - auto-close and rename HTML/JSX tags
+* **nvim-treesitter-textobjects** -- structural text objects and motions based on the parse tree
+* **nvim-treesitter-context** -- sticky scope header pinned to the top of the window
+* **rainbow-delimiters.nvim** -- colored bracket pairs by nesting depth
+* **hlargs.nvim** -- distinct highlighting for function arguments
+* **nvim-autopairs** -- treesitter-aware auto-pairing of brackets and quotes
+* **nvim-ts-autotag** -- auto-close and auto-rename HTML/JSX tags
 
 == Ensured Parsers
 
-The following parsers are installed automatically:
+The following 24 parsers are installed automatically:
 
 [.compact]
 `bash`, `c`, `css`, `csv`, `dockerfile`, `html`, `htmldjango`, `http`, `javascript`, `json`, `lua`, `markdown`, `markdown_inline`, `python`, `query`, `regex`, `rust`, `sql`, `toml`, `typescript`, `vim`, `vimdoc`, `xml`, `yaml`
 
+Additional parsers can be installed on demand with `:TSInstall <language>`.
+
 == Text Objects
 
-Provided by **nvim-treesitter-textobjects**.
+Provided by **nvim-treesitter-textobjects**, these operate on structural nodes in the parse tree rather than simple text patterns.
 
 === Selection
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
 | Key | Selects
 
@@ -50,13 +52,13 @@ Provided by **nvim-treesitter-textobjects**.
 | `ab` / `ib`
 | Outer / inner block
 
-| `a/` / `i/`
-| Outer / inner comment
+| `a/`
+| Comment (outer)
 |===
 
 === Movement
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
 | Key | Motion
 
@@ -66,16 +68,13 @@ Provided by **nvim-treesitter-textobjects**.
 | `]M` / `[M`
 | Next / previous function end
 
-| `]c` / `[c`
-| Next / previous class start (overridden by gitsigns in git files)
-
 | `]a` / `[a`
 | Next / previous parameter
 |===
 
 === Swap
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
 | Key | Action
 
@@ -89,11 +88,16 @@ Provided by **nvim-treesitter-textobjects**.
 == Treesitter Context
 
 **nvim-treesitter-context** displays a sticky header at the top of the window showing the current function, class, or block scope.
-This provides constant awareness of where you are in deeply nested code.
+When you scroll deep into a function body, the function signature remains visible, providing constant awareness of your position in nested code.
+
+== Rainbow Delimiters
+
+**rainbow-delimiters.nvim** colors matching bracket pairs (`()`, `[]`, `{}`) by nesting depth.
+Each depth level receives a distinct color, making it straightforward to identify which opening bracket matches which closing bracket in deeply nested expressions.
 
 == Companion Plugins
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
 | Plugin | Purpose
 
@@ -101,15 +105,24 @@ This provides constant awareness of where you are in deeply nested code.
 | Colors matching bracket pairs by nesting depth
 
 | hlargs.nvim
-| Highlights function arguments with a distinct color
+| Highlights function arguments with a distinct color, separate from local variables
 
 | nvim-autopairs
 | Treesitter-aware auto-pairing of brackets and quotes
 
 | nvim-ts-autotag
-| Auto-closes and auto-renames HTML/JSX tags
+| Auto-closes and auto-renames HTML/JSX tags based on treesitter nodes
 |===
 
 == Configuration
 
-Treesitter is configured in `{lua-dir}/plugins/config/treesitter.lua` and declared as a plugin spec in `{lua-dir}/plugins/specs/editor.lua`.
+[cols="1,2", options="header"]
+|===
+| File | Purpose
+
+| `{lua-dir}/plugins/config/treesitter.lua`
+| Parser list, text objects, context, and highlight settings
+
+| `{lua-dir}/plugins/specs/editor.lua`
+| Plugin declarations and lazy-loading triggers
+|===

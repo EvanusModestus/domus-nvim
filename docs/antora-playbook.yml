@@ -1,9 +1,9 @@
-# Local preview playbook for domus-instrumentum docs
+# Local preview playbook for domus-nvim docs
 # For production, this component is aggregated via domus-docs
 
 site:
-  title: Domus Instrumentum
-  start_page: instrumentum::index.adoc
+  title: Domus Neovim
+  start_page: nvim::index.adoc
 
 content:
   sources:

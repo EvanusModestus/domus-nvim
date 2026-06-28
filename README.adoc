@@ -1,123 +1,214 @@
 = domus-nvim
-:description: Hierarchical, modular Neovim configuration
+:description: A modular, layered Neovim configuration with 90+ plugins, 5-layer architecture, and embedded Antora documentation
 :icons: font
+:url-docs: https://docs.architectus.dev
+:url-repo: https://github.com/EvanusModestus/domus-nvim
 
-A modern, hierarchical Neovim configuration with embedded documentation.
+A modular, layered Neovim configuration built on Neovim 0.11+ with 90+ curated plugins and full Antora documentation.
+Designed for polyglot development — Lua, Python, Rust, C/C++, TypeScript, shell, infrastructure-as-code, and technical writing in AsciiDoc and Markdown.
+
+== Architecture
+
+Five layers load in sequence.
+Each layer has a single responsibility and a clean boundary.
+
+[mermaid]
+----
+graph TD
+    A["<b>Layer 1: Config</b><br/>options · keymaps · autocmds"] --> B
+    B["<b>Layer 2: Core</b><br/>lazy.nvim bootstrap · utilities"] --> C
+    C["<b>Layer 3: Plugins</b><br/>specs — what to load<br/>config — how to configure"] --> D
+    D["<b>Layer 4: Features</b><br/>custom systems · MOTD"] --> E
+    E["<b>Layer 5: UI</b><br/>visual enhancements"]
+
+    style A fill:#a6e3a1,color:#1e1e2e
+    style B fill:#89b4fa,color:#1e1e2e
+    style C fill:#cba6f7,color:#1e1e2e
+    style D fill:#fab387,color:#1e1e2e
+    style E fill:#f38ba8,color:#1e1e2e
+----
+
+Plugin specs (what to load) live apart from plugin configs (how to configure).
+Adding a plugin never touches configuration logic and vice versa.
+
+[mermaid]
+----
+graph LR
+    subgraph specs["Specs — what to load"]
+        editor["editor.lua<br/>treesitter, surround, flash"]
+        ui_s["ui.lua<br/>colorscheme, statusline"]
+        coding["coding.lua<br/>LSP, completion, copilot"]
+        git_s["git.lua<br/>fugitive, gitsigns, lazygit"]
+        tools["tools.lua<br/>telescope, harpoon, oil"]
+        debug["debug.lua<br/>DAP stack"]
+        lang["lang/*<br/>python, rust, asciidoc"]
+    end
+
+    subgraph config["Config — how to configure"]
+        ts["treesitter"]
+        tel["telescope"]
+        lsp["lsp/"]
+        cmp["completion/"]
+        dap["dap/"]
+        lng["lang/"]
+    end
+
+    specs --> config
+
+    style specs fill:#1e1e2e,color:#cdd6f4,stroke:#cba6f7
+    style config fill:#1e1e2e,color:#cdd6f4,stroke:#89b4fa
+----
+
+Full architecture documentation: {url-docs}
 
 == Features
 
-* **Hierarchical Structure** - Organized by domain (config, core, plugins, features, ui)
-* **Separated Concerns** - Plugin specs vs configs
-* **Native ftplugin** - Filetype settings via Neovim's native mechanism
-* **Embedded Antora Docs** - Documentation as code
+[cols="1,2,2", options="header"]
+|===
+| Category | Plugin | Highlights
+
+| Completion
+| blink.cmp
+| Rust-based engine — LSP, snippets, path, buffer sources
+
+| Fuzzy Finding
+| telescope.nvim
+| Files, grep, buffers, git, LSP symbols, undo history
+
+| File Browser
+| oil.nvim
+| Edit directories as buffers
+
+| LSP
+| Mason + lspconfig
+| 14 servers auto-installed (lua_ls, pyright, rust_analyzer, clangd, ts_ls, bashls, and more)
+
+| Formatting
+| conform.nvim
+| Format-on-save — stylua, prettier, ruff, rustfmt, shfmt, clang-format
+
+| Linting
+| nvim-lint
+| ruff, eslint_d, shellcheck, selene, yamllint, hadolint
+
+| Syntax
+| nvim-treesitter
+| 24 parsers, text objects, context header, rainbow delimiters
+
+| Debugging
+| nvim-dap
+| Python (debugpy), Rust/C/C++ (codelldb), full DAP UI with virtual text
+
+| Git
+| Fugitive + gitsigns + LazyGit + Diffview
+| Stage, blame, diff, history — terminal and buffer UIs
+
+| Navigation
+| Harpoon + Flash
+| Quick marks, labeled jumps, treesitter selection
+
+| Text Objects
+| mini.ai + treesitter-textobjects
+| Custom AsciiDoc/Markdown block objects, function/class/parameter motions
+
+| Terminal
+| toggleterm.nvim
+| Floating, horizontal, vertical — persistent across toggles
+
+| AI
+| Copilot + CopilotChat
+| Inline suggestions, code review, refactoring
+
+| Colorscheme
+| Catppuccin Mocha
+| Deep custom highlights, 5 alternative themes
+|===
 
 == Prerequisites
 
-[cols="1,2,3"]
+[cols="1,1,2", options="header"]
 |===
 | Component | Version | Notes
 
-| **Neovim**
-| 0.11.0+
-| Required for `vim.lsp.config` API (mason-lspconfig)
+| Neovim
+| 0.11+
+| Required — `vim.lsp.config` API
 
-| **Git**
+| Git
 | 2.19+
 | Plugin installation via lazy.nvim
 
-| **C compiler**
+| C compiler
 | gcc or clang
-| Required — telescope-fzf-native and LuaSnip jsregexp build natively
+| Required — native builds (telescope-fzf-native, LuaSnip jsregexp)
 
-| **make**
-| Any
-| Required — same build steps as above
+| Nerd Font
+| Any https://www.nerdfonts.com[Nerd Font]
+| Required — icons throughout the UI
 
-| **Nerd Font**
-| Any https://www.nerdfonts.com/[Nerd Font]
-| Required — icons in statusline, file browser, dashboard, which-key
-
-| **Node.js**
+| Node.js
 | 18+
 | Optional — for LSP servers (pyright, ts_ls, etc.)
 
-| **ripgrep**
+| ripgrep
 | Any
 | Recommended — Telescope live grep
 
-| **fd**
+| fd
 | Any
-| Recommended — faster Telescope file finding
+| Recommended — faster file finding
 
-| **lazygit**
+| lazygit
 | Any
 | Optional — `<Space>lg` integration
-
-| **tmux**
-| Any
-| Optional — `<C-f>` tmux-sessionizer binding
 |===
 
-=== Installing prerequisites
+== Installation
 
-==== Arch Linux
-
-[source,bash]
-----
-sudo pacman -S neovim git base-devel ripgrep fd lazygit tmux npm python ipython
-----
-
-Install a Nerd Font (e.g., JetBrainsMono):
+=== Quick Start
 
 [source,bash]
 ----
-sudo pacman -S ttf-jetbrains-mono-nerd
+# Back up existing config
+mv ~/.config/nvim ~/.config/nvim.bak
+mv ~/.local/share/nvim ~/.local/share/nvim.bak
+
+# Clone
+git clone https://github.com/EvanusModestus/domus-nvim.git ~/.config/domus-nvim
+
+# Launch with NVIM_APPNAME
+NVIM_APPNAME=domus-nvim nvim
 ----
 
-==== Ubuntu/Debian
+On first launch, lazy.nvim bootstraps itself, downloads ~90 plugins, Mason installs LSP servers and formatters, and Treesitter compiles parsers.
+Let it finish before editing.
+
+=== Side-by-Side with Existing Config
 
 [source,bash]
 ----
-# Add Neovim PPA (0.11+)
+alias v='NVIM_APPNAME=domus-nvim nvim'
+----
+
+=== Platform Packages
+
+**Arch Linux:**
+
+[source,bash]
+----
+sudo pacman -S neovim git base-devel ripgrep fd lazygit tmux npm python ipython ttf-jetbrains-mono-nerd
+----
+
+**Ubuntu/Debian:**
+
+[source,bash]
+----
 sudo add-apt-repository ppa:neovim-ppa/unstable
-sudo apt update
-----
-
-[source,bash]
-----
-# Core packages
-sudo apt install -y neovim git build-essential ripgrep fd-find nodejs npm python3 python3-pip
-----
-
-[source,bash]
-----
-# fd is installed as fdfind on Ubuntu — symlink it
+sudo apt update && sudo apt install -y neovim git build-essential ripgrep fd-find nodejs npm python3
 sudo ln -sf $(which fdfind) /usr/local/bin/fd
 ----
 
-[source,bash]
-----
-# lazygit (not in default repos)
-LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-curl -Lo /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-tar xf /tmp/lazygit.tar.gz -C /tmp lazygit
-sudo install /tmp/lazygit /usr/local/bin
-----
-
-Nerd Font (CLI install):
-
-[source,bash]
-----
-mkdir -p ~/.local/share/fonts
-curl -fLo /tmp/JetBrainsMono.tar.xz \
-  https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz
-tar xf /tmp/JetBrainsMono.tar.xz -C ~/.local/share/fonts/
-fc-cache -fv
-----
-
-Then set your terminal emulator's font to "JetBrainsMono Nerd Font".
-
-==== macOS
+**macOS:**
 
 [source,bash]
 ----
@@ -125,184 +216,96 @@ brew install neovim git ripgrep fd lazygit tmux node python ipython
 brew install --cask font-jetbrains-mono-nerd-font
 ----
 
-==== Language toolchains
-
-Mason auto-installs most LSP servers and formatters, but some languages require their own toolchain installed first.
-
-**Rust** — rust-analyzer, rustfmt, and clippy all come from rustup:
+=== Verify
 
 [source,bash]
 ----
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-rustup component add rust-analyzer clippy
-----
-
-**Python** — pyright is installed by Mason, but you need the runtime and optionally ipython for the REPL (`<Space>sc` to send code):
-
-[source,bash]
-----
-# Arch
-pip install ipython
-
-# Ubuntu/Debian (pip is blocked — use apt)
-sudo apt install python3-ipython
-----
-
-**Node.js** — required by several Mason-installed servers (ts_ls, html, cssls, jsonls, yamlls). Install via your package manager (shown above) or https://github.com/nvm-sh/nvm[nvm].
-
-Build Neovim from source: https://github.com/neovim/neovim/blob/master/BUILD.md
-
-== Installation
-
-=== 1. Back Up Existing Config
-
-If you already have a Neovim configuration:
-
-[source,bash]
-----
-mv ~/.config/nvim ~/.config/nvim.bak
-mv ~/.local/share/nvim ~/.local/share/nvim.bak
-mv ~/.local/state/nvim ~/.local/state/nvim.bak
-mv ~/.cache/nvim ~/.cache/nvim.bak
-----
-
-=== 2. Clone and Launch
-
-[source,bash]
-----
-git clone https://github.com/EvanusModestus/domus-nvim.git ~/.config/nvim
-nvim
-----
-
-On first launch:
-
-1. **lazy.nvim** bootstraps itself (cloned from GitHub)
-2. **~90 plugins** download and install — takes 1-2 minutes
-3. **Mason** installs LSP servers, formatters, and linters in the background
-4. **TreeSitter** parsers compile on first encounter of each filetype
-
-Let the initial install complete before editing files.
-
-=== 3. Verify
-
-[source,bash]
-----
-for cmd in nvim git gcc rg fd lazygit tmux node python3; do
-  printf "%-10s %s\n" "$cmd" "$(command -v $cmd >/dev/null 2>&1 && echo 'OK' || echo 'MISSING')"
+for cmd in nvim git gcc rg fd lazygit node python3; do
+  printf "%-10s %s\n" "$cmd" \
+    "$(command -v $cmd >/dev/null 2>&1 && echo 'OK' || echo 'MISSING')"
 done
 ----
 
-Inside nvim:
-
-* `:Lazy` — all plugins loaded?
-* `:Mason` — LSP servers installed?
-* `:checkhealth` — any errors?
-
-=== Troubleshooting
-
-[cols="1,2"]
-|===
-| Problem | Fix
-
-| Plugins fail to clone
-| Check SSH key: `ssh -T git@github.com`. If no key, lazy.nvim uses HTTPS automatically.
-
-| Mason installs fail
-| `:Mason` → check for errors. Most need `npm` or `python3` installed.
-
-| No icons / broken characters
-| Nerd Font not installed or terminal not using it. Set terminal font to JetBrainsMono Nerd Font.
-
-| TreeSitter parser errors
-| Need `gcc` or `clang`: `sudo pacman -S base-devel` (Arch) or `sudo apt install build-essential` (Ubuntu).
-
-| "E5108: Error executing lua"
-| Neovim too old. Need 0.11.0+: `nvim --version`.
-|===
-
-=== Uninstall
-
-[source,bash]
-----
-rm -rf ~/.config/nvim
-rm -rf ~/.local/share/nvim
-rm -rf ~/.local/state/nvim
-rm -rf ~/.cache/nvim
-----
-
-== Structure
-
-[source]
-----
-domus-nvim/
-├── init.lua                    # Entry point
-├── lua/domus/                  # Configuration layers
-│   ├── config/                 # User preferences
-│   │   ├── options.lua
-│   │   ├── keymaps.lua
-│   │   └── autocmds.lua
-│   ├── core/                   # Infrastructure
-│   │   ├── lazy.lua
-│   │   └── util.lua
-│   ├── plugins/                # Plugin system
-│   │   ├── specs/              # What to load
-│   │   │   ├── editor.lua
-│   │   │   ├── ui.lua
-│   │   │   ├── coding.lua
-│   │   │   ├── git.lua
-│   │   │   ├── tools.lua
-│   │   │   ├── debug.lua
-│   │   │   └── lang/
-│   │   └── config/             # How to configure
-│   │       ├── treesitter.lua
-│   │       ├── telescope.lua
-│   │       ├── lsp/
-│   │       ├── completion/
-│   │       └── dap/
-│   ├── features/               # Custom systems
-│   │   └── motd/
-│   └── ui/                     # Visual components
-├── ftplugin/                   # Filetype settings
-├── after/                      # Syntax overrides
-└── docs/                       # Antora documentation
-----
+Inside Neovim: `:Lazy` (plugins loaded?), `:Mason` (servers installed?), `:checkhealth` (any errors?).
 
 == Key Bindings
 
 Leader: `<Space>`
 
-=== Navigation
+[cols="1,2,1,2", options="header"]
+|===
+| Key | Action | Key | Action
 
-* `<Space>ff` - Find files
-* `<Space>fg` - Live grep
-* `<Space>e` - File browser (Oil)
-* `<C-e>` - Harpoon menu
+| `<Space>ff`
+| Find files
+| `gd`
+| Go to definition
 
-=== LSP
+| `<Space>fg`
+| Live grep
+| `gr`
+| References
 
-* `gd` - Go to definition
-* `gr` - References
-* `K` - Hover docs
-* `<Space>ca` - Code action
+| `<Space>fb`
+| Buffers
+| `K`
+| Hover docs
 
-=== Git
+| `<Space>e` / `-`
+| File browser (Oil)
+| `<Space>ca`
+| Code action
 
-* `<Space>gs` - Git status
-* `<Space>lg` - LazyGit
-* `<Space>hs` - Stage hunk
+| `<C-e>`
+| Harpoon menu
+| `<Space>rn`
+| Rename
+
+| `<Space>lg`
+| LazyGit
+| `<F5>`
+| Debug continue
+
+| `<Space>gs`
+| Git status
+| `<Space>db`
+| Toggle breakpoint
+
+| `s`
+| Flash jump
+| `<Space>z`
+| Zen mode
+|===
 
 == Documentation
 
-Full documentation in `docs/` directory.
+Full documentation is available at {url-docs} and lives in the `docs/` directory as an Antora component.
 
 === Local Preview
 
 [source,bash]
 ----
-cd docs && npx antora antora-playbook.yml
-# Open build/site/nvim/index.html
+make docs-serve   # Build and serve on :8000
 ----
 
-=== Aggregated Site
+Or manually:
 
-This component integrates with `domus-docs` for the full documentation site.
+[source,bash]
+----
+cd docs && npx antora antora-playbook.yml
+# Open docs/build/site/index.html
+----
+
+== Uninstall
+
+[source,bash]
+----
+rm -rf ~/.config/domus-nvim
+rm -rf ~/.local/share/domus-nvim
+rm -rf ~/.local/state/domus-nvim
+rm -rf ~/.cache/domus-nvim
+----
+
+== License
+
+MIT

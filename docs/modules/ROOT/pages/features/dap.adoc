@@ -1,5 +1,5 @@
 = Debug Adapter Protocol
-:description: Full debugging stack integration using {debugger}, DAP UI, virtual text, and Mason-managed adapters.
+:description: Full debugging stack integration in domus-nvim using nvim-dap, DAP UI, virtual text, and Mason-managed adapters.
 :navtitle: DAP
 :icons: font
 
@@ -54,6 +54,9 @@ For Rust projects it defaults to `target/debug/`, making the typical `cargo buil
 | `{leader}dB`
 | Conditional breakpoint (prompts for condition)
 
+| `{leader}dc`
+| Continue (alternative to F5)
+
 | `{leader}dr`
 | Open REPL
 
@@ -62,6 +65,19 @@ For Rust projects it defaults to `target/debug/`, making the typical `cargo buil
 
 | `{leader}dt`
 | Terminate session
+|===
+
+== Breakpoint Signs
+
+[cols="1,2", options="header"]
+|===
+| Sign | Meaning
+
+| `●`
+| DapBreakpoint -- a breakpoint is set on this line
+
+| `→`
+| DapStopped -- the debugger is currently paused on this line
 |===
 
 == DAP UI

@@ -1,36 +1,46 @@
 = Git Integration
-:description: Git tools and workflows
+:description: Git workflow tools in domus-nvim including Fugitive, Gitsigns, LazyGit, Diffview, and Telescope git pickers.
 :navtitle: Git
 :icons: font
 
+== Overview
+
+domus-nvim integrates five git tools, each serving a distinct role in the workflow:
+
+* **vim-fugitive** -- full git command interface within Neovim
+* **gitsigns.nvim** -- buffer-level git decorations and hunk operations
+* **LazyGit** -- full-featured terminal UI for git (via lazygit.nvim)
+* **diffview.nvim** -- professional multi-file diff and merge viewing
+* **{fuzzy-finder}** -- git commit and branch pickers
+
 == Fugitive
 
-Git commands in Neovim.
+vim-fugitive exposes the full `git` command set as `:Git` ex-commands, with deep buffer integration for staging, diffing, and conflict resolution.
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
-| Key/Command | Action
+| Key / Command | Action
 
 | `{leader}gs`
-| Git status (`:Git`)
+| Git status (opens `:Git` summary buffer)
 
 | `{leader}gp`
 | Git push
 
 | `:Git blame`
-| Inline blame
+| Inline blame annotations for every line
 
 | `:Gvdiffsplit`
-| Vertical diff split
+| Vertical diff split against the index
 |===
 
 == Gitsigns
 
-Git decorations and hunk operations.
+gitsigns.nvim provides per-line git status in the sign column and a complete set of hunk operations without leaving the buffer.
 
 === Signs
 
-[cols="1,2"]
+[cols="1,2", options="header"]
 |===
 | Sign | Meaning
 
@@ -44,9 +54,9 @@ Git decorations and hunk operations.
 | Deleted lines
 |===
 
-=== Keybindings
+=== Hunk Navigation
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
 | Key | Action
 
@@ -55,6 +65,13 @@ Git decorations and hunk operations.
 
 | `[c`
 | Previous hunk
+|===
+
+=== Hunk Operations
+
+[cols="1,3", options="header"]
+|===
+| Key | Action
 
 | `{leader}hs`
 | Stage hunk
@@ -63,38 +80,72 @@ Git decorations and hunk operations.
 | Reset hunk
 
 | `{leader}hS`
-| Stage buffer
+| Stage entire buffer
 
 | `{leader}hu`
 | Undo stage hunk
 
+| `{leader}hR`
+| Reset entire buffer
+
 | `{leader}hp`
-| Preview hunk
+| Preview hunk inline
 
 | `{leader}hb`
-| Blame line
+| Blame current line
 
 | `{leader}hd`
-| Diff this
+| Diff this file against the index
 |===
 
 == LazyGit
 
-Full-featured Git TUI.
+LazyGit provides a full terminal UI for git operations -- staging, committing, branching, rebasing, stashing, and cherry-picking -- all through a keyboard-driven interface.
 
-`{leader}lg` - Open LazyGit
+`{leader}lg` -- Open LazyGit in a floating terminal.
 
 == Diffview
 
-Professional diff viewing.
+diffview.nvim provides a professional multi-file diff interface with a file panel, inline diff rendering, and merge conflict resolution tools.
 
-[cols="1,2"]
+[cols="1,3", options="header"]
 |===
 | Key | Action
 
 | `{leader}gd`
-| Open Diffview
+| Open Diffview (diff working tree against index)
 
 | `{leader}gh`
-| File history
+| File history (git log for the current file)
+|===
+
+== Telescope Git Pickers
+
+{fuzzy-finder} provides fuzzy-searchable git pickers for commits and branches:
+
+[cols="1,3", options="header"]
+|===
+| Key | Action
+
+| `{leader}gc`
+| Browse commits with diff preview
+
+| `{leader}gb`
+| Browse and switch branches
+|===
+
+== Configuration
+
+[cols="1,2", options="header"]
+|===
+| File | Purpose
+
+| `{lua-dir}/plugins/config/git.lua`
+| Fugitive keymaps, gitsigns setup, and hunk operations
+
+| `{lua-dir}/plugins/config/lazygit.lua`
+| LazyGit floating terminal configuration
+
+| `{lua-dir}/plugins/specs/git.lua`
+| Plugin declarations for all git plugins
 |===

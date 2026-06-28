@@ -1,53 +1,115 @@
 = LSP Configuration
-:description: Language Server Protocol setup
+:description: Language Server Protocol integration in domus-nvim with 14 auto-installed servers, per-server customizations, and Glance-powered peek navigation.
 :navtitle: LSP
 :icons: font
 
 == Overview
 
-LSP is managed through:
+domus-nvim provides a complete LSP stack built on three layers:
 
-* **{lsp-installer}** - LSP server installation
-* **mason-lspconfig** - Bridge between {lsp-installer} and lspconfig
-* **nvim-lspconfig** - LSP client configuration
+* **{lsp-installer}** -- automatic server installation and lifecycle management
+* **mason-lspconfig.nvim** -- bridge that maps {lsp-installer} package names to lspconfig server names
+* **nvim-lspconfig** -- canonical LSP client configuration
+* **glance.nvim** -- peek UI for definitions, references, type definitions, and implementations
+
+Completion capabilities are injected from {completion-engine}, ensuring every server advertises snippet support, resolve support, and other extended client capabilities.
+
+On Termux (Android), where {lsp-installer} is unavailable, domus-nvim falls back to the native `vim.lsp.config` API introduced in Neovim 0.11, configuring servers directly without mason-lspconfig.
 
 == Auto-Installed Servers
 
-[cols="1,2"]
+{lsp-installer} ensures the following 14 servers are present:
+
+[cols="1,2,2", options="header"]
 |===
-| Language | Server
+| Language | Server | Notes
 
 | Lua
-| lua_ls
+| `lua_ls`
+| Third-party library diagnostics disabled to reduce noise in plugin development
 
 | Python
-| pyright
+| `pyright`
+| Basic type checking mode; diagnostic severities overridden to avoid duplicates with ruff
 
 | Rust
-| rust_analyzer
+| `rust_analyzer`
+| Clippy on check, all features enabled, inlay hints active
 
-| TypeScript/JavaScript
-| ts_ls
+| TypeScript / JavaScript
+| `ts_ls`
+| Standard configuration
 
-| HTML/CSS
-| html, cssls
+| HTML
+| `html`
+| Standard configuration
+
+| CSS
+| `cssls`
+| Standard configuration
 
 | JSON
-| jsonls (with SchemaStore)
+| `jsonls`
+| SchemaStore integration for auto-detected schema validation
 
 | YAML
-| yamlls (with schemas)
+| `yamlls`
+| SchemaStore integration for auto-detected schema validation
 
 | Bash
-| bashls
+| `bashls`
+| Standard configuration
 
 | Docker
-| dockerls
+| `dockerls`
+| Standard configuration
+
+| Ansible
+| `ansiblels`
+| Standard configuration
+
+| Markdown
+| `marksman`
+| Wiki-link and reference support
+
+| TOML
+| `taplo`
+| Schema-aware TOML validation
+
+| C / C++
+| `clangd`
+| Standard configuration
 |===
+
+== Per-Server Customizations
+
+=== lua_ls
+
+Disables the `Lua.diagnostics.libraryFiles` third-party check.
+This prevents false positives when editing Neovim plugin code that references runtime libraries.
+
+=== pyright
+
+Type checking mode is set to `basic` rather than `strict`.
+Several diagnostic severities are overridden (e.g., `reportMissingImports`, `reportUnusedVariable`) to avoid duplicate diagnostics when ruff is also active as a linter.
+
+=== rust_analyzer
+
+* Check command set to `clippy` for lint-level feedback on save
+* All Cargo features enabled (`features = "all"`)
+* Inlay hints enabled for types, parameters, and chaining
+
+=== jsonls / yamlls
+
+Both servers integrate with SchemaStore, automatically applying JSON Schema or YAML Schema validation based on the file name and content patterns.
 
 == Keybindings
 
-[cols="1,2"]
+=== on_attach Mappings
+
+These keymaps are set when a language server attaches to a buffer:
+
+[cols="1,3", options="header"]
 |===
 | Key | Action
 
@@ -60,14 +122,23 @@ LSP is managed through:
 | `gi`
 | Go to implementation
 
+| `go`
+| Go to type definition
+
 | `gr`
-| References
+| List references
 
 | `K`
 | Hover documentation
 
-| `<C-k>` (insert)
+| `<C-k>` (insert mode)
 | Signature help
+
+| `{leader}vd`
+| Show line diagnostics in a float
+
+| `[d` / `]d`
+| Previous / next diagnostic
 
 | `{leader}ca`
 | Code action
@@ -79,24 +150,59 @@ LSP is managed through:
 | Toggle inlay hints
 |===
 
-== Custom Server Config
+=== Glance (Peek Navigation)
 
-To customize an LSP server, edit `{lua-dir}/plugins/config/lsp/init.lua`:
+Glance opens an inline preview window instead of jumping away from your current context:
 
+[cols="1,3", options="header"]
+|===
+| Key | Action
+
+| `gP`
+| Glance definitions
+
+| `gR`
+| Glance references
+
+| `gY`
+| Glance type definitions
+
+| `gM`
+| Glance implementations
+|===
+
+== Adding a New Server
+
+To add a new language server:
+
+. Add the server name to the `ensure_installed` list in `{lua-dir}/plugins/config/lsp/init.lua`.
+. If the server needs custom settings, add a named handler function:
++
 [source,lua]
 ----
 -- In the handlers table:
-pyright = function()
-    require("lspconfig").pyright.setup({
+["new_server"] = function()
+    require("lspconfig").new_server.setup({
         on_attach = on_attach,
         capabilities = capabilities,
         settings = {
-            python = {
-                analysis = {
-                    typeCheckingMode = "strict",  -- or "basic" or "off"
-                },
-            },
+            -- server-specific settings
         },
     })
 end,
 ----
++
+. Run `:Mason` to verify the server installs, then open a file of the target filetype to confirm attachment.
+
+== Configuration
+
+[cols="1,2", options="header"]
+|===
+| File | Purpose
+
+| `{lua-dir}/plugins/config/lsp/init.lua`
+| Server list, per-server handlers, on_attach keymaps, capabilities
+
+| `{lua-dir}/plugins/specs/lsp.lua`
+| Plugin declarations and lazy-loading triggers
+|===

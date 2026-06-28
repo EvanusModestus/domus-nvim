@@ -1,41 +1,94 @@
 = Terminal Integration
-:description: Persistent terminal instances via toggleterm.nvim
+:description: Persistent terminal instances with floating, horizontal, and vertical layouts via toggleterm.nvim, plus LazyGit and tmux sessionizer integration.
 :navtitle: Terminal
 :icons: font
 
-{terminal} provides persistent terminal instances that can be toggled without losing state.
-Supports floating, horizontal, and vertical layouts.
+{terminal} provides persistent terminal instances that survive toggling -- state, scrollback, and running processes are preserved across open/close cycles.
+Three layout modes cover different workflows: floating overlays for quick commands, horizontal splits for build output, and vertical splits for side-by-side reference.
 
 == Layouts
 
-Floating (centered overlay):: Default layout.
-Horizontal (bottom split):: Standard terminal below the editor.
-Vertical (right split):: Side-by-side terminal.
+Floating (centered overlay)::
+A borderless terminal window centered over the editor.
+Ideal for quick, focused tasks that do not need to coexist with open buffers.
 
-== Terminal Mode Keymaps
+Horizontal (bottom split)::
+Opens below the current buffer.
+Useful for build logs, test output, or any long-running process you want visible alongside code.
 
-Defined in `{lua-dir}/config/autocmds.lua`:
+Vertical (right split)::
+Opens to the right of the current buffer.
+Best for side-by-side workflows -- editing on the left, terminal on the right.
 
-[cols="1,2"]
+== Keymaps
+
+=== Toggle Keymaps
+
+[cols="1,3", options="header"]
+|===
+| Key | Action
+
+| `Ctrl-\`
+| Toggle last-used terminal (any layout)
+
+| `{leader}tt`
+| Toggle terminal (default layout)
+
+| `{leader}tf`
+| Open floating terminal
+
+| `{leader}th`
+| Open horizontal terminal
+
+| `{leader}tv`
+| Open vertical terminal
+|===
+
+=== Terminal Mode Keymaps
+
+Defined in `{lua-dir}/config/autocmds.lua`.
+These keymaps activate only inside a terminal buffer:
+
+[cols="1,3", options="header"]
 |===
 | Key | Action
 
 | `Esc`
-| Exit terminal mode
+| Exit terminal mode (return to normal mode)
 
 | `jk`
-| Exit terminal mode
+| Exit terminal mode (alternative)
+
+| `Ctrl-h`
+| Navigate to left window from terminal
+
+| `Ctrl-j`
+| Navigate to below window from terminal
+
+| `Ctrl-k`
+| Navigate to above window from terminal
+
+| `Ctrl-l`
+| Navigate to right window from terminal
 |===
+
+The `Ctrl-h/j/k/l` bindings let you move between splits without first leaving terminal mode -- the same window navigation keymaps that work in normal mode.
 
 == LazyGit
 
-`{leader}lg` opens LazyGit in a floating terminal.
-See xref:features/git.adoc[Git] for details.
+`{leader}lg` opens LazyGit in a dedicated floating terminal.
+The terminal instance is separate from the general-purpose floating terminal, so toggling the regular float does not interfere with a LazyGit session.
+
+See xref:features/git.adoc[Git] for the full git workflow.
 
 == Tmux Sessionizer
 
-`Ctrl-f` launches a tmux sessionizer from within Neovim (defined in `{lua-dir}/config/keymaps.lua`).
+`Ctrl-f` launches a tmux sessionizer from within Neovim.
+This integrates with tmux to switch between project sessions without leaving the editor -- useful when managing multiple repositories in parallel.
+
+Defined in `{lua-dir}/config/keymaps.lua`.
 
 == Configuration
 
-Declared in `{lua-dir}/plugins/specs/tools.lua`.
+Plugin spec declared in `{lua-dir}/plugins/specs/tools.lua`.
+Terminal mode autocommands defined in `{lua-dir}/config/autocmds.lua`.

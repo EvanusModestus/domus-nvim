@@ -1,104 +1,244 @@
 = Architecture
-:description: Domus Instrumentum architecture
+:description: Layered architecture, boot sequence, and design rationale for domus-nvim
 :navtitle: Architecture
 :icons: font
 
-== Layer System
+domus-nvim uses a layered architecture where each layer has a single responsibility, loads in a fixed order, and depends only on layers above it.
+This design makes it possible to modify any single concern — keymaps, plugin choices, LSP servers, visual tweaks — without cascading side effects.
 
-Domus Instrumentum uses a layered architecture for clean separation of concerns.
+== Boot Sequence
 
-=== Layer 1: Config
+When Neovim starts, `init.lua` checks for Neovim {neovim-version} and then calls `require("domus")`.
+The bootstrap loader in `{lua-dir}/init.lua` loads the layers in order:
 
-User preferences loaded first.
-
-* `{lua-dir}/config/options.lua` - vim.opt settings
-* `{lua-dir}/config/keymaps.lua` - Global keybindings
-* `{lua-dir}/config/autocmds.lua` - Autocommands
-
-=== Layer 2: Core
-
-Infrastructure and {plugin-manager} bootstrap.
-
-* `{lua-dir}/core/lazy.lua` - Plugin manager setup
-* `{lua-dir}/core/util.lua` - Shared utilities
-
-=== Layer 3: Plugins
-
-Plugin management with separated concerns.
-
-==== Specs (What to Load)
-
-[source,subs=attributes+]
+[mermaid]
 ----
-{lua-dir}/plugins/specs/
-├── editor.lua     # Treesitter, autopairs, comment
-├── ui.lua         # Colorscheme, statusline, icons
-├── coding.lua     # LSP, completion, snippets
-├── git.lua        # Fugitive, gitsigns, lazygit
-├── tools.lua      # Telescope, harpoon, oil
-├── debug.lua      # DAP stack
-└── lang/          # Language-specific
-    ├── python.lua
-    ├── rust.lua
-    ├── asciidoc.lua
-    └── ...
+graph TD
+    A["<b>Layer 1: Config</b><br/>options · keymaps · autocmds"] --> B
+    B["<b>Layer 2: Core</b><br/>lazy.nvim bootstrap · utilities"] --> C
+    C["<b>Layer 3: Plugins</b><br/>specs — what to load<br/>config — how to configure"] --> D
+    D["<b>Layer 4: Features</b><br/>custom systems · MOTD"] --> E
+    E["<b>Layer 5: UI</b><br/>visual enhancements"]
+
+    style A fill:#a6e3a1,color:#1e1e2e
+    style B fill:#89b4fa,color:#1e1e2e
+    style C fill:#cba6f7,color:#1e1e2e
+    style D fill:#fab387,color:#1e1e2e
+    style E fill:#f38ba8,color:#1e1e2e
 ----
 
-==== Config (How to Configure)
-
-[source,subs=attributes+]
+[source,lua]
 ----
-{lua-dir}/plugins/config/
-├── treesitter.lua
-├── telescope.lua
-├── lsp/
-│   └── init.lua
-├── completion/
-│   └── blink.lua
-├── dap/
-│   └── init.lua
-└── lang/
-    └── asciidoc.lua
+require("domus.config")     -- Layer 1
+require("domus.core")       -- Layer 2 (installs lazy.nvim, loads plugins)
+-- Layer 3: plugins load via lazy.nvim specs
+-- Layer 4: features load via VeryLazy autocmd
+-- Layer 5: UI loads as part of plugin specs
 ----
 
-=== Layer 4: Features
+This sequence guarantees that user preferences (options, keymaps) are set before any plugin runs, and that infrastructure (lazy.nvim) is bootstrapped before specs are evaluated.
 
-Custom systems loaded after plugins.
+== Layer 1: Config
 
-* `{lua-dir}/features/motd/` - Message of the Day with quick-key reference
+User preferences loaded first, before any plugins.
+These settings apply regardless of which plugins are installed.
 
-=== Layer 5: UI
+[cols="1,3", options="header"]
+|===
+| File | Purpose
 
-Visual enhancements.
+| `{lua-dir}/config/options.lua`
+| `vim.opt` settings — line numbers, tabs (4 spaces), search behavior, scrolloff, colorcolumn 80, undofile, WSL clipboard detection
 
-* `{lua-dir}/ui/init.lua` - Post-plugin visual setup
+| `{lua-dir}/config/keymaps.lua`
+| Plugin-independent keybindings — visual line movement, half-page centering, system clipboard (`{leader}y`/`{leader}d`), search-and-replace (`{leader}s`), window navigation, quickfix traversal
 
-== Native Neovim
+| `{lua-dir}/config/autocmds.lua`
+| Autocommands — yank highlight, trailing whitespace removal on save, auto-create directories, terminal keymaps (`Esc`/`jk` to exit terminal mode), auto-resize splits
+|===
+
+*Design rationale:* By loading options and keymaps before plugins, you get a usable editor even if every plugin fails to load.
+The autocmds here are Neovim-native behaviors, not plugin-dependent ones.
+
+== Layer 2: Core
+
+Infrastructure and bootstrap.
+
+[cols="1,3", options="header"]
+|===
+| File | Purpose
+
+| `{lua-dir}/core/lazy.lua`
+| Bootstraps {plugin-manager} from GitHub if not present, configures it with HTTPS git URLs (no SSH key required for cloning), enables cache, disables built-in plugins (`netrw`, `gzip`, `matchit`, `tar`, `tohtml`, `tutor`, `zip`), and registers the `VeryLazy` hook that loads Layer 4
+
+| `{lua-dir}/core/util.lua`
+| Shared utilities — `map()` (keymap with silent default), `augroup()` (prefixed autogroups), `is_wsl()`, `is_termux()`, `safe_require()` (require with error handling)
+|===
+
+*Design rationale:* `util.lua` exists because the same patterns (keymapping, environment detection) appear across many files.
+WSL and Termux detection gates platform-specific behavior — clipboard provider selection, Mason fallbacks, browser-open commands.
+
+== Layer 3: Plugins
+
+The largest layer, split into two parallel trees: *specs* and *config*.
+
+=== Specs — What to Load
+
+Each file in `specs/` returns a table of {plugin-manager} plugin specs.
+A spec declares the plugin's repository, lazy-loading triggers, and dependencies — but not its configuration.
+
+[cols="1,3", options="header"]
+|===
+| File | Plugins
+
+| `specs/editor.lua`
+| {treesitter}, treesitter-textobjects, treesitter-context, rainbow-delimiters, autopairs, autotag, Comment, {text-objects}, illuminate, UFO (folding), undotree, mini.surround, Flash, todo-comments, hlargs
+
+| `specs/ui.lua`
+| Catppuccin (+ 5 alternatives), lualine, indent-blankline, highlight-colors, headlines, colorful-winsep, zen-mode, noice, alpha (dashboard), fidget, which-key, screenkey, mini.animate, nvim-web-devicons
+
+| `specs/coding.lua`
+| {lsp-installer}, mason-lspconfig, mason-tool-installer, nvim-lspconfig, lazydev, {snippet-engine}, {completion-engine}, conform, nvim-lint, Glance, refactoring, Copilot, CopilotChat, cloak, SchemaStore, Trouble
+
+| `specs/git.lua`
+| Fugitive, gitsigns, LazyGit, Diffview
+
+| `specs/tools.lua`
+| {fuzzy-finder} (+ fzf, file_browser, project, undo extensions), Harpoon, {file-browser}, {terminal}, {session-manager}
+
+| `specs/debug.lua`
+| {debugger}, nvim-dap-ui, nvim-dap-virtual-text, mason-nvim-dap
+
+| `specs/lang/*`
+| Language-specific: Python (iron.nvim REPL), Rust, JavaScript, AsciiDoc, Markdown ({markdown-preview}, vim-markdown, bullets, table-mode), Misc (cisco, junos, rainbow_csv, {database})
+|===
+
+=== Config — How to Configure
+
+Each file in `config/` contains the `opts` or setup function for a single plugin or plugin group.
+Configs are referenced by specs via `config = function() require("domus.plugins.config.X") end`.
+
+[cols="1,3", options="header"]
+|===
+| File | What it configures
+
+| `config/treesitter.lua`
+| 24 ensured parsers, highlight and textobject modules, swap/move keymaps (`]f`/`[f` functions, `]c`/`[c` classes, `sn`/`sp` parameter swap)
+
+| `config/telescope.lua`
+| Ripgrep flags (hidden files, exclude `.git`), flex layout, fzf/file_browser/project/undo extensions, 15+ keymaps across find/git/LSP/extensions
+
+| `config/lsp/init.lua`
+| LSP capabilities (blink.cmp), on_attach keymaps (`gd`, `gr`, `K`, `{leader}ca`, `{leader}rn`, `{leader}ih`), per-server handlers (lua_ls, pyright with severity overrides, rust_analyzer with clippy + inlay hints, jsonls/yamlls with SchemaStore)
+
+| `config/completion/blink.lua`
+| Keymap (`C-space` show, `Tab`/`S-Tab` navigate, `C-y` accept), sources priority (lsp > path > snippets > buffer, lazydev +100), auto-brackets, signature help
+
+| `config/dap/init.lua`
+| DAP UI auto-open/close, Python adapter (debugpy, venv detection), Rust/C/C++ adapter (codelldb), breakpoint signs
+
+| `config/conform.lua`
+| Formatters by filetype (stylua, ruff, prettier, shfmt `-i2 -ci -bn`, rustfmt, clang-format, sqlfluff, taplo), format-on-save with filetype exclusions (sql, markdown)
+
+| `config/lint.lua`
+| Linters by filetype (ruff, eslint_d, selene, markdownlint, yamllint, jsonlint, hadolint, golangci-lint, tflint), custom asciidoctor stderr parser, auto-lint on BufWritePost + InsertLeave
+
+| `config/colorscheme.lua`
+| Catppuccin Mocha with custom palette overrides (Tokyo Night-inspired blues), 50+ custom highlight groups spanning treesitter, LSP, diagnostics, diff, UI, and plugin integrations
+
+| `config/lualine.lua`
+| Mode, branch, diff, filename (with Oil buffer handling), diagnostics, macro recording indicator, LSP clients list, filetype, encoding, location
+
+| `config/mason-tools.lua`
+| Auto-install list (17 tools), Termux detection (skips Mason, uses system packages), delayed start (3s)
+
+| `config/mini-ai.lua`
+| Custom text objects: AsciiDoc blocks (`i-`/`a-` for `----`, `i/`/`a/` for `////`, `i=`/`a=` for `====`), inline (`i_`, `i*`, `i+`), Markdown fenced blocks, treesitter (function, class, comment, tag), entire buffer (`ig`)
+
+| `config/which-key.lua`
+| Group labels for all `{leader}` prefixes: find, git, hunk, LSP, code/Copilot, debug, terminal, AsciiDoc, Trouble
+
+| `config/lang/asciidoc.lua`
+| 100+ LuaSnip snippets (code blocks, diagrams — D2, Mermaid, PlantUML, Graphviz, Kroki — Antora xrefs, includes, admonitions, formatting), block/section/include/xref/diagram navigation keymaps, 6 custom commands (Outline, WordCount, FindBrokenXrefs, CheckAttrs, PreviewAttrs, ListDiagrams)
+|===
+
+*Design rationale:* Separating specs from configs means you can swap a plugin (change the spec) without rewriting configuration, and you can tune configuration without touching the loading declaration.
+Language-specific configs in `config/lang/` keep domain knowledge isolated — the AsciiDoc configuration (1100+ lines) doesn't clutter the general LSP setup.
+
+== Layer 4: Features
+
+Custom systems that depend on plugins being loaded.
+Features load via a `VeryLazy` autocmd registered in Layer 2.
+
+[cols="1,3", options="header"]
+|===
+| File | Purpose
+
+| `{lua-dir}/features/motd/init.lua`
+| Message of the Day — shows quick-key reference on startup via `vim.notify`.
+Disabled by default (`vim.g.disable_motd`).
+Available on demand with `:Motd`.
+|===
+
+*Design rationale:* Features are distinct from plugin configs because they compose multiple plugins into higher-level behavior.
+The MOTD system, for example, uses nvim-notify (a UI plugin) to display content — it couldn't load before the plugin exists.
+
+== Layer 5: UI
+
+Visual enhancements that load as part of the plugin specs in Layer 3 but conceptually form their own layer.
+These plugins modify how Neovim looks without changing editing behavior: colorscheme, statusline, dashboard, indent guides, window separators, notifications, key hints, cursor animation.
+
+See xref:features/ui.adoc[UI Enhancements] for the full breakdown.
+
+== Native Neovim Directories
+
+These directories use Neovim's built-in loading conventions — no plugin required.
 
 === ftplugin/
 
-Filetype-specific settings use Neovim's native ftplugin mechanism:
+Filetype-specific settings load automatically when a matching buffer opens.
 
-[source,subs=attributes+]
-----
-{ftplugin-dir}/
-├── asciidoc.lua
-├── markdown.lua
-├── python.lua
-└── lua.lua
-----
+[cols="1,3", options="header"]
+|===
+| File | Settings
 
-These load automatically when opening files of that type.
+| `{ftplugin-dir}/asciidoc.lua`
+| Spell (`en_us`), soft wrap, conceal level 2, indent-based folding (disabled by default), `gf` follows `xref:` and `include::` directives
 
-=== after/
+| `{ftplugin-dir}/markdown.lua`
+| Spell (`en_us`), soft wrap, auto-comment continuation disabled, `gf` follows `[text](path.md)` links
 
-Syntax overrides:
+| `{ftplugin-dir}/python.lua`
+| 4-space tabs, `{leader}cr` runs file with `python3`, `{leader}cd` runs with debugpy listener
 
-[source]
-----
-after/
-└── syntax/
-    └── regex.vim   # Custom regex highlighting
-----
+| `{ftplugin-dir}/lua.lua`
+| 4-space tabs, `{leader}cr` runs file with `:luafile`
+|===
 
-NOTE: The `after/` directory is used for overriding built-in syntax files and is not parameterized as it follows Neovim conventions.
+=== after/syntax/
+
+Syntax overrides that load after built-in syntax files.
+
+[cols="1,3", options="header"]
+|===
+| File | Purpose
+
+| `after/syntax/regex.vim`
+| Custom regex highlighting for practice exercises — metacharacters, character classes, quantifiers, anchors, groups, alternation with distinct colors
+|===
+
+== Environment Detection
+
+domus-nvim adapts to its runtime environment:
+
+WSL (Windows Subsystem for Linux)::
+Detects via `/proc/version` and configures `win32yank.exe` as the clipboard provider.
+Markdown preview opens in the Windows default browser.
+
+Termux (Android)::
+Skips Mason entirely — uses system-installed LSP servers and tools via native `vim.lsp.config` API.
+
+Standard Linux / macOS::
+Full Mason integration for automatic tool installation.
+
+Detection lives in `{lua-dir}/core/util.lua` and is consumed by clipboard setup (options), Mason (mason-tools), and LSP (lsp/init.lua).
