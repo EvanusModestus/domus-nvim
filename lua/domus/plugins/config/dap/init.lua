@@ -81,8 +81,20 @@ function M.setup()
         },
     }
 
-    dap.configurations.c = vim.deepcopy(dap.configurations.rust)
-    dap.configurations.cpp = vim.deepcopy(dap.configurations.rust)
+    dap.configurations.c = {
+        {
+            name = "Launch",
+            type = "codelldb",
+            request = "launch",
+            program = function()
+                return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+            end,
+            cwd = "${workspaceFolder}",
+            stopOnEntry = false,
+        },
+    }
+
+    dap.configurations.cpp = vim.deepcopy(dap.configurations.c)
 
     -- Signs
     vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DapBreakpoint" })

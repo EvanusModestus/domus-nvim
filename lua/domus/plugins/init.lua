@@ -22,9 +22,8 @@ add("domus.plugins.specs.tools")      -- Telescope, harpoon, oil
 add("domus.plugins.specs.debug")      -- DAP stack
 
 -- Language-specific specs
+add("domus.plugins.specs.lang.c")
 add("domus.plugins.specs.lang.python")
-add("domus.plugins.specs.lang.rust")
-add("domus.plugins.specs.lang.javascript")
 add("domus.plugins.specs.lang.asciidoc")
 add("domus.plugins.specs.lang.markdown")
 add("domus.plugins.specs.lang.misc")  -- Cisco, Jinja2, CSV, SQL

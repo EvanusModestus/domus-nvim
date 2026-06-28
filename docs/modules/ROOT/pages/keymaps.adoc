@@ -78,7 +78,7 @@ Press `{leader}` and wait for which-key to display available continuations.
 | Harpoon menu
 | Harpoon
 
-| `{leader}a`
+| `{leader}ha`
 | Add file to Harpoon
 | Harpoon
 

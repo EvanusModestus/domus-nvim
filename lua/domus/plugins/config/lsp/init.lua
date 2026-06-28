@@ -124,6 +124,27 @@ function M.setup()
 				})
 			end,
 
+			-- C/C++
+			clangd = function()
+				require("lspconfig").clangd.setup({
+					on_attach = on_attach,
+					capabilities = capabilities,
+					cmd = {
+						"clangd",
+						"--background-index",
+						"--clang-tidy",
+						"--header-insertion=iwyu",
+						"--completion-style=detailed",
+						"--function-arg-placeholders",
+					},
+					init_options = {
+						usePlaceholders = true,
+						completeUnimportedMembers = true,
+						clangdFileStatus = true,
+					},
+				})
+			end,
+
 			-- JSON (with SchemaStore)
 			jsonls = function()
 				local schemastore_ok, schemastore = pcall(require, "schemastore")
