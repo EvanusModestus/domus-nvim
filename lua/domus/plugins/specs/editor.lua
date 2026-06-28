@@ -11,7 +11,9 @@ return {
             vim.g.rainbow_delimiters = {
                 strategy = {
                     [""] = "rainbow-delimiters.strategy.global",
-                    vim = "rainbow-delimiters.strategy.local",
+                    -- Disable for vim: local strategy crashes on nil treesitter
+                    -- nodes in regex-heavy syntax files (regex.vim)
+                    vim = "rainbow-delimiters.strategy.noop",
                 },
                 query = {
                     [""] = "rainbow-delimiters",
