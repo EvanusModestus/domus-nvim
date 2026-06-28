@@ -914,12 +914,58 @@ function M.navigation()
                 end
             end, vim.tbl_extend("force", opts, { desc = "Toggle checklist item" }))
 
-            -- ---- Admonitions ------------------------------------------------
-            map("n", "<leader>aN", "INOTE: <Esc>",    vim.tbl_extend("force", opts, { desc = "NOTE:" }))
-            map("n", "<leader>aT", "ITIP: <Esc>",     vim.tbl_extend("force", opts, { desc = "TIP:" }))
-            map("n", "<leader>aW", "IWARNING: <Esc>", vim.tbl_extend("force", opts, { desc = "WARNING:" }))
-            map("n", "<leader>aC", "ICAUTION: <Esc>", vim.tbl_extend("force", opts, { desc = "CAUTION:" }))
-            map("n", "<leader>aI", "IIMPORTANT: <Esc>", vim.tbl_extend("force", opts, { desc = "IMPORTANT:" }))
+            -- ---- Admonitions (inline) ---------------------------------------
+            map("n", "<leader>aN", "INOTE: <Esc>",    vim.tbl_extend("force", opts, { desc = "NOTE: (inline)" }))
+            map("n", "<leader>aT", "ITIP: <Esc>",     vim.tbl_extend("force", opts, { desc = "TIP: (inline)" }))
+            map("n", "<leader>aW", "IWARNING: <Esc>", vim.tbl_extend("force", opts, { desc = "WARNING: (inline)" }))
+            map("n", "<leader>aC", "ICAUTION: <Esc>", vim.tbl_extend("force", opts, { desc = "CAUTION: (inline)" }))
+            map("n", "<leader>aI", "IIMPORTANT: <Esc>", vim.tbl_extend("force", opts, { desc = "IMPORTANT: (inline)" }))
+
+            -- ---- Admonitions (block) ----------------------------------------
+            local function insert_block_admonition(type)
+                local row = vim.api.nvim_win_get_cursor(0)[1]
+                vim.api.nvim_buf_set_lines(0, row, row, false, {
+                    "[" .. type .. "]",
+                    "====",
+                    "",
+                    "====",
+                })
+                vim.api.nvim_win_set_cursor(0, { row + 3, 0 })
+                vim.cmd("startinsert")
+            end
+
+            map("n", "<leader>aBn", function() insert_block_admonition("NOTE") end,
+                vim.tbl_extend("force", opts, { desc = "NOTE block" }))
+            map("n", "<leader>aBt", function() insert_block_admonition("TIP") end,
+                vim.tbl_extend("force", opts, { desc = "TIP block" }))
+            map("n", "<leader>aBw", function() insert_block_admonition("WARNING") end,
+                vim.tbl_extend("force", opts, { desc = "WARNING block" }))
+            map("n", "<leader>aBc", function() insert_block_admonition("CAUTION") end,
+                vim.tbl_extend("force", opts, { desc = "CAUTION block" }))
+            map("n", "<leader>aBi", function() insert_block_admonition("IMPORTANT") end,
+                vim.tbl_extend("force", opts, { desc = "IMPORTANT block" }))
+
+            -- Wrap visual selection in block admonition
+            local function wrap_block_admonition(type)
+                local start_row = vim.fn.line("'<")
+                local end_row = vim.fn.line("'>")
+                vim.api.nvim_buf_set_lines(0, end_row, end_row, false, { "====" })
+                vim.api.nvim_buf_set_lines(0, start_row - 1, start_row - 1, false, {
+                    "[" .. type .. "]",
+                    "====",
+                })
+            end
+
+            map("v", "<leader>aBn", function() wrap_block_admonition("NOTE") end,
+                vim.tbl_extend("force", opts, { desc = "Wrap in NOTE block" }))
+            map("v", "<leader>aBt", function() wrap_block_admonition("TIP") end,
+                vim.tbl_extend("force", opts, { desc = "Wrap in TIP block" }))
+            map("v", "<leader>aBw", function() wrap_block_admonition("WARNING") end,
+                vim.tbl_extend("force", opts, { desc = "Wrap in WARNING block" }))
+            map("v", "<leader>aBc", function() wrap_block_admonition("CAUTION") end,
+                vim.tbl_extend("force", opts, { desc = "Wrap in CAUTION block" }))
+            map("v", "<leader>aBi", function() wrap_block_admonition("IMPORTANT") end,
+                vim.tbl_extend("force", opts, { desc = "Wrap in IMPORTANT block" }))
 
             -- ---- Commands via keymap ----------------------------------------
             map("n", "<leader>ao", ":AsciidocOutline<CR>",
