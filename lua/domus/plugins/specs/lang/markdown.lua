@@ -1,21 +1,6 @@
 -- Markdown Language Specs
 
 return {
-	-- Markdown preview
-	{
-		"iamcco/markdown-preview.nvim",
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		ft = { "markdown" },
-		build = "cd app && npm install",
-		init = function()
-			vim.g.mkdp_filetypes = { "markdown" }
-		end,
-		config = function()
-			local is_wsl = vim.fn.system("uname -r"):match("[Mm]icrosoft") ~= nil
-			vim.g.mkdp_browser = is_wsl and "wsl-open" or "firefox"
-		end,
-	},
-
 	-- vim-markdown
 	{
 		"preservim/vim-markdown",
