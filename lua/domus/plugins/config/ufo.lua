@@ -13,6 +13,14 @@ function M.setup()
 
     ufo.setup({
         provider_selector = function(bufnr, filetype, buftype)
+            -- Disable for non-file buffers and FIFOs (/dev/fd/*)
+            if buftype ~= "" then
+                return ""
+            end
+            local bufname = vim.api.nvim_buf_get_name(bufnr)
+            if bufname:match("^/dev/fd/") or bufname:match("^/proc/self/fd/") then
+                return ""
+            end
             -- Use indent for filetypes without treesitter
             local no_ts = { "asciidoc", "asciidoctor", "text" }
             if vim.tbl_contains(no_ts, filetype) then
