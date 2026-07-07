@@ -112,7 +112,7 @@ function M.setup()
             lualine_y = {},
             lualine_z = {},
         },
-        extensions = { "fugitive", "lazy", "oil", "quickfix" },
+        extensions = { "lazy", "oil", "quickfix" },
     })
 end
 

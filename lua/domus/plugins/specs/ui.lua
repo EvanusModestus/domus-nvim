@@ -137,41 +137,8 @@ return {
 		},
 	},
 
-	-- Noice (better UI for messages, cmdline, notifications)
-	{
-		"folke/noice.nvim",
-		event = "VeryLazy",
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-			"rcarriga/nvim-notify",
-		},
-		config = function()
-			require("noice").setup({
-				-- Let Neovim handle all messages natively — consistent yank, :ls, Ctrl+w feedback
-				messages = {
-					enabled = false,
-				},
-				lsp = {
-					override = {
-						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-						["vim.lsp.util.stylize_markdown"] = true,
-						["cmp.entry.get_documentation"] = true,
-					},
-				},
-				presets = {
-					bottom_search = true,
-					command_palette = true,
-					lsp_doc_border = true,
-				},
-			})
-			require("notify").setup({
-				background_colour = "#1a1a26",
-				render = "compact",
-				stages = "fade",
-				timeout = 5000,
-			})
-		end,
-	},
+	-- Messages/cmdline: native Neovim handling (noice + nui + nvim-notify removed —
+	-- messages were already disabled; fidget covers LSP progress).
 
 	-- Dashboard (minimal, clean)
 	{

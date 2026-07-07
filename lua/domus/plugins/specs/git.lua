@@ -2,15 +2,8 @@
 -- Git integration plugins
 
 return {
-    -- Fugitive (Git commands)
-    {
-        "tpope/vim-fugitive",
-        cmd = { "Git", "G", "Gdiffsplit", "Gvdiffsplit", "Gwrite", "Gread" },
-        keys = {
-            { "<leader>gs", "<cmd>Git<CR>", desc = "Git status" },
-            { "<leader>gp", "<cmd>Git push<CR>", desc = "Git push" },
-        },
-    },
+    -- Git front-end: lazygit (below) + gitsigns (hunks) + diffview (diffs/history).
+    -- vim-fugitive was removed — its status/push role is covered by lazygit.
 
     -- Gitsigns (git decorations)
     {

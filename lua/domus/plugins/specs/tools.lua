@@ -13,8 +13,10 @@ return {
             "nvim-lua/plenary.nvim",
             { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         },
-        lazy = false,
-        priority = 900,
+        -- Keymaps are registered imperatively in the config (telescope.lua),
+        -- so load right after UI enter rather than eagerly at startup.
+        cmd = "Telescope",
+        event = "VeryLazy",
         config = function()
             require("domus.plugins.config.telescope").setup()
         end,
@@ -29,11 +31,7 @@ return {
         lazy = true,
         dependencies = { "nvim-telescope/telescope.nvim" },
     },
-    {
-        "debugloop/telescope-undo.nvim",
-        lazy = true,
-        dependencies = { "nvim-telescope/telescope.nvim" },
-    },
+    -- Undo history: undotree (editor.lua, <leader>u). telescope-undo removed as a duplicate.
 
     -- Harpoon (quick file switching)
     {

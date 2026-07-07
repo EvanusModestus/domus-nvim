@@ -114,14 +114,7 @@ return {
         ft = { "html", "javascript", "typescript", "jsx", "tsx", "vue", "svelte", "xml", "markdown" },
     },
 
-    -- Comment
-    {
-        "numToStr/Comment.nvim",
-        event = { "BufReadPost", "BufNewFile" },
-        config = function()
-            require("Comment").setup()
-        end,
-    },
+    -- Commenting: Neovim 0.10+ ships native gc/gcc/gbc mappings, no plugin needed.
 
     -- Surround (mini.ai for text objects)
     {
