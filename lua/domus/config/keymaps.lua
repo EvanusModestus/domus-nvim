@@ -28,8 +28,8 @@ map("x", "<leader>p", [["_dP]], { desc = "Paste without yank" })
 map({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to clipboard" })
 map("n", "<leader>Y", [["+Y]], { desc = "Yank line to clipboard" })
 
--- Delete to void register
-map({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete to void" })
+-- Delete to void register (<leader>D — <leader>d is the Debug group prefix)
+map({ "n", "v" }, "<leader>D", [["_d]], { desc = "Delete to void" })
 
 -- Better escape
 map("i", "<C-c>", "<Esc>", { desc = "Escape" })
@@ -42,8 +42,8 @@ map("n", "Q", "<nop>")
 -- Tmux integration
 map("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>", { desc = "Tmux sessionizer" })
 
--- LSP formatting
-map("n", "<leader>f", vim.lsp.buf.format, { desc = "Format buffer" })
+-- Note: buffer formatting is <leader>cF (conform.lua, with LSP fallback).
+-- The old <leader>f map was removed — it shadowed the Find/Telescope group.
 
 -- Quickfix navigation
 map("n", "<C-k>", "<cmd>cnext<CR>zz", { desc = "Next quickfix" })
@@ -51,11 +51,11 @@ map("n", "<C-j>", "<cmd>cprev<CR>zz", { desc = "Previous quickfix" })
 map("n", "<leader>k", "<cmd>lnext<CR>zz", { desc = "Next location" })
 map("n", "<leader>j", "<cmd>lprev<CR>zz", { desc = "Previous location" })
 
--- Search and replace word under cursor
-map("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Search/replace word" })
+-- Search and replace word under cursor (<leader>S — <leader>s prefixes treesitter swap / iron REPL)
+map("n", "<leader>S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Search/replace word" })
 
--- Make file executable
-map("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make executable" })
+-- Make file executable (<leader>X — <leader>x is the Trouble group prefix)
+map("n", "<leader>X", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make executable" })
 
 -- Source current file
 map("n", "<leader><leader>", function()

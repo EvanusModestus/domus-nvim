@@ -48,7 +48,7 @@ function M.setup()
             end
             return {
                 timeout_ms = 500,
-                lsp_fallback = true,
+                lsp_format = "fallback",
                 quiet = true,
             }
         end,
@@ -56,7 +56,7 @@ function M.setup()
 
     -- Manual format keymap
     vim.keymap.set({ "n", "v" }, "<leader>cF", function()
-        conform.format({ async = true, lsp_fallback = true })
+        conform.format({ async = true, lsp_format = "fallback" })
     end, { desc = "Format buffer" })
 end
 

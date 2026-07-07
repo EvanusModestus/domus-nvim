@@ -56,7 +56,6 @@ function M.setup()
     pcall(telescope.load_extension, "fzf")
     pcall(telescope.load_extension, "file_browser")
     pcall(telescope.load_extension, "project")
-    pcall(telescope.load_extension, "undo")
 
     -- Setup keymaps
     M.keymaps()
@@ -91,7 +90,6 @@ function M.keymaps()
     -- Extensions
     map("n", "<leader>fe", "<cmd>Telescope file_browser<CR>", { desc = "File browser" })
     map("n", "<leader>fp", "<cmd>Telescope project<CR>", { desc = "Projects" })
-    map("n", "<leader>fu", "<cmd>Telescope undo<CR>", { desc = "Undo tree" })
 end
 
 return M

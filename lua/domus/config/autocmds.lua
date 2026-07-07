@@ -11,7 +11,8 @@ local general = augroup("DomusGeneral", { clear = true })
 autocmd("TextYankPost", {
     group = general,
     callback = function()
-        vim.highlight.on_yank({ higroup = "Visual", timeout = 200 })
+        -- vim.hl on 0.11+, vim.highlight on older
+        (vim.hl or vim.highlight).on_yank({ higroup = "Visual", timeout = 200 })
     end,
 })
 

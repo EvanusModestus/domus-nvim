@@ -28,8 +28,14 @@ function M.setup()
 
 		-- Diagnostics
 		map("n", "<leader>vd", vim.diagnostic.open_float, opts)
-		map("n", "[d", vim.diagnostic.goto_prev, opts)
-		map("n", "]d", vim.diagnostic.goto_next, opts)
+		-- vim.diagnostic.jump on 0.11+, goto_prev/goto_next on older
+		if vim.diagnostic.jump then
+			map("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+			map("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
+		else
+			map("n", "[d", vim.diagnostic.goto_prev, opts)
+			map("n", "]d", vim.diagnostic.goto_next, opts)
+		end
 
 		-- Actions
 		map("n", "<leader>ca", vim.lsp.buf.code_action, opts)
@@ -116,7 +122,8 @@ function M.setup()
 					capabilities = capabilities,
 					settings = {
 						["rust-analyzer"] = {
-							checkOnSave = { command = "clippy" },
+							checkOnSave = true,
+							check = { command = "clippy" },
 							cargo = { allFeatures = true },
 							inlayHints = { enable = true },
 						},

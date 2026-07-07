@@ -33,13 +33,10 @@ function M.setup()
         { "<leader>fk", desc = "Keymaps" },
         { "<leader>fe", desc = "File browser" },
         { "<leader>fp", desc = "Projects" },
-        { "<leader>fu", desc = "Undo tree" },
         { "<leader>ft", desc = "Todos" },
 
         -- Git — git.lua, telescope.lua
         { "<leader>g", group = "Git" },
-        { "<leader>gs", desc = "Status (fugitive)" },
-        { "<leader>gp", desc = "Push" },
         { "<leader>gc", desc = "Commits" },
         { "<leader>gb", desc = "Branches" },
         { "<leader>gd", desc = "Diffview" },
@@ -113,6 +110,9 @@ function M.setup()
         { "<leader>u", desc = "Undotree" },
         { "<leader>z", desc = "Zen mode" },
         { "<leader>lg", desc = "LazyGit" },
+        { "<leader>D", desc = "Delete to void" },
+        { "<leader>X", desc = "Make executable" },
+        { "<leader>S", desc = "Search/replace word" },
     })
 end
 
