@@ -7,9 +7,15 @@ function M.setup()
     local ok, lualine = pcall(require, "lualine")
     if not ok then return end
 
-    -- Catppuccin palette for consistent colors
-    local palette_ok, palettes = pcall(require, "catppuccin.palettes")
-    local colors = palette_ok and palettes.get_palette("mocha") or {}
+    -- Read a foreground color from a highlight group so custom components
+    -- follow the ACTIVE colorscheme (theme-agnostic; supports theme switching).
+    local function hl_fg(group, fallback)
+        local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = group, link = false })
+        if ok and hl and hl.fg then
+            return string.format("#%06x", hl.fg)
+        end
+        return fallback
+    end
 
     -- Custom components
     local function lsp_clients()
@@ -33,7 +39,9 @@ function M.setup()
     lualine.setup({
         options = {
             icons_enabled = true,
-            theme = "catppuccin",
+            -- "auto" derives the statusline palette from the active colorscheme,
+            -- so it follows whatever theme is loaded (no per-theme config needed).
+            theme = "auto",
             component_separators = { left = "│", right = "│" },
             section_separators = { left = "", right = "" },
             globalstatus = true,
@@ -84,10 +92,10 @@ function M.setup()
                     symbols = { error = " ", warn = " ", info = " ", hint = " " },
                     colored = true,
                 },
-                { macro_recording, color = { fg = colors.red or "#f38ba8" } },
+                { macro_recording, color = function() return { fg = hl_fg("DiagnosticError", "#f38ba8") } end },
             },
             lualine_x = {
-                { lsp_clients, color = { fg = colors.blue or "#89b4fa" } },
+                { lsp_clients, color = function() return { fg = hl_fg("Function", "#89b4fa") } end },
                 { "filetype" },
             },
             lualine_y = {
