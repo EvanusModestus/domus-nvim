@@ -71,14 +71,3 @@ require("lazy").setup(specs, {
         notify = false, -- Don't spam notifications
     },
 })
-
--- Post-plugin setup
-vim.api.nvim_create_autocmd("User", {
-    pattern = "VeryLazy",
-    callback = function()
-        -- Load features after plugins are ready
-        vim.defer_fn(function()
-            require("domus.features")
-        end, 100)
-    end,
-})
