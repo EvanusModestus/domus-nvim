@@ -40,9 +40,13 @@ return {
 		event = "BufReadPost",
 		main = "ibl",
 		config = function()
+			local hl = require("domus.core.highlights")
 			local hooks = require("ibl.hooks")
+			-- Re-derive on every ibl highlight setup (fires on ColorScheme) so the
+			-- scope/indent guides follow the active theme.
 			hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-				vim.api.nvim_set_hl(0, "IblScope", { fg = "#89b4fa" }) -- blue
+				vim.api.nvim_set_hl(0, "IblScope", { fg = hl.fg("Function", "#89b4fa") })
+				vim.api.nvim_set_hl(0, "IblIndent", { fg = hl.fg("NonText", "#313244") })
 			end)
 			require("ibl").setup({
 				indent = { char = "│", highlight = "IblIndent" },
@@ -70,14 +74,9 @@ return {
 		ft = { "markdown", "asciidoc", "org" },
 		dependencies = "nvim-treesitter/nvim-treesitter",
 		config = function()
-			vim.api.nvim_set_hl(0, "Headline1", { bg = "#2a1f3d", fg = "#f38ba8", bold = true })
-			vim.api.nvim_set_hl(0, "Headline2", { bg = "#2d2a1f", fg = "#fab387", bold = true })
-			vim.api.nvim_set_hl(0, "Headline3", { bg = "#2a2d1f", fg = "#f9e2af", bold = true })
-			vim.api.nvim_set_hl(0, "Headline4", { bg = "#1f2d2a", fg = "#a6e3a1", bold = true })
-			vim.api.nvim_set_hl(0, "Headline5", { bg = "#1f2a2d", fg = "#89b4fa", bold = true })
-			vim.api.nvim_set_hl(0, "Headline6", { bg = "#2a1f2d", fg = "#cba6f7", bold = true })
-			vim.api.nvim_set_hl(0, "CodeBlock", { bg = "#181825" })
-			vim.api.nvim_set_hl(0, "Dash", { fg = "#6c7086" })
+			-- Headline1-6 / CodeBlock / Dash are defined (and refreshed on theme
+			-- change) by domus.core.highlights. Ensure they exist before render.
+			require("domus.core.highlights").apply()
 			require("headlines").setup({
 				markdown = {
 					headline_highlights = {
@@ -114,7 +113,7 @@ return {
 		event = "WinNew",
 		config = function()
 			require("colorful-winsep").setup({
-				hi = { fg = "#89b4fa" },
+				hi = { fg = require("domus.core.highlights").fg("Function", "#89b4fa") },
 				smooth = true,
 				exponential_smoothing = true,
 				anchor = {
@@ -185,11 +184,9 @@ return {
 				dashboard.section.footer,
 			}
 
-			-- Catppuccin colors
-			vim.api.nvim_set_hl(0, "AlphaHeader", { fg = "#cba6f7", bold = true }) -- mauve
-			vim.api.nvim_set_hl(0, "AlphaButtons", { fg = "#cdd6f4" }) -- text
-			vim.api.nvim_set_hl(0, "AlphaShortcut", { fg = "#f38ba8", bold = true }) -- red
-			vim.api.nvim_set_hl(0, "AlphaFooter", { fg = "#6c7086", italic = true }) -- overlay0
+			-- Alpha* highlight groups are theme-derived and refreshed on
+			-- ColorScheme by domus.core.highlights; ensure they exist now.
+			require("domus.core.highlights").apply()
 
 			alpha.setup(dashboard.config)
 

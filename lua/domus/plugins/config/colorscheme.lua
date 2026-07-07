@@ -106,8 +106,7 @@ function M.setup()
 				DiagnosticVirtualTextHint = { fg = colors.teal, bg = colors.surface0, italic = true },
 
 				-- Indent guides
-				IblIndent = { fg = colors.surface0 },
-				IblScope = { fg = colors.mauve },
+				-- IblIndent/IblScope owned by the ibl HIGHLIGHT_SETUP hook (ui.lua)
 
 				-- Treesitter context
 				TreesitterContext = { bg = colors.mantle },
@@ -272,6 +271,10 @@ function M.setup()
 	})
 
 	vim.cmd.colorscheme("catppuccin")
+
+	-- Theme-adaptive plugin highlights (headlines, alpha dashboard, …).
+	-- Registers a ColorScheme autocmd so these follow any theme you switch to.
+	require("domus.core.highlights").setup()
 end
 
 return M

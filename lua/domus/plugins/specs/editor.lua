@@ -69,7 +69,8 @@ return {
         event = "BufReadPost",
         config = function()
             require("hlargs").setup({
-                color = "#f2cdcd", -- flamingo
+                -- Derive from the theme's parameter color instead of a fixed hex
+                color = require("domus.core.highlights").fg("@variable.parameter", "#f2cdcd"),
                 paint_arg_declarations = true,
                 paint_arg_usages = true,
             })
