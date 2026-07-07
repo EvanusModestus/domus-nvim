@@ -36,6 +36,54 @@ map("i", "<C-c>", "<Esc>", { desc = "Escape" })
 map("i", "jk", "<Esc>", { desc = "Exit insert mode" })
 map("i", "jj", "<Esc>", { desc = "Exit insert mode" })
 
+-- Insert-comment motions (native gc/gcc/gbc lack these; provided by the old
+-- Comment.nvim). Built on 'commentstring' via the buffer API so 'formatoptions'
+-- auto-continuation can't double the leader, and block comments (/* %s */) land
+-- the cursor between the delimiters.
+local function commentstring_parts()
+    local cs = vim.bo.commentstring
+    if type(cs) ~= "string" or cs == "" or not cs:find("%%s") then
+        return nil
+    end
+    local left, right = cs:match("^(.-)%%s(.-)$")
+    return vim.trim(left or ""), vim.trim(right or "")
+end
+
+local function insert_comment(mode) -- "below" | "above" | "eol"
+    local win = 0
+    local row = vim.api.nvim_win_get_cursor(win)[1]
+    local cur = vim.api.nvim_get_current_line()
+    local left, right = commentstring_parts()
+    local indent = cur:match("^%s*") or ""
+    local pad = (left and left ~= "") and (left .. " ") or ""
+    local tail = (left and right ~= "") and (" " .. right) or ""
+
+    local target_row, base_col
+    if mode == "eol" then
+        local sep = (cur == "" or cur:match("%s$")) and "" or " "
+        vim.api.nvim_set_current_line(cur .. sep .. pad .. tail)
+        target_row, base_col = row, #cur + #sep + #pad
+    else
+        local text = indent .. pad .. tail
+        local at = (mode == "below") and row or (row - 1)
+        vim.api.nvim_buf_set_lines(0, at, at, false, { text })
+        target_row = (mode == "below") and (row + 1) or row
+        base_col = #indent + #pad
+    end
+
+    if tail == "" then
+        vim.api.nvim_win_set_cursor(win, { target_row, math.max(base_col - 1, 0) })
+        vim.cmd.startinsert({ bang = true }) -- append at end of line
+    else
+        vim.api.nvim_win_set_cursor(win, { target_row, base_col })
+        vim.cmd.startinsert()
+    end
+end
+
+map("n", "gco", function() insert_comment("below") end, { desc = "Comment line below" })
+map("n", "gcO", function() insert_comment("above") end, { desc = "Comment line above" })
+map("n", "gcA", function() insert_comment("eol") end, { desc = "Comment at line end" })
+
 -- Disable Ex mode
 map("n", "Q", "<nop>")
 
