@@ -5,7 +5,6 @@ return {
     -- Mason (LSP/tool installer)
     {
         "williamboman/mason.nvim",
-        version = "^1.0",  -- Pin to 1.x: 2.x drops the mason-lspconfig handlers API used below
         lazy = false,
         priority = 100,
         config = function()
@@ -14,7 +13,6 @@ return {
     },
     {
         "williamboman/mason-lspconfig.nvim",
-        version = "^1.0",  -- Pin to 1.x: 2.x removed setup({ handlers = ... }) (lsp/init.lua)
         lazy = false,
         priority = 99,
         dependencies = { "williamboman/mason.nvim" },
