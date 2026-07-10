@@ -73,7 +73,7 @@ return {
     {
         "saghen/blink.cmp",
         lazy = false,
-        version = "*",  -- Use latest release with prebuilt binaries
+        version = "1.*",  -- Track latest v1.x (prebuilt binaries); v0.14.2 lacked the buffer word-cache
         dependencies = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets" },
         config = function()
             require("domus.plugins.config.completion.blink").setup()

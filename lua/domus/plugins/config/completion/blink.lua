@@ -37,6 +37,19 @@ function M.setup()
                     module = "lazydev.integrations.blink",
                     score_offset = 100,
                 },
+                -- Buffer (word) completion. v0.14.2 hard-capped at 500KB and had no
+                -- word cache — it re-tokenized the whole buffer on every keystroke, so
+                -- large docs (>500KB) returned nothing and mid-size ones lagged. v1.x
+                -- keeps a per-buffer cache (default use_cache=true), invalidated only on
+                -- modify. These limits let a multi-thousand-line doc stay fully indexed.
+                -- Invariant: max_total > max_async > max_sync (blink validates this).
+                buffer = {
+                    opts = {
+                        max_sync_buffer_size  = 40000,    -- <=40KB: tokenize inline (instant)
+                        max_async_buffer_size = 2000000,  -- <=2MB per buffer: async, non-blocking
+                        max_total_buffer_size = 4000000,  -- <=4MB across buffers (must exceed async)
+                    },
+                },
             },
         },
 
