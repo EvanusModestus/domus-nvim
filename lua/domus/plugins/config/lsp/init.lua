@@ -133,7 +133,7 @@ function M.setup()
 			"--clang-tidy",
 			"--header-insertion=iwyu",
 			"--completion-style=detailed",
-			"--function-arg-placeholders",
+			"--function-arg-placeholders=1", -- clangd 22+ requires an explicit value (bare flag errors)
 		},
 		init_options = {
 			usePlaceholders = true,
