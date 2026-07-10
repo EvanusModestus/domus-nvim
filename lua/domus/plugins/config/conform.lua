@@ -37,14 +37,14 @@ function M.setup()
             shfmt = {
                 prepend_args = { "-i", "2", "-ci", "-bn" },
             },
-            -- Mirror the lint dialect logic: project .sqlfluff wins, else tsql.
+            -- Mirror the lint dialect logic: project .sqlfluff wins, else postgres.
             sqlfluff = {
                 args = function(_, ctx)
                     local args = { "format" }
                     local has_cfg = ctx.filename ~= ""
                         and vim.fs.find(".sqlfluff", { upward = true, path = vim.fs.dirname(ctx.filename) })[1] ~= nil
                     if not has_cfg then
-                        vim.list_extend(args, { "--dialect=tsql" })
+                        vim.list_extend(args, { "--dialect=postgres" })
                     end
                     vim.list_extend(args, { "-" })
                     return args

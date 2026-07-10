@@ -27,8 +27,8 @@ function M.setup()
     }
 
     -- sqlfluff refuses to run without a dialect. Honor a project .sqlfluff (its
-    -- dialect wins); otherwise fall back to tsql (Azure SQL / SQL Server, the
-    -- primary target). For Postgres/MySQL repos drop a .sqlfluff with the dialect.
+    -- dialect wins); otherwise fall back to postgres (the default across repos).
+    -- For a T-SQL / MySQL repo drop a .sqlfluff with the right dialect.
     local sqlfluff = require("lint.linters.sqlfluff")
     sqlfluff.args = function()
         local args = { "lint", "--format=json" }
@@ -36,7 +36,7 @@ function M.setup()
         local has_cfg = buf ~= ""
             and vim.fs.find(".sqlfluff", { upward = true, path = vim.fs.dirname(buf) })[1] ~= nil
         if not has_cfg then
-            table.insert(args, "--dialect=tsql")
+            table.insert(args, "--dialect=postgres")
         end
         table.insert(args, "-")
         return args
