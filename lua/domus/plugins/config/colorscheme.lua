@@ -256,7 +256,6 @@ function M.setup()
 			dap = true,
 			dap_ui = true,
 			fidget = true,
-			harpoon = true,
 			lsp_trouble = true,
 			mason = true,
 			mini = { enabled = true },

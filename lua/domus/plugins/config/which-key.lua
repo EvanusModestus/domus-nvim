@@ -42,9 +42,8 @@ function M.setup()
         { "<leader>gd", desc = "Diffview" },
         { "<leader>gh", desc = "File history" },
 
-        -- Hunks & Harpoon — gitsigns on_attach, tools.lua
-        { "<leader>h", group = "Hunk/Harpoon" },
-        { "<leader>ha", desc = "Harpoon add" },
+        -- Hunks — gitsigns on_attach
+        { "<leader>h", group = "Hunk" },
         { "<leader>hs", desc = "Stage" },
         { "<leader>hr", desc = "Reset" },
         { "<leader>hS", desc = "Stage buffer" },

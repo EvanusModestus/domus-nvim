@@ -18,7 +18,7 @@ add("domus.plugins.specs.editor")     -- Treesitter, autopairs, comment
 add("domus.plugins.specs.ui")         -- Colorscheme, lualine, icons
 add("domus.plugins.specs.coding")     -- LSP, completion, snippets
 add("domus.plugins.specs.git")        -- gitsigns, lazygit, diffview
-add("domus.plugins.specs.tools")      -- Telescope, harpoon, oil
+add("domus.plugins.specs.tools")      -- Telescope, oil
 add("domus.plugins.specs.debug")      -- DAP stack
 
 -- Language-specific specs
