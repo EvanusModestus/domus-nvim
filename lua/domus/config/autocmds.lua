@@ -4,6 +4,10 @@
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
+-- Filetype registration: Neovim core doesn't detect .d2, so conform/lint never
+-- fire on it. Map the extension to the `d2` filetype (Terrastruct diagrams).
+vim.filetype.add({ extension = { d2 = "d2" } })
+
 -- General augroup
 local general = augroup("DomusGeneral", { clear = true })
 

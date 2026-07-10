@@ -21,7 +21,26 @@ function M.setup()
         go = { "golangci-lint" },
         terraform = { "tflint" },
         asciidoc = { "asciidoctor" },
+        sql = { "sqlfluff" },
+        -- PowerShell diagnostics come from powershell_es (PSScriptAnalyzer) via LSP,
+        -- so no nvim-lint entry — same pattern as sh/bash (bashls → shellcheck).
     }
+
+    -- sqlfluff refuses to run without a dialect. Honor a project .sqlfluff (its
+    -- dialect wins); otherwise fall back to tsql (Azure SQL / SQL Server, the
+    -- primary target). For Postgres/MySQL repos drop a .sqlfluff with the dialect.
+    local sqlfluff = require("lint.linters.sqlfluff")
+    sqlfluff.args = function()
+        local args = { "lint", "--format=json" }
+        local buf = vim.api.nvim_buf_get_name(0)
+        local has_cfg = buf ~= ""
+            and vim.fs.find(".sqlfluff", { upward = true, path = vim.fs.dirname(buf) })[1] ~= nil
+        if not has_cfg then
+            table.insert(args, "--dialect=tsql")
+        end
+        table.insert(args, "-")
+        return args
+    end
 
     -- Custom linter: asciidoctor
     -- Parses stderr warnings/errors into buffer diagnostics

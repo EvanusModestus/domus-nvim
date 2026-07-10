@@ -23,6 +23,9 @@ local servers = {
 	"marksman",
 	"taplo",
 	"clangd",
+	"powershell_es", -- PowerShell (needs `pwsh` on PATH; bundle_path set below)
+	"sqlls",         -- SQL (sql-language-server, npm)
+	"terraformls",   -- Terraform / Azure IaC
 }
 
 -- Buffer-local keymaps, wired once via LspAttach (replaces per-server on_attach).
@@ -173,6 +176,29 @@ function M.setup()
 		},
 	})
 
+	-- PowerShell Editor Services ships as a bundle, not a plain binary. The
+	-- lspconfig def reads vim.lsp.config.powershell_es.bundle_path to build its
+	-- Start-EditorServices.ps1 cmd. mason-lspconfig's handler used to inject this;
+	-- our native vim.lsp.enable path bypasses that, so set it to the mason package.
+	-- Requires `pwsh` (PowerShell Core) on PATH — install separately on Arch.
+	local pses_bundle = vim.fn.stdpath("data") .. "/mason/packages/powershell-editor-services"
+	vim.lsp.config("powershell_es", {
+		bundle_path = pses_bundle,
+	})
+
+	-- AsciiDoc language server: NOT in nvim-lspconfig or mason. Hand-defined and
+	-- guarded so a missing binary never breaks startup. Provides document symbols,
+	-- folding, and xref/anchor completion only — the asciidoctor linter (nvim-lint)
+	-- remains the real validator. Install with: npm i -g asciidoc-language-server
+	if vim.fn.executable("asciidoc-language-server") == 1 then
+		vim.lsp.config("asciidoc_ls", {
+			cmd = { "asciidoc-language-server", "--stdio" },
+			filetypes = { "asciidoc" },
+			root_markers = { "antora.yml", ".git" },
+		})
+		vim.lsp.enable("asciidoc_ls")
+	end
+
 	-- Auto-install via mason-lspconfig (no handlers / no lspconfig framework).
 	-- automatic_enable = false: we enable explicitly below so the server set is
 	-- identical on mason-lspconfig 1.x and 2.x.
@@ -188,7 +214,16 @@ function M.setup()
 	if require("domus.core.util").is_termux() then
 		vim.lsp.enable({ "lua_ls", "pyright", "rust_analyzer" })
 	else
-		vim.lsp.enable(servers)
+		-- powershell_es spawns `pwsh`; enabling it without PowerShell Core installed
+		-- logs a start failure on every launch. Keep it in the mason install set but
+		-- only enable when pwsh is present (Arch: install the `powershell` package).
+		local enabled = {}
+		for _, s in ipairs(servers) do
+			if s ~= "powershell_es" or vim.fn.executable("pwsh") == 1 then
+				table.insert(enabled, s)
+			end
+		end
+		vim.lsp.enable(enabled)
 	end
 end
 
