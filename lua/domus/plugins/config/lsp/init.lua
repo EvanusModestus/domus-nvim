@@ -120,7 +120,19 @@ function M.setup()
 			["rust-analyzer"] = {
 				checkOnSave = true,
 				check = { command = "clippy" },
-				cargo = { allFeatures = true },
+				-- procMacro + buildScripts are the completion multipliers: without them,
+				-- derive-macro output (serde's Deserialize, tokio's #[tokio::main], etc.)
+				-- and build-script-generated symbols never make it into the completion
+				-- index, so whole APIs look "missing". allFeatures widens the surface.
+				cargo = { allFeatures = true, buildScripts = { enable = true } },
+				procMacro = { enable = true },
+				completion = {
+					callable = { snippets = "fill_arguments" }, -- complete `fn(a, b)` with arg placeholders
+					fullFunctionSignatures = { enable = true },
+					postfix = { enable = true },                -- `.match`, `.if`, `.let` postfix completions
+					autoimport = { enable = true },             -- offer + insert `use` for out-of-scope items
+					autoself = { enable = true },
+				},
 				inlayHints = { enable = true },
 			},
 		},
@@ -132,7 +144,10 @@ function M.setup()
 			"--background-index",
 			"--clang-tidy",
 			"--header-insertion=iwyu",
+			"--header-insertion-decorators", -- prefix header-adding items with a marker so they're obvious
 			"--completion-style=detailed",
+			"--all-scopes-completion",       -- suggest symbols from all scopes (auto-adds the needed #include)
+			"--pch-storage=memory",          -- keep preamble PCH in RAM: faster completion, no /tmp churn
 			"--function-arg-placeholders=1", -- clangd 22+ requires an explicit value (bare flag errors)
 		},
 		init_options = {
@@ -184,6 +199,29 @@ function M.setup()
 	local pses_bundle = vim.fn.stdpath("data") .. "/mason/packages/powershell-editor-services"
 	vim.lsp.config("powershell_es", {
 		bundle_path = pses_bundle,
+		settings = {
+			powershell = {
+				-- Run $PROFILE inside the PSES runspace so any `Import-Module` there
+				-- (e.g. Az) populates completion. NOTE: completion of Az cmdlets ALSO
+				-- requires the module to actually be installed on PSModulePath —
+				-- `Install-Module Az -Scope CurrentUser`. With Az absent, no setting helps.
+				enableProfileLoading = true,
+				scriptAnalysis = { enable = true },
+				codeFormatting = { preset = "OTBS", autoCorrectAliases = true },
+			},
+		},
+	})
+
+	-- bash-language-server: point it explicitly at mason's shellcheck (its lint +
+	-- completion source) and widen the glob so sourced fragments are indexed for
+	-- cross-file completion. Falls back to no-op if the key is unsupported.
+	vim.lsp.config("bashls", {
+		settings = {
+			bashIde = {
+				globPattern = "*@(.sh|.inc|.bash|.command|.zsh)",
+				shellcheckPath = vim.fn.stdpath("data") .. "/mason/bin/shellcheck",
+			},
+		},
 	})
 
 	-- AsciiDoc language server: NOT in nvim-lspconfig or mason. Hand-defined and

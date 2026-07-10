@@ -5,7 +5,7 @@
 :url-repo: https://github.com/EvanusModestus/domus-nvim
 
 A modular, layered Neovim configuration built on Neovim 0.11+ with 90+ curated plugins and full Antora documentation.
-Designed for polyglot development — Lua, Python, Rust, C/C++, TypeScript, shell, infrastructure-as-code, and technical writing in AsciiDoc and Markdown.
+Designed for polyglot development — Lua, Python, Rust, C/C++, TypeScript, PowerShell, shell, SQL, infrastructure-as-code, and technical writing in AsciiDoc and Markdown.
 
 == Architecture
 
@@ -81,7 +81,7 @@ Full architecture documentation: {url-docs}
 
 | LSP
 | Mason + lspconfig
-| 14 servers auto-installed (lua_ls, pyright, rust_analyzer, clangd, ts_ls, bashls, and more)
+| 17 servers auto-installed (lua_ls, pyright, rust_analyzer, clangd, ts_ls, bashls, powershell_es, terraformls, and more)
 
 | Formatting
 | conform.nvim
@@ -150,6 +150,10 @@ Full architecture documentation: {url-docs}
 | 18+
 | Optional — for LSP servers (pyright, ts_ls, etc.)
 
+| PowerShell
+| 7.4+ (`pwsh`)
+| Optional — required by the `powershell_es` LSP; server stays disabled until `pwsh` is on `PATH`
+
 | ripgrep
 | Any
 | Recommended — Telescope live grep
@@ -215,6 +219,41 @@ sudo ln -sf $(which fdfind) /usr/local/bin/fd
 brew install neovim git ripgrep fd lazygit tmux node python ipython
 brew install --cask font-jetbrains-mono-nerd-font
 ----
+
+=== PowerShell & Azure Tooling
+
+The `powershell_es` LSP self-enables only when `pwsh` is on `PATH`.
+Completion covers only cmdlets present on `PSModulePath` — the `Az` module is a separate, per-machine install (it does not travel with the synced config).
+
+Install PowerShell Core:
+
+[source,bash]
+----
+# Arch Linux (AUR)
+paru -S powershell-bin
+
+# Ubuntu/Debian
+sudo apt install -y powershell
+
+# macOS
+brew install --cask powershell
+----
+
+Install the Azure module for `Get-Az*` completion (drive `pwsh` non-interactively from your shell):
+
+[source,bash]
+----
+# Verify absence
+pwsh -NoProfile -Command 'Get-Module -ListAvailable Az.Accounts | Select-Object Name, Version'
+
+# Install for the current user (~5 min). -NoProfile so install errors surface.
+pwsh -NoProfile -Command 'Install-Module Az -Scope CurrentUser -Repository PSGallery -Force -AllowClobber'
+
+# Confirm on PSModulePath, then restart nvim so PSES rebuilds its command cache
+pwsh -NoProfile -Command 'Get-Module -ListAvailable Az.Accounts, Az.Compute | Select-Object Name, Version'
+----
+
+PowerShell completion is space-driven (parameters, pipeline cmdlets), so blink is configured to allow space as a completion trigger for `ps1`/`psm1`/`psd1` buffers only — typing `Get-Process | ` opens the pipeline-cmdlet menu.
 
 === Verify
 

@@ -55,6 +55,21 @@ function M.setup()
 
         completion = {
             accept = { auto_brackets = { enabled = true } },
+            trigger = {
+                -- PowerShell Editor Services advertises space (' ') as a completion
+                -- trigger character because PS completion is space/parameter-driven
+                -- (`Get-Process | `, `-Path `, `Set-Cl`). blink blocks space globally
+                -- by default, so the pipeline/parameter menu never auto-opened after a
+                -- pipe. Unblock space ONLY for PowerShell buffers — matching VS Code —
+                -- while keeping it blocked elsewhere (prose, other langs).
+                show_on_blocked_trigger_characters = function()
+                    local ft = vim.bo.filetype
+                    if ft == "ps1" or ft == "psm1" or ft == "psd1" then
+                        return { "\n", "\t" }
+                    end
+                    return { " ", "\n", "\t" }
+                end,
+            },
             menu = {
                 draw = {
                     columns = {
