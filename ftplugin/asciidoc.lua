@@ -1,8 +1,14 @@
 -- AsciiDoc filetype settings
 
+-- Big files: the guard in config/autocmds.lua already stripped syntax/fold/spell.
+-- Skip the expensive re-enables below; keep only cheap nav (gf) at the bottom.
+local bigfile = vim.b.bigfile
+
 -- Spell checking
-vim.opt_local.spell = true
-vim.opt_local.spelllang = "en_us"
+if not bigfile then
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = "en_us"
+end
 
 -- Text wrapping (soft wrap, no hard breaks)
 vim.opt_local.wrap = true
@@ -13,13 +19,20 @@ vim.opt_local.textwidth = 0
 vim.opt_local.formatoptions:remove({ "r", "o", "c" })
 vim.opt_local.comments = ""
 
--- Concealment
-vim.opt_local.conceallevel = 2
-vim.opt_local.concealcursor = ""
+if not bigfile then
+    -- Concealment
+    vim.opt_local.conceallevel = 2
+    vim.opt_local.concealcursor = ""
 
--- Folding (indent-based, no treesitter parser for AsciiDoc)
-vim.opt_local.foldmethod = "indent"
-vim.opt_local.foldenable = false
+    -- Folding (indent-based, no treesitter parser for AsciiDoc)
+    vim.opt_local.foldmethod = "indent"
+    vim.opt_local.foldenable = false
+
+    -- Syntax perf: built-in syntax/asciidoc.vim runs expensive multi-line regexes.
+    -- Cap highlighting past column 400 so a single long line (base64 data-URI,
+    -- wide table row, long URL) can't trigger E363. 400 clears normal wrapped prose.
+    vim.opt_local.synmaxcol = 400
+end
 
 -- Follow AsciiDoc xrefs with gf
 vim.keymap.set("n", "gf", function()

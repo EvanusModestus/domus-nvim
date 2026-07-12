@@ -28,6 +28,12 @@ vim.opt.undofile = true
 vim.opt.undolevels = 10000
 vim.opt.updatetime = 50
 
+-- Regex memory ceiling (global-only option). Default 1000 KB is too low for
+-- Vim's built-in syntax/asciidoc.vim multi-line region patterns, which raise
+-- E363 on long lines (URLs, base64 data-URIs, wide table rows). AsciiDoc has no
+-- treesitter parser, so those regexes are unavoidable — give them headroom.
+vim.opt.maxmempattern = 5000
+
 -- Search
 vim.opt.hlsearch = false
 vim.opt.incsearch = true

@@ -8,6 +8,41 @@ local autocmd = vim.api.nvim_create_autocmd
 -- fire on it. Map the extension to the `d2` filetype (Terrastruct diagrams).
 vim.filetype.add({ extension = { d2 = "d2" } })
 
+-- Big-file guard: legacy syntax (syntax/asciidoc.vim has no treesitter parser),
+-- indent folding, and spell each re-scan the whole buffer, so a 500k-line file
+-- stalls the UI and can raise E363. Detect size at BufReadPre (before filetype /
+-- syntax / ftplugin) and strip the expensive machinery. b:bigfile lets ftplugins
+-- skip their own heavy settings (see ftplugin/asciidoc.lua).
+local bigfile = augroup("DomusBigFile", { clear = true })
+autocmd("BufReadPre", {
+    group = bigfile,
+    callback = function(ev)
+        local ok, stat = pcall((vim.uv or vim.loop).fs_stat, ev.match)
+        local size = (ok and stat) and stat.size or 0
+        if size < 1.5 * 1024 * 1024 then -- 1.5 MB
+            return
+        end
+        vim.b[ev.buf].bigfile = true
+        vim.opt_local.swapfile = false
+        vim.opt_local.undofile = false
+        vim.opt_local.undolevels = -1
+        vim.opt_local.foldmethod = "manual"
+        vim.opt_local.foldenable = false
+        vim.opt_local.spell = false
+        vim.opt_local.list = false
+        -- Filetype turns syntax on after this hook; kill it once the buffer loads.
+        autocmd("BufReadPost", {
+            buffer = ev.buf,
+            once = true,
+            callback = function()
+                vim.bo[ev.buf].syntax = "off"
+                vim.notify("Big file (" .. math.floor(size / 1024 / 1024) ..
+                    " MB): syntax/fold/spell disabled", vim.log.levels.WARN)
+            end,
+        })
+    end,
+})
+
 -- General augroup
 local general = augroup("DomusGeneral", { clear = true })
 

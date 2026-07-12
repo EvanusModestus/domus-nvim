@@ -22,6 +22,13 @@ function M.setup()
         auto_install = true,
         highlight = {
             enable = true,
+            -- Skip parsing on big buffers (same class of stall as legacy syntax;
+            -- mirrors the 1.5 MB cutoff in config/autocmds.lua's big-file guard).
+            disable = function(_, buf)
+                local ok, stat = pcall((vim.uv or vim.loop).fs_stat,
+                    vim.api.nvim_buf_get_name(buf))
+                return ok and stat and stat.size > 1.5 * 1024 * 1024
+            end,
             additional_vim_regex_highlighting = false,
         },
         textobjects = {
