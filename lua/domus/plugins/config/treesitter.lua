@@ -81,6 +81,17 @@ function M.setup()
             },
         },
     })
+
+    -- Neutralize markdown injection queries. nvim-treesitter's frozen master
+    -- ships a markdown/markdown_inline injections query that hands Neovim 0.12's
+    -- reworked core a nil node -> "attempt to call method 'range' (a nil value)"
+    -- on every fenced code block, crashing the highlighter. Set at setup (before
+    -- any markdown buffer parses) so the empty query wins. Markdown still gets
+    -- block-level treesitter highlighting; fenced-code/inline injection
+    -- highlighting is dropped until the main branch is adopted. Other languages'
+    -- injections (html, lua, ...) are unaffected.
+    pcall(vim.treesitter.query.set, "markdown", "injections", "")
+    pcall(vim.treesitter.query.set, "markdown_inline", "injections", "")
 end
 
 return M
