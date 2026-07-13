@@ -138,6 +138,11 @@ return {
         event = "BufReadPost",
         config = function()
             require("illuminate").configure({
+                -- Drop the "treesitter" provider: it calls nvim-treesitter.locals,
+                -- which errors ("attempt to call method 'parent' (a nil value)")
+                -- on the frozen master branch this config pins. LSP document-
+                -- highlight + regex cover word-under-cursor with no crash.
+                providers = { "lsp", "regex" },
                 delay = 200,
                 large_file_cutoff = 2000,
             })
