@@ -56,24 +56,52 @@ touches configuration logic.
 
 == Install
 
+Choose *one* of the two setups below and stick with it.
+
+[WARNING]
+====
+Do not mix them. Launching the same config sometimes as plain `nvim` and sometimes with
+`NVIM_APPNAME` creates two separate data directories (`~/.local/share/nvim` vs
+`~/.local/share/domus-nvim`). Mason and Treesitter bake absolute paths into their installs, so a
+split leaves tool wrappers pointing at the wrong tree — LSP servers fail with exit code 127,
+parsers vanish. Pick a lane; if you pick Option B, always launch through the alias.
+====
+
+=== Option A — dedicated (recommended)
+
+domus-nvim becomes your Neovim: config at `~/.config/nvim`, data at `~/.local/share/nvim`, launched
+with plain `nvim`. Simplest and least error-prone.
+
 [source,bash]
 ----
-# Back up any existing config/data
+# Back up any existing config + data first
 mv ~/.config/nvim ~/.config/nvim.bak 2>/dev/null || true
+mv ~/.local/share/nvim ~/.local/share/nvim.bak 2>/dev/null || true
 
-git clone https://github.com/EvanusModestus/domus-nvim.git ~/.config/domus-nvim
-NVIM_APPNAME=domus-nvim nvim
+git clone https://github.com/EvanusModestus/domus-nvim.git ~/.config/nvim
+nvim
 ----
 
-First launch bootstraps lazy.nvim, downloads ~80 plugins, Mason installs servers/formatters, and
-Treesitter compiles parsers (via git). Let it finish before editing. Handy alias:
+(Prefer to keep the repo elsewhere? Clone anywhere and symlink it:
+`ln -s /path/to/domus-nvim ~/.config/nvim`. Same result — still launched with plain `nvim`.)
+
+=== Option B — isolated (try it alongside your current config)
+
+Keeps your existing `~/.config/nvim` untouched. `NVIM_APPNAME` namespaces both config and data.
+Alias it so you *always* launch the same way — never run it plain, or you split its data dir.
 
 [source,bash]
 ----
-alias v='NVIM_APPNAME=domus-nvim nvim'
+git clone https://github.com/EvanusModestus/domus-nvim.git ~/.config/domus-nvim
+echo "alias vd='NVIM_APPNAME=domus-nvim nvim'" >> ~/.bashrc   # or ~/.zshrc
+# from now on, ALWAYS launch with:  vd
 ----
 
-Verify inside Neovim: `:Lazy` (plugins), `:Mason` (servers), `:checkhealth` (errors).
+=== First launch (either option)
+
+Bootstraps lazy.nvim, downloads ~80 plugins, Mason installs servers/formatters, and Treesitter
+compiles parsers (fetched via git). Let it finish before editing. Then verify inside Neovim:
+`:Lazy` (plugins), `:Mason` (servers), `:checkhealth` (errors).
 
 == Documentation
 
