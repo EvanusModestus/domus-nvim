@@ -41,7 +41,13 @@ local function on_attach(client, bufnr)
 	map("n", "gr", vim.lsp.buf.references, opts)
 
 	-- Information
-	map("n", "K", vim.lsp.buf.hover, opts)
+	-- Skip K for C/C++: ftplugin/c.lua binds a richer K (man 2→3→general, then
+	-- hover fallback) on FileType, and LspAttach fires after it — mapping here
+	-- would clobber the man-page lookup. Other filetypes get plain hover.
+	local ft = vim.bo[bufnr].filetype
+	if ft ~= "c" and ft ~= "cpp" then
+		map("n", "K", vim.lsp.buf.hover, opts)
+	end
 	map("i", "<C-k>", vim.lsp.buf.signature_help, opts)
 
 	-- Diagnostics

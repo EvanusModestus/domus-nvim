@@ -239,7 +239,7 @@ function M.setup()
         -- Bold with double asterisk for inline (single * conflicts with block delimiter)
         ['*'] = { "%*%*[^%*]+%*%*", "%*%*()[^%*]+()%*%*" },
         -- Passthrough: +text+
-        ['+'] = { "%+[^%+]+%+", "%+()[^%+]+()`+" },
+        ['+'] = { "%+[^%+]+%+", "%+()[^%+]+()%+" },
 
         -- XML/HTML tags (enhanced)
         ['t'] = ai.gen_spec.treesitter({ a = '@tag.outer', i = '@tag.inner' }),

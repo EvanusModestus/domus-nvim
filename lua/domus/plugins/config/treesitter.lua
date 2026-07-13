@@ -68,12 +68,14 @@ function M.setup()
                 set_jumps = true,
                 goto_next_start = {
                     ["]f"] = "@function.outer",
-                    ["]c"] = "@class.outer",
+                    -- ]C not ]c: ]c/[c belong to Gitsigns hunk nav (Vim diff
+                    -- convention). Reactivating treesitter reintroduced the clash.
+                    ["]C"] = "@class.outer",
                     ["]b"] = "@block.outer",
                 },
                 goto_previous_start = {
                     ["[f"] = "@function.outer",
-                    ["[c"] = "@class.outer",
+                    ["[C"] = "@class.outer",
                     ["[b"] = "@block.outer",
                 },
             },

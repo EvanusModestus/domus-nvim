@@ -395,7 +395,7 @@ function M.setup()
         s("xrefcm",  { t("xref:"), i(1, "component"), t("::"), i(2, "module"), t(":"), i(3, "page.adoc"), t("["), i(4, "text"), t("]") }),
         s("include", { t("include::"), i(1, "path/file.adoc"), t("[]") }),
         s("partial", { t("include::partial$"), i(1, "file.adoc"), t("[]") }),
-        s("example", { t("include::example$"), i(1, "file.adoc"), t("[]") }),
+        s("exampleinc", { t("include::example$"), i(1, "file.adoc"), t("[]") }),
         s("attach",  { t("link:{attachmentsdir}/"), i(1, "file.pdf"), t("["), i(2, "Download"), t("]") }),
 
         -- Antora page header (full)
