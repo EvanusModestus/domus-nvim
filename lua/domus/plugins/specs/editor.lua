@@ -80,6 +80,11 @@ return {
     -- Treesitter
     {
         "nvim-treesitter/nvim-treesitter",
+        -- Pin master: this config uses the legacy `nvim-treesitter.configs` API,
+        -- which the default `main` branch (the rewrite) deleted. Without this pin
+        -- setup() errors silently (swallowed by pcall) and highlighting/textobjects
+        -- are inert. See docs appendix-issues #1.
+        branch = "master",
         priority = 1000,
         build = ":TSUpdate",
         lazy = false,
@@ -89,6 +94,7 @@ return {
     },
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
+        branch = "master", -- match nvim-treesitter (legacy API)
         lazy = false,
         dependencies = { "nvim-treesitter/nvim-treesitter" },
     },
