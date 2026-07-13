@@ -16,6 +16,13 @@ function M.setup()
         return
     end
 
+    -- Fetch grammars via git, not curl. This workstation's hardened AppArmor
+    -- curl profile denies writes to ~/.local/share/nvim (stdpath data), so the
+    -- default `curl --output <lang>.tar.gz` path fails with curl (23). git is
+    -- unconfined and already the transport lazy.nvim uses for every plugin, so
+    -- no sudo and the curl profile stays fully locked. Default is win32-only.
+    require("nvim-treesitter.install").prefer_git = true
+
     configs.setup({
         ensure_installed = ensure_installed,
         sync_install = false,
