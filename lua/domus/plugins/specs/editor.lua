@@ -100,6 +100,11 @@ return {
     },
     {
         "nvim-treesitter/nvim-treesitter-context",
+        -- Disabled: the latest release (can't update further) crashes on
+        -- Neovim 0.12's core treesitter API — `languagetree.lua: attempt to
+        -- call method 'range' (a nil value)` during injection parse, on every
+        -- cursor move. Re-enable once upstream ships a 0.12-compatible fix.
+        enabled = false,
         event = "BufReadPost",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
     },
