@@ -32,7 +32,7 @@ touches configuration logic.
 * *Completion* — blink.cmp (Rust engine: LSP, snippets, path, buffer)
 * *LSP* — Mason + lspconfig, 17 servers auto-installed (lua_ls, pyright, rust_analyzer, clangd, ts_ls, powershell_es, sqlls, terraformls, …)
 * *Format / lint* — conform.nvim (format-on-save) + nvim-lint
-* *Syntax* — nvim-treesitter (24 parsers, textobjects, context); grammars fetched via git
+* *Syntax* — nvim-treesitter (24 parsers, textobjects); grammars fetched via git
 * *Finder / files* — telescope.nvim (+ fzf, file-browser, project) and oil.nvim
 * *Git* — gitsigns, lazygit, diffview
 * *Debug* — nvim-dap with UI and virtual text
@@ -82,8 +82,16 @@ git clone https://github.com/EvanusModestus/domus-nvim.git ~/.config/nvim
 nvim
 ----
 
-(Prefer to keep the repo elsewhere? Clone anywhere and symlink it:
-`ln -s /path/to/domus-nvim ~/.config/nvim`. Same result — still launched with plain `nvim`.)
+Prefer to keep the repo in a dotfiles/projects directory (and symlink it into place)? Same result,
+still launched with plain `nvim`:
+
+[source,bash]
+----
+git clone https://github.com/EvanusModestus/domus-nvim.git ~/repos/domus-nvim
+mv ~/.config/nvim ~/.config/nvim.bak 2>/dev/null || true   # ~/.config/nvim must not already exist
+ln -s ~/repos/domus-nvim ~/.config/nvim
+nvim
+----
 
 === Option B — isolated (try it alongside your current config)
 
@@ -112,8 +120,14 @@ just the landing page.
 
 == Uninstall
 
+Remove the paths for the option you installed.
+
 [source,bash]
 ----
+# Option A (dedicated). If ~/.config/nvim is a symlink, this removes the link, not the repo clone.
+rm -rf ~/.config/nvim ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
+
+# Option B (isolated)
 rm -rf ~/.config/domus-nvim ~/.local/share/domus-nvim ~/.local/state/domus-nvim ~/.cache/domus-nvim
 ----
 
