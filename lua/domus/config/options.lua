@@ -53,6 +53,15 @@ vim.opt.isfname:append("@-@")
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
+-- Floating window border (nvim 0.11+). One global option styles every otherwise
+-- borderless core float — LSP hover, signature help, the diagnostic float,
+-- vim.ui.input (rename) and vim.ui.select. Plugins that pass their own border
+-- (blink.cmp, telescope, which-key, lazy.nvim) override it, so this only touches
+-- the built-in floats that previously rendered with no border at all.
+if vim.fn.has("nvim-0.11") == 1 then
+    vim.o.winborder = "rounded"
+end
+
 -- Completion
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 vim.opt.shortmess:append("c")

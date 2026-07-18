@@ -70,6 +70,19 @@ local function on_attach(client, bufnr)
 			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 		end, opts)
 	end
+
+	-- Code lens (native vim.lsp.codelens — no plugin). rust_analyzer emits Run/Debug
+	-- and "N implementations" lenses, clangd and others too; this config previously
+	-- discarded them. enable() auto-refreshes the lens display for this buffer;
+	-- <leader>cL runs the lens under the cursor. Gated on the codeLensProvider
+	-- capability, so it stays silent for servers without one (pyright, bashls, …).
+	-- enable() is 0.11+; guarded so older builds skip rather than error.
+	if client and client.server_capabilities.codeLensProvider
+		and vim.lsp.codelens and vim.lsp.codelens.enable then
+		vim.lsp.codelens.enable(true, { bufnr = bufnr })
+		map("n", "<leader>cL", vim.lsp.codelens.run,
+			vim.tbl_extend("force", opts, { desc = "Run code lens" }))
+	end
 end
 
 function M.setup()

@@ -4,3 +4,4 @@
 require("domus.config.options")
 require("domus.config.keymaps")
 require("domus.config.autocmds")
+require("domus.config.diagnostics")
