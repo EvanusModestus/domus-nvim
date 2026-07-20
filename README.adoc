@@ -4,6 +4,8 @@
 :url-docs: https://docs.architectus.dev
 :url-repo: https://github.com/EvanusModestus/domus-nvim
 
+image::assets/domus-nvim-banner.svg[domus-nvim — a modular, layered Neovim 0.11+ configuration]
+
 A modular, layered Neovim configuration for Neovim 0.11+ — 80 plugins managed by lazy.nvim, built for
 polyglot development: Lua, Python, Rust, C/C++, TypeScript, PowerShell, shell, SQL,
 infrastructure-as-code, and technical writing in AsciiDoc and Markdown.
