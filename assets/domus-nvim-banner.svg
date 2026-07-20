@@ -1,150 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   domus-nvim animated banner  (Catppuccin Mocha)
-  ────────────────────────────────────────────────────────────────────────
-  A self-contained, editable "lego". Renders + animates on GitHub because it
-  is served as a standalone image: declarative animation only (CSS @keyframes
-  and one SMIL <animate>), no <script>, no external assets. Colours are inline
-  hex (NOT CSS var()) so every renderer — browsers, librsvg, GitHub — agrees.
+  ══════════════════════════════════════════════════════════════════════════
+  Docs-as-code SVG "lego": all styling is centralized in the <style> head, one
+  definition per colour, applied to elements by semantic class — nothing inline
+  on the shapes. Re-theme by editing the palette hexes in <style>; change wording
+  in the <text> nodes; change motion in the @keyframes / #typeReveal `dur`.
 
-  PALETTE — Catppuccin Mocha (find/replace to re-theme)
-    base #1e1e2e   mantle #181825   surface0 #313244   surface1 #45475a
-    text #cdd6f4   subtext #a6adc8
-    blue #89b4fa   sapphire #74c7ec  mauve #cba6f7   green #a6e3a1
-    pink #f5c2e7   rose #f5e0dc      red #f38ba8     yellow #f9e2af
-
-  EDIT
-    • Text ..... the <text> nodes: title, tagline, and the five bricks.
-    • Timing ... the `dur` on #typeReveal (typing) and animation-duration below.
-  ────────────────────────────────────────────────────────────────────────
+  Renders + animates wherever it is consumed as an image (GitHub, browser,
+  Antora/asciidoctor HTML, and rasterisers like Inkscape/Kroki): declarative
+  animation only (CSS + one SMIL reveal), no <script>, concrete hex (no var()).
+  ══════════════════════════════════════════════════════════════════════════
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 250" width="820" height="250"
      font-family="'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"
      role="img" aria-label="domus-nvim — a modular, layered Neovim 0.11+ configuration">
 
   <style>
-    .title   { font-size: 58px; font-weight: 800; letter-spacing: 1px; }
-    .tagline { font-size: 19px; }
-    .prompt  { font-size: 20px; font-weight: 700; }
-    .brick-l { font-size: 14px; font-weight: 600; text-anchor: middle; }
+    /* ── PALETTE — Catppuccin Mocha, single edit point ──────────────────────
+       Every colour is defined once, here in the stylesheet, and applied to
+       elements by class (nothing inline downstream). Concrete hex — not var()
+       — so it resolves in every engine (browser, librsvg, Inkscape, Kroki),
+       which matters in a rasterising docs pipeline. To re-theme, change a hex
+       here and it propagates everywhere it is used:
+         base #1e1e2e  mantle #181825  surface0 #313244  surface1 #45475a
+         subtext #a6adc8  blue #89b4fa  sapphire #74c7ec  mauve #cba6f7
+         green #a6e3a1  pink #f5c2e7  rose #f5e0dc  red #f38ba8  yellow #f9e2af
+       ──────────────────────────────────────────────────────────────────── */
+    /* gradient stops */
+    .st-base{stop-color:#1e1e2e}      .st-mantle{stop-color:#181825}
+    .st-mauve{stop-color:#cba6f7}     .st-blue{stop-color:#89b4fa}
+    .st-sapphire{stop-color:#74c7ec}
+    .st-mauve-0{stop-color:#cba6f7;stop-opacity:0}
 
-    /* blinking terminal cursor (clipped until the typing reveal reaches it) */
-    .cursor  { animation: blink 1.06s steps(1) infinite; }
-    @keyframes blink { 0%,49% { opacity: 1 } 50%,100% { opacity: 0 } }
+    /* element roles (colour + type, no inline hex on the elements) */
+    .card    { fill:url(#cardGrad); stroke:#313244; stroke-width:1.5 }
+    .hint    { fill:#45475a; font-size:13px }
+    .title   { fill:url(#titleGrad); font-size:58px; font-weight:800; letter-spacing:1px }
+    .tagline { fill:#a6adc8; font-size:19px }
+    .prompt  { fill:#a6e3a1; font-size:20px; font-weight:700 }
+    .cursor  { fill:#f5e0dc; animation:blink 1.06s steps(1) infinite }
+    .glow    { fill:url(#glowGrad); animation:glowPulse 4.5s ease-in-out infinite }
+    .sheen   { animation:sheen 4.8s ease-in-out infinite }
+    .brick   { fill:#313244; stroke:#45475a }
+    .brick-l { font-size:14px; font-weight:600; text-anchor:middle }
+    .bl-green{fill:#a6e3a1} .bl-blue{fill:#89b4fa} .bl-mauve{fill:#cba6f7}
+    .bl-sapphire{fill:#74c7ec} .bl-pink{fill:#f5c2e7}
 
-    /* traffic-light dots — staggered breathe */
-    .dot     { animation: dotPulse 2.4s ease-in-out infinite; }
-    .dot.d2  { animation-delay: .35s; }
-    .dot.d3  { animation-delay: .70s; }
-    @keyframes dotPulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+    /* dots: colour + staggered breathe */
+    .dot        { animation:dotPulse 2.4s ease-in-out infinite }
+    .dot-red    { fill:#f38ba8 }
+    .dot-yellow { fill:#f9e2af; animation-delay:.35s }
+    .dot-green  { fill:#a6e3a1; animation-delay:.70s }
 
-    /* soft glow behind the title */
-    .glow    { animation: glowPulse 4.5s ease-in-out infinite; }
-    @keyframes glowPulse { 0%,100% { opacity: .18 } 50% { opacity: .40 } }
-
-    /* light sheen sweeping across the title letters */
-    .sheen   { animation: sheen 4.8s ease-in-out infinite; }
+    /* ── keyframes (motion) ────────────────────────────────────────────── */
+    @keyframes blink     { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+    @keyframes dotPulse  { 0%,100%{opacity:1} 50%{opacity:.35} }
+    @keyframes glowPulse { 0%,100%{opacity:.18} 50%{opacity:.40} }
     @keyframes sheen {
-      0%       { transform: translateX(-120px) skewX(-18deg) }
-      55%,100% { transform: translateX( 500px) skewX(-18deg) }
+      0%       { transform:translateX(-120px) skewX(-18deg) }
+      55%,100% { transform:translateX( 500px) skewX(-18deg) }
     }
-
-    /* bricks cascade in after the tagline types */
-    .bricks g              { opacity: 0; animation: brickIn .55s cubic-bezier(.2,.7,.2,1) forwards; }
-    .bricks g:nth-child(1) { animation-delay: .55s }
-    .bricks g:nth-child(2) { animation-delay: .70s }
-    .bricks g:nth-child(3) { animation-delay: .85s }
-    .bricks g:nth-child(4) { animation-delay: 1.00s }
-    .bricks g:nth-child(5) { animation-delay: 1.15s }
-    @keyframes brickIn { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: translateY(0) } }
+    .bricks g              { opacity:0; animation:brickIn .55s cubic-bezier(.2,.7,.2,1) forwards }
+    .bricks g:nth-child(1) { animation-delay:.55s }
+    .bricks g:nth-child(2) { animation-delay:.70s }
+    .bricks g:nth-child(3) { animation-delay:.85s }
+    .bricks g:nth-child(4) { animation-delay:1.00s }
+    .bricks g:nth-child(5) { animation-delay:1.15s }
+    @keyframes brickIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
   </style>
 
   <defs>
     <linearGradient id="cardGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#1e1e2e"/>
-      <stop offset="1" stop-color="#181825"/>
+      <stop offset="0" class="st-base"/><stop offset="1" class="st-mantle"/>
     </linearGradient>
-
     <linearGradient id="titleGrad" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0"    stop-color="#cba6f7"/>
-      <stop offset="0.55" stop-color="#89b4fa"/>
-      <stop offset="1"    stop-color="#74c7ec"/>
+      <stop offset="0" class="st-mauve"/><stop offset="0.55" class="st-blue"/><stop offset="1" class="st-sapphire"/>
     </linearGradient>
-
-    <linearGradient id="sheenGrad" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0"   stop-color="#ffffff" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.55"/>
-      <stop offset="1"   stop-color="#ffffff" stop-opacity="0"/>
-    </linearGradient>
-
     <radialGradient id="glowGrad" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#cba6f7"/>
-      <stop offset="1" stop-color="#cba6f7" stop-opacity="0"/>
+      <stop offset="0" class="st-mauve"/><stop offset="1" class="st-mauve-0"/>
     </radialGradient>
+    <linearGradient id="sheenGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDev="9"/></filter>
 
-    <filter id="soft" x="-30%" y="-60%" width="160%" height="220%">
-      <feGaussianBlur stdDev="9"/>
-    </filter>
-
-    <!-- clip the sheen to the title glyphs so only the letters catch light -->
-    <clipPath id="titleClip">
-      <text class="title" x="36" y="126">domus-nvim</text>
-    </clipPath>
-
-    <!-- left-to-right typing reveal for the tagline -->
+    <clipPath id="titleClip"><text class="title" x="36" y="126">domus-nvim</text></clipPath>
     <clipPath id="typeClip">
       <rect id="typeReveal" x="28" y="150" width="0" height="40">
         <animate attributeName="width" values="0;660" keyTimes="0;1"
-                 begin="0.5s" dur="2.4s" fill="freeze"
-                 calcMode="spline" keySplines="0.3 0.6 0.2 1"/>
+                 begin="0.5s" dur="2.4s" fill="freeze" calcMode="spline" keySplines="0.3 0.6 0.2 1"/>
       </rect>
     </clipPath>
   </defs>
 
-  <!-- card -->
-  <rect x="8" y="8" width="804" height="234" rx="18" fill="url(#cardGrad)"
-        stroke="#313244" stroke-width="1.5"/>
+  <rect class="card" x="8" y="8" width="804" height="234" rx="18"/>
 
-  <!-- terminal traffic lights -->
-  <circle class="dot d1" cx="40" cy="44" r="6.5" fill="#f38ba8"/>
-  <circle class="dot d2" cx="64" cy="44" r="6.5" fill="#f9e2af"/>
-  <circle class="dot d3" cx="88" cy="44" r="6.5" fill="#a6e3a1"/>
-  <text x="796" y="49" text-anchor="end" font-size="13" fill="#45475a">~/.config/nvim</text>
+  <circle class="dot dot-red"    cx="40" cy="44" r="6.5"/>
+  <circle class="dot dot-yellow" cx="64" cy="44" r="6.5"/>
+  <circle class="dot dot-green"  cx="88" cy="44" r="6.5"/>
+  <text class="hint" x="796" y="49" text-anchor="end">~/.config/nvim</text>
 
-  <!-- glow + title + sheen -->
-  <ellipse class="glow" cx="210" cy="104" rx="195" ry="52" fill="url(#glowGrad)" filter="url(#soft)"/>
-  <text class="title" x="36" y="126" fill="url(#titleGrad)">domus-nvim</text>
-  <g clip-path="url(#titleClip)">
-    <rect class="sheen" x="0" y="66" width="46" height="86" fill="url(#sheenGrad)"/>
-  </g>
+  <ellipse class="glow" cx="210" cy="104" rx="195" ry="52" filter="url(#soft)"/>
+  <text class="title" x="36" y="126">domus-nvim</text>
+  <g clip-path="url(#titleClip)"><rect class="sheen" x="0" y="66" width="46" height="86" fill="url(#sheenGrad)"/></g>
 
-  <!-- prompt + typed tagline (with blinking cursor) -->
-  <text class="prompt" x="36" y="177" fill="#a6e3a1">❯</text>
+  <text class="prompt" x="36" y="177">❯</text>
   <g clip-path="url(#typeClip)">
-    <text class="tagline" x="62" y="177" fill="#a6adc8">a modular, layered Neovim 0.11+ configuration<tspan class="cursor" dx="6" fill="#f5e0dc">█</tspan></text>
+    <text class="tagline" x="62" y="177">a modular, layered Neovim 0.11+ configuration<tspan class="cursor" dx="6">█</tspan></text>
   </g>
 
-  <!-- lego bricks: the stack, in stat form -->
   <g class="bricks">
-    <g>
-      <rect x="36"  y="202" width="66"  height="30" rx="7" fill="#313244" stroke="#45475a"/>
-      <text class="brick-l" x="69"  y="221" fill="#a6e3a1">0.11+</text>
-    </g>
-    <g>
-      <rect x="110" y="202" width="104" height="30" rx="7" fill="#313244" stroke="#45475a"/>
-      <text class="brick-l" x="162" y="221" fill="#89b4fa">80 plugins</text>
-    </g>
-    <g>
-      <rect x="222" y="202" width="96"  height="30" rx="7" fill="#313244" stroke="#45475a"/>
-      <text class="brick-l" x="270" y="221" fill="#cba6f7">lazy.nvim</text>
-    </g>
-    <g>
-      <rect x="326" y="202" width="86"  height="30" rx="7" fill="#313244" stroke="#45475a"/>
-      <text class="brick-l" x="369" y="221" fill="#74c7ec">LSP ×17</text>
-    </g>
-    <g>
-      <rect x="420" y="202" width="112" height="30" rx="7" fill="#313244" stroke="#45475a"/>
-      <text class="brick-l" x="476" y="221" fill="#f5c2e7">Catppuccin</text>
-    </g>
+    <g><rect class="brick" x="36"  y="202" width="66"  height="30" rx="7"/><text class="brick-l bl-green"    x="69"  y="221">0.11+</text></g>
+    <g><rect class="brick" x="110" y="202" width="104" height="30" rx="7"/><text class="brick-l bl-blue"     x="162" y="221">80 plugins</text></g>
+    <g><rect class="brick" x="222" y="202" width="96"  height="30" rx="7"/><text class="brick-l bl-mauve"    x="270" y="221">lazy.nvim</text></g>
+    <g><rect class="brick" x="326" y="202" width="86"  height="30" rx="7"/><text class="brick-l bl-sapphire" x="369" y="221">LSP ×17</text></g>
+    <g><rect class="brick" x="420" y="202" width="112" height="30" rx="7"/><text class="brick-l bl-pink"     x="476" y="221">Catppuccin</text></g>
   </g>
 </svg>
