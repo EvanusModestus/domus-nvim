@@ -92,6 +92,39 @@ function M.setup()
     -- injections (html, lua, ...) are unaffected.
     pcall(vim.treesitter.query.set, "markdown", "injections", "")
     pcall(vim.treesitter.query.set, "markdown_inline", "injections", "")
+
+    -- Neutralize only the crashing bash heredoc injection. nvim-treesitter's
+    -- frozen master ships a `heredoc_redirect` injection that applies
+    -- `#downcase!` to a language *node* capture (the heredoc_end tag). Neovim
+    -- 0.12's reworked core mishandles a directive on a language node and hands
+    -- the highlighter a nil node -> "attempt to call method 'range'/'start' (a
+    -- nil value)" on every shell buffer containing a heredoc. Rather than nuke
+    -- every bash injection like markdown above, read the shipped query and
+    -- strip ONLY that one stanza, so printf/regex/comment/bind injections
+    -- survive. Heredoc-body language highlighting is dropped until the main
+    -- branch (which parses clean on 0.12) is adopted. Runs at setup, before any
+    -- bash buffer parses, so the set query wins.
+    do
+        local files = vim.api.nvim_get_runtime_file(
+            "queries/bash/injections.scm", true)
+        local raw = ""
+        for _, f in ipairs(files) do
+            local fh = io.open(f, "r")
+            if fh then
+                raw = raw .. fh:read("*a") .. "\n"
+                fh:close()
+            end
+        end
+        -- Lua patterns treat `.` as any char incl. newline; `.-` is non-greedy,
+        -- so this matches the stanza from `((heredoc_redirect` to its first `))`.
+        local stripped, removed = raw:gsub("%(%(heredoc_redirect.-%)%)", "")
+        -- Only install when we actually removed the crashing stanza. If a future
+        -- query drops it upstream (removed == 0), the shipped query is already
+        -- safe and we leave Neovim's default in place.
+        if removed > 0 then
+            pcall(vim.treesitter.query.set, "bash", "injections", stripped)
+        end
+    end
 end
 
 return M
