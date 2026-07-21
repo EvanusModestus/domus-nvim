@@ -108,5 +108,24 @@ autocmd("TermOpen", {
     end,
 })
 
+-- Secrets-safe editing: `sops <file>` decrypts to a temp that KEEPS the original
+-- name (e.g. foo.sops.yaml) and opens it here. Neovim would otherwise spill that
+-- plaintext to persistent disk via undofile (~/.local/share/nvim/undo/), the swap
+-- file, and backups — long after the file is re-encrypted. Strip every on-disk
+-- trace for any *.sops.* / *.age buffer (the temp inherits that name). Residual:
+-- shada can still record a yanked secret line; add `:set shadafile=NONE` if paranoid.
+local secrets = augroup("DomusSecrets", { clear = true })
+autocmd({ "BufReadPre", "BufNewFile" }, {
+    group = secrets,
+    pattern = { "*.sops.yaml", "*.sops.yml", "*.sops.json", "*.sops.env", "*.age" },
+    callback = function()
+        vim.opt_local.swapfile = false
+        vim.opt_local.undofile = false
+        vim.opt_local.undolevels = -1 -- no in-memory undo history either
+        vim.opt_local.backup = false
+        vim.opt_local.writebackup = false
+    end,
+})
+
 -- Note: Filetype-specific autocmds moved to ftplugin/ directory
 -- See: ftplugin/markdown.lua, ftplugin/asciidoc.lua
