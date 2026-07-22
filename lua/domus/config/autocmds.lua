@@ -43,6 +43,34 @@ autocmd("BufReadPre", {
     end,
 })
 
+-- FilePost lazy-load gate (technique borrowed from NvChad, adapted).
+-- `BufReadPost`/`BufReadPre` fire for EVERY buffer — including `:help`, quickfix,
+-- and `nofile` scratch buffers — so a plugin gated on them wakes up on buffers it
+-- can't act on. This gate emits a custom `User FilePost` event ONCE, only after
+-- the UI has entered AND a real, listed, non-`nofile` file buffer exists, then
+-- deletes its own augroup so it never runs again. gitsigns is the sole consumer
+-- (see specs/git.lua): pointless on non-file buffers, and its own attach logic
+-- latches onto the current buffer when lazy re-emits the event, so no FileType
+-- re-fire is needed. Any future file-only decoration plugin can subscribe with
+-- `event = "User FilePost"`.
+local filepost = augroup("DomusFilePost", { clear = true })
+autocmd({ "UIEnter", "BufReadPost", "BufNewFile" }, {
+    group = filepost,
+    callback = function(args)
+        local file = vim.api.nvim_buf_get_name(args.buf)
+        local buftype = vim.api.nvim_get_option_value("buftype", { buf = args.buf })
+
+        if not vim.g.ui_entered and args.event == "UIEnter" then
+            vim.g.ui_entered = true
+        end
+
+        if file ~= "" and buftype ~= "nofile" and vim.g.ui_entered then
+            vim.api.nvim_exec_autocmds("User", { pattern = "FilePost", modeline = false })
+            vim.api.nvim_del_augroup_by_name("DomusFilePost")
+        end
+    end,
+})
+
 -- General augroup
 local general = augroup("DomusGeneral", { clear = true })
 

@@ -8,7 +8,7 @@ return {
     -- Gitsigns (git decorations)
     {
         "lewis6991/gitsigns.nvim",
-        event = { "BufReadPre", "BufNewFile" },
+        event = "User FilePost",
         config = function()
             require("gitsigns").setup({
                 signs = {
