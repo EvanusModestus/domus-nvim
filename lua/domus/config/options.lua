@@ -69,9 +69,9 @@ vim.opt.shortmess:append("c")
 -- Netrw (backup file browser)
 vim.g.netrw_bufsettings = "noma nomod rnu nobl nowrap ro"
 
--- Clipboard (auto-detect environment)
+-- Clipboard — environment-aware provider
 if vim.fn.executable("win32yank.exe") == 1 then
-    -- WSL: use win32yank
+    -- WSL: bridge to the Windows clipboard
     vim.g.clipboard = {
         name = "win32yank-wsl",
         copy = {
@@ -84,7 +84,23 @@ if vim.fn.executable("win32yank.exe") == 1 then
         },
         cache_enabled = 0,
     }
+elseif vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+    -- Remote over SSH: no local display for xclip/wl-copy to reach, so a bare
+    -- "unnamedplus" yields "no clipboard provider". Route the system clipboard
+    -- through the terminal via OSC 52 (built into Neovim 0.10+) — a yank to "+
+    -- lands in the *client* terminal's clipboard (kitty/wezterm/foot/iTerm2).
+    -- Copy-first by design: we do NOT force unnamedplus, so normal `p` stays
+    -- instant on the unnamed register and only the explicit "+ maps (<leader>y,
+    -- "+p) round-trip through the terminal — no OSC 52 read lag on every paste.
+    local ok, osc52 = pcall(require, "vim.ui.clipboard.osc52")
+    if ok then
+        vim.g.clipboard = {
+            name = "OSC 52 (ssh)",
+            copy  = { ["+"] = osc52.copy("+"),  ["*"] = osc52.copy("*") },
+            paste = { ["+"] = osc52.paste("+"), ["*"] = osc52.paste("*") },
+        }
+    end
 else
-    -- Native Linux: neovim auto-detects xclip/xsel
+    -- Native local session: Neovim auto-detects wl-clipboard (Wayland) or xclip/xsel (X11)
     vim.opt.clipboard = "unnamedplus"
 end
