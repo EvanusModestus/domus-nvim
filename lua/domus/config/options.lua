@@ -96,8 +96,14 @@ elseif vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
     if ok then
         vim.g.clipboard = {
             name = "OSC 52 (ssh)",
-            copy  = { ["+"] = osc52.copy("+"),  ["*"] = osc52.copy("*") },
-            paste = { ["+"] = osc52.paste("+"), ["*"] = osc52.paste("*") },
+            copy  = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+            -- Copy round-trips to the client terminal via OSC 52. Paste reads the
+            -- unnamed register instead of querying the terminal — many terminals
+            -- refuse the OSC 52 read, which hung nvim on "Waiting for OSC 52 response".
+            paste = {
+                ["+"] = function() return { vim.fn.getreg('"', 1, true), vim.fn.getregtype('"') } end,
+                ["*"] = function() return { vim.fn.getreg('"', 1, true), vim.fn.getregtype('"') } end,
+            },
         }
     end
 else
