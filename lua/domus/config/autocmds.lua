@@ -121,7 +121,9 @@ autocmd("BufWritePre", {
     end,
 })
 
--- Terminal keymaps
+-- Terminal keymaps and buffer-local UX. <C-l> is deliberately left unmapped
+-- in terminal mode so it passes through to the shell (clear screen) instead
+-- of being hijacked for window nav.
 autocmd("TermOpen", {
     group = general,
     pattern = "term://*",
@@ -132,7 +134,23 @@ autocmd("TermOpen", {
         vim.keymap.set("t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
         vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
         vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
-        vim.keymap.set("t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
+
+        vim.opt_local.number = false
+        vim.opt_local.relativenumber = false
+        vim.opt_local.signcolumn = "no"
+        vim.opt_local.cursorline = false
+    end,
+})
+
+-- Auto-enter terminal insert mode on focus, since a terminal buffer is
+-- read as a live shell, not text to navigate in Normal mode.
+autocmd({ "BufEnter", "WinEnter" }, {
+    group = general,
+    pattern = "term://*",
+    callback = function()
+        if vim.bo.buftype == "terminal" then
+            vim.cmd.startinsert()
+        end
     end,
 })
 
