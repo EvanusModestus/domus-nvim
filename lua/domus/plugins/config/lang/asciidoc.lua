@@ -56,6 +56,18 @@ function M.setup()
             t("<1> "), i(3, "Explanation"),
         }),
 
+        -- Code callout block, 3 numbered callouts (multi-step command explanation)
+        s("codeco", {
+            t({"[source,"}), i(1, "bash"), t({"]", "----", ""}),
+            i(2, "command one"), t("  <1>"),
+            t({"", ""}), i(3, "command two"), t("  <2>"),
+            t({"", ""}), i(4, "command three"), t("  <3>"),
+            t({"", "----", ""}),
+            t("<1> "), i(5, "Explanation one"),
+            t({"", "<2> "}), i(6, "Explanation two"),
+            t({"", "<3> "}), i(7, "Explanation three"),
+        }),
+
         -- Passthrough block (raw HTML for Antora/Asciidoctor)
         s("pass", { t({"[pass]", "++++", ""}), i(1), t({"", "++++"}) }),
         s("passhtml", {
@@ -398,6 +410,13 @@ function M.setup()
         s("exampleinc", { t("include::example$"), i(1, "file.adoc"), t("[]") }),
         s("attach",  { t("link:{attachmentsdir}/"), i(1, "file.pdf"), t("["), i(2, "Download"), t("]") }),
 
+        -- Single-source a tagged region of another file (avoid pasting duplicate code)
+        s("includet", { t("include::"), i(1, "path/file.adoc"), t("[tags="), i(2, "tagname"), t("]") }),
+        -- Single-source a line range
+        s("includel", { t("include::"), i(1, "path/file.adoc"), t("[lines="), i(2, "1..10"), t("]") }),
+        -- Compose a child page's headings into the current page at a shifted level
+        s("includelvl", { t("include::"), i(1, "path/file.adoc"), t("[leveloffset="), i(2, "+1"), t("]") }),
+
         -- Antora page header (full)
         s("antorapage", {
             t("= "), i(1, "Title"),
@@ -521,16 +540,6 @@ function M.setup()
             t("= "), i(1, "Title"),
             t({"", ":description: "}), i(2, "Description"),
             t({"", ":navtitle: "}), i(3, "Nav"),
-            t({"", ":icons: font", ""}),
-        }),
-
-        -- Document header with TOC
-        s("docheadertoc", {
-            t("= "), i(1, "Title"),
-            t({"", ":description: "}), i(2, "Description"),
-            t({"", ":toc: left"}),
-            t({"", ":toclevels: "}), i(3, "3"),
-            t({"", ":toc-title: "}), i(4, "Contents"),
             t({"", ":icons: font", ""}),
         }),
 
@@ -771,6 +780,10 @@ function M.setup()
         s("sup",     { t("^"), i(1), t("^") }),
         s("role",    { t("[."), i(1, "role"), t("]#"), i(2, "text"), t("#") }),
         s("fn",      { t("footnote:["), i(1, "Footnote text"), t("]") }),
+        -- Footnote with an id, so it can be cited again later
+        s("fnid",    { t("footnote:"), i(1, "id"), t("["), i(2, "Footnote text"), t("]") }),
+        -- Re-cite an existing footnote id (no text — reuses the earlier definition)
+        s("fnref",   { t("footnote:"), i(1, "id"), t("[]") }),
 
         -- ----------------------------------------------------------------
         -- ATTRIBUTES
@@ -802,18 +815,18 @@ function M.setup()
         s("datetime", { f(function() return os.date("%Y-%m-%d %H:%M") end) }),
 
         -- ----------------------------------------------------------------
-        -- TOC MACRO (inline placement)
-        -- ----------------------------------------------------------------
-
-        s("toc", { t("toc::[]") }),
-        s("tocl", { t("toc::[leveloffset="), i(1, "1"), t("]") }),
-
-        -- ----------------------------------------------------------------
         -- PAGE BREAK / HORIZONTAL RULE
         -- ----------------------------------------------------------------
 
         s("pagebreak", { t("<<<") }),
         s("hr",        { t("'''") }),
+
+        -- ----------------------------------------------------------------
+        -- COMMENTS
+        -- ----------------------------------------------------------------
+
+        s("comment",  { t("// "), i(1) }),
+        s("commentb", { t({"////", ""}), i(1), t({"", "////"}) }),
 
     })
 
