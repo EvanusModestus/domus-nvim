@@ -31,7 +31,6 @@ function M.setup()
         { "<leader>fd", desc = "Diagnostics" },
         { "<leader>fc", desc = "Commands" },
         { "<leader>fk", desc = "Keymaps" },
-        { "<leader>fe", desc = "File browser" },
         { "<leader>fp", desc = "Projects" },
         { "<leader>ft", desc = "Todos" },
 
@@ -41,6 +40,7 @@ function M.setup()
         { "<leader>gb", desc = "Branches" },
         { "<leader>gd", desc = "Diffview" },
         { "<leader>gh", desc = "File history" },
+        { "<leader>gg", desc = "LazyGit" },
 
         -- Hunks — gitsigns on_attach
         { "<leader>h", group = "Hunk" },
@@ -108,7 +108,6 @@ function M.setup()
         { "<leader>ih", desc = "Inlay hints toggle" },
         { "<leader>u", desc = "Undotree" },
         { "<leader>z", desc = "Zen mode" },
-        { "<leader>lg", desc = "LazyGit" },
         { "<leader>D", desc = "Delete to void" },
         { "<leader>X", desc = "Make executable" },
         { "<leader>S", desc = "Search/replace word" },

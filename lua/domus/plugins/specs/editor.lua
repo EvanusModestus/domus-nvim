@@ -124,6 +124,11 @@ return {
         "windwp/nvim-ts-autotag",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
         ft = { "html", "javascript", "typescript", "jsx", "tsx", "vue", "svelte", "xml", "markdown" },
+        -- v2+ requires an explicit setup() call — without it the plugin loads
+        -- per-buffer but auto-tag-rename never actually activates.
+        config = function()
+            require("nvim-ts-autotag").setup()
+        end,
     },
 
     -- Commenting: Neovim 0.10+ ships native gc/gcc/gbc mappings, no plugin needed.

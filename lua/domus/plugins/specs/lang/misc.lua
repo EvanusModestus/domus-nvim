@@ -24,9 +24,7 @@ return {
         cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection" },
         dependencies = { "tpope/vim-dadbod" },
     },
-    {
-        "kristijanhusak/vim-dadbod-completion",
-        ft = { "sql", "mysql", "plsql" },
-        dependencies = { "tpope/vim-dadbod" },
-    },
+    -- vim-dadbod-completion removed: it's an nvim-cmp source, and this config's
+    -- completion engine is blink.cmp with no compat shim registered — it loaded
+    -- on every SQL buffer and fed zero completions.
 }

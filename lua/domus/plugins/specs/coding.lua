@@ -15,7 +15,9 @@ return {
         "williamboman/mason-lspconfig.nvim",
         lazy = false,
         priority = 99,
-        dependencies = { "williamboman/mason.nvim" },
+        -- Its handler API calls straight into nvim-lspconfig; declared explicitly
+        -- rather than relying on priority-ordered load happening to work.
+        dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
     },
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
