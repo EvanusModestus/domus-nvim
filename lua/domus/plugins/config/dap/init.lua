@@ -50,7 +50,9 @@ function M.setup()
             program = "${file}",
             pythonPath = function()
                 local venv = os.getenv("VIRTUAL_ENV")
-                if venv then
+                -- A stale $VIRTUAL_ENV (left set after `deactivate` in some shells)
+                -- would otherwise point the debugger at a dead interpreter path.
+                if venv and vim.fn.executable(venv .. "/bin/python") == 1 then
                     return venv .. "/bin/python"
                 end
                 return "python3"

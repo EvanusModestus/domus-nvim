@@ -74,10 +74,24 @@ function M.setup()
         end,
     }
 
-    -- Auto-lint on save and insert leave
-    vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {
+    -- Auto-lint on save (immediate) and insert leave (debounced 500ms — InsertLeave
+    -- fires on nearly every small edit, e.g. i, one char, <Esc>, and slower external
+    -- linters like golangci-lint/tflint/hadolint would otherwise spawn a subprocess
+    -- on each one instead of just on a real pause).
+    local debounce_timer = nil
+    vim.api.nvim_create_autocmd("BufWritePost", {
         callback = function()
             lint.try_lint()
+        end,
+    })
+    vim.api.nvim_create_autocmd("InsertLeave", {
+        callback = function()
+            if debounce_timer then
+                debounce_timer:stop()
+            end
+            debounce_timer = vim.defer_fn(function()
+                lint.try_lint()
+            end, 500)
         end,
     })
 end

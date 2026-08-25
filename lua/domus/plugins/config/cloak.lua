@@ -27,12 +27,16 @@ function M.setup()
                 replace = nil,
             },
             {
+                -- Bracketed per letter for case-insensitivity: Lua patterns have no
+                -- inline case-insensitive flag, and a plain lowercase pattern misses
+                -- `Password:` / `API_KEY:` (common in Helm/CI yaml) — a real leak of
+                -- exactly what this plugin exists to hide.
                 file_pattern = "*.yaml",
                 cloak_pattern = {
-                    "(password%s*:%s*)(.+)",
-                    "(secret%s*:%s*)(.+)",
-                    "(token%s*:%s*)(.+)",
-                    "(api_key%s*:%s*)(.+)",
+                    "([Pp][Aa][Ss][Ss][Ww][Oo][Rr][Dd]%s*:%s*)(.+)",
+                    "([Ss][Ee][Cc][Rr][Ee][Tt]%s*:%s*)(.+)",
+                    "([Tt][Oo][Kk][Ee][Nn]%s*:%s*)(.+)",
+                    "([Aa][Pp][Ii]_[Kk][Ee][Yy]%s*:%s*)(.+)",
                 },
             },
         },

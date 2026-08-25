@@ -54,7 +54,6 @@ function M.setup()
 
     -- Load extensions
     pcall(telescope.load_extension, "fzf")
-    pcall(telescope.load_extension, "file_browser")
     pcall(telescope.load_extension, "project")
 
     -- Setup keymaps
@@ -88,7 +87,6 @@ function M.keymaps()
     map("n", "<leader>lw", builtin.lsp_workspace_symbols, { desc = "LSP workspace" })
 
     -- Extensions
-    map("n", "<leader>fe", "<cmd>Telescope file_browser<CR>", { desc = "File browser" })
     map("n", "<leader>fp", "<cmd>Telescope project<CR>", { desc = "Projects" })
 end
 

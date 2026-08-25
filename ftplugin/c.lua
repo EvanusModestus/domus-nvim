@@ -1,6 +1,6 @@
 -- C filetype settings
 
--- Indentation (kernel style: tabs, 8-wide; override per-project with .editorconfig)
+-- Indentation (4-space, expandtab; override per-project with .editorconfig)
 vim.opt_local.tabstop = 4
 vim.opt_local.shiftwidth = 4
 vim.opt_local.expandtab = true

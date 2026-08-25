@@ -1,9 +1,6 @@
 -- Lua filetype settings
-
--- Indentation
-vim.opt_local.tabstop = 4
-vim.opt_local.shiftwidth = 4
-vim.opt_local.expandtab = true
+-- Indentation matches config/options.lua's global default (4/4/expandtab) —
+-- not repeated here to avoid drifting if that default ever changes.
 
 -- Run current file
 vim.keymap.set("n", "<leader>cr", function()

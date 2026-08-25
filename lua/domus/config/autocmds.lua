@@ -96,8 +96,12 @@ autocmd("BufWritePre", {
     group = general,
     pattern = "*",
     callback = function()
-        -- Skip special buffers (dashboard, terminal, etc.)
-        if vim.bo.binary or vim.bo.filetype == "diff" or not vim.bo.modifiable or vim.bo.buftype ~= "" then
+        -- Skip special buffers (dashboard, terminal, etc.) and big files — the
+        -- BufReadPre guard above strips fold/syntax/spell there specifically
+        -- because a full-buffer scan stalls the UI; a whole-buffer :%s on save
+        -- would pay that same cost.
+        if vim.b.bigfile or vim.bo.binary or vim.bo.filetype == "diff"
+            or not vim.bo.modifiable or vim.bo.buftype ~= "" then
             return
         end
         local view = vim.fn.winsaveview()

@@ -22,16 +22,13 @@ return {
         end,
     },
     {
-        "nvim-telescope/telescope-file-browser.nvim",
-        lazy = true,
-        dependencies = { "nvim-telescope/telescope.nvim" },
-    },
-    {
         "nvim-telescope/telescope-project.nvim",
         lazy = true,
         dependencies = { "nvim-telescope/telescope.nvim" },
     },
     -- Undo history: undotree (editor.lua, <leader>u). telescope-undo removed as a duplicate.
+    -- File browsing: oil.nvim (below) is the default_file_explorer. telescope-file-browser.nvim
+    -- was removed as a redundant second full file-browser (was <leader>fe).
 
     -- Oil (file browser)
     {

@@ -52,13 +52,8 @@ local function on_attach(client, bufnr)
 
 	-- Diagnostics
 	map("n", "<leader>vd", vim.diagnostic.open_float, opts)
-	if vim.diagnostic.jump then
-		map("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
-		map("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
-	else
-		map("n", "[d", vim.diagnostic.goto_prev, opts)
-		map("n", "]d", vim.diagnostic.goto_next, opts)
-	end
+	map("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+	map("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
 
 	-- Actions
 	map("n", "<leader>ca", vim.lsp.buf.code_action, opts)
@@ -256,19 +251,23 @@ function M.setup()
 		vim.lsp.enable("asciidoc_ls")
 	end
 
+	local is_termux = require("domus.core.util").is_termux()
+
 	-- Auto-install via mason-lspconfig (no handlers / no lspconfig framework).
 	-- automatic_enable = false: we enable explicitly below so the server set is
-	-- identical on mason-lspconfig 1.x and 2.x.
+	-- identical on mason-lspconfig 1.x and 2.x. On Termux, mason-tools.lua
+	-- already skips ensure_installed in favor of system packages — mirror that
+	-- here too, or mason-lspconfig would still try to install all servers.
 	local mlsp_ok, mlsp = pcall(require, "mason-lspconfig")
 	if mlsp_ok then
 		mlsp.setup({
-			ensure_installed = servers,
+			ensure_installed = is_termux and {} or servers,
 			automatic_enable = false,
 		})
 	end
 
 	-- Termux installs a smaller set of servers outside mason; enable that subset.
-	if require("domus.core.util").is_termux() then
+	if is_termux then
 		vim.lsp.enable({ "lua_ls", "pyright", "rust_analyzer" })
 	else
 		-- powershell_es spawns `pwsh`; enabling it without PowerShell Core installed
