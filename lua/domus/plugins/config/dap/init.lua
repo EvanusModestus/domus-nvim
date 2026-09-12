@@ -1,5 +1,7 @@
 -- DAP Configuration
 
+local util = require("domus.core.util")
+
 local M = {}
 
 function M.setup()
@@ -51,9 +53,12 @@ function M.setup()
             pythonPath = function()
                 local venv = os.getenv("VIRTUAL_ENV")
                 if venv then
+                    if util.is_windows() then
+                        return venv .. "\\Scripts\\python.exe"
+                    end
                     return venv .. "/bin/python"
                 end
-                return "python3"
+                return util.is_windows() and "python" or "python3"
             end,
         },
     }
@@ -63,7 +68,7 @@ function M.setup()
         type = "server",
         port = "${port}",
         executable = {
-            command = vim.fn.stdpath("data") .. "/mason/bin/codelldb",
+            command = util.mason_bin("codelldb"),
             args = { "--port", "${port}" },
         },
     }
