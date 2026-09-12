@@ -107,6 +107,28 @@ echo "alias vd='NVIM_APPNAME=domus-nvim nvim'" >> ~/.bashrc   # or ~/.zshrc
 # from now on, ALWAYS launch with:  vd
 ----
 
+=== Windows (native)
+
+On Windows the config lives under `%LOCALAPPDATA%\nvim` (data in `%LOCALAPPDATA%\nvim-data`), and the
+config is *per Windows user* — each user who wants domus-nvim runs this in their own login. Install the
+dependencies with winget; `zig` supplies the C compiler nvim-treesitter needs (via `zig cc`), so there
+is no MSVC workload to install.
+
+[source,powershell]
+----
+# dependencies (elevated PowerShell). Confirm an ID with `winget search <name>` if one fails.
+$ids = @('Neovim.Neovim','Git.Git','ziglang.zig','BurntSushi.ripgrep.MSVC',
+         'sharkdp.fd','OpenJS.NodeJS.LTS','JesseDuffield.lazygit')
+foreach ($id in $ids) { winget install --id $id --accept-package-agreements --accept-source-agreements }
+# plus a Nerd Font (icons): winget search "Nerd Font", or download from https://www.nerdfonts.com
+
+# back up any existing config, then clone into the Windows config location (HTTPS: no SSH key needed)
+$cfg = "$env:LOCALAPPDATA\nvim"
+if (Test-Path $cfg) { Rename-Item $cfg "nvim.bak-$(Get-Random)" }
+git clone https://github.com/EvanusModestus/domus-nvim.git $cfg
+nvim
+----
+
 === First launch (either option)
 
 Bootstraps lazy.nvim, downloads ~80 plugins, Mason installs servers/formatters, and Treesitter

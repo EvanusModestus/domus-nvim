@@ -238,7 +238,7 @@ function M.setup()
 		settings = {
 			bashIde = {
 				globPattern = "*@(.sh|.inc|.bash|.command|.zsh)",
-				shellcheckPath = vim.fn.stdpath("data") .. "/mason/bin/shellcheck",
+				shellcheckPath = require("domus.core.util").mason_bin("shellcheck"),
 			},
 		},
 	})
