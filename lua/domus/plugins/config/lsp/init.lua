@@ -26,6 +26,7 @@ local servers = {
 	"powershell_es", -- PowerShell (needs `pwsh` on PATH; bundle_path set below)
 	"sqlls",         -- SQL (sql-language-server, npm)
 	"terraformls",   -- Terraform / Azure IaC
+	"perlnavigator", -- Perl (node-based; perl -c diagnostics + perlcritic/perltidy if present)
 }
 
 -- Buffer-local keymaps, wired once via LspAttach (replaces per-server on_attach).
@@ -45,7 +46,7 @@ local function on_attach(client, bufnr)
 	-- hover fallback) on FileType, and LspAttach fires after it — mapping here
 	-- would clobber the man-page lookup. Other filetypes get plain hover.
 	local ft = vim.bo[bufnr].filetype
-	if ft ~= "c" and ft ~= "cpp" then
+	if ft ~= "c" and ft ~= "cpp" and ft ~= "perl" then  -- perl: ftplugin binds a perldoc K
 		map("n", "K", vim.lsp.buf.hover, opts)
 	end
 	map("i", "<C-k>", vim.lsp.buf.signature_help, opts)
@@ -243,10 +244,27 @@ function M.setup()
 		},
 	})
 
+	-- PerlNavigator: node-based Perl LSP (mason-installed). Gives `perl -c` syntax
+	-- diagnostics, completion, go-to-def, and hover out of the box; it ALSO drives
+	-- perlcritic + perltidy when those are on PATH (optional CPAN installs:
+	-- `cpan Perl::Critic Perl::Tidy`) and no-ops them cleanly when absent.
+	vim.lsp.config("perlnavigator", {
+		settings = {
+			perlnavigator = {
+				perlPath = "perl",
+				enableWarnings = true,
+				perlcriticEnabled = true,
+				perltidyEnabled = true,
+				includePaths = { ".", "lib" },
+			},
+		},
+	})
+
 	-- AsciiDoc language server: NOT in nvim-lspconfig or mason. Hand-defined and
 	-- guarded so a missing binary never breaks startup. Provides document symbols,
 	-- folding, and xref/anchor completion only — the asciidoctor linter (nvim-lint)
-	-- remains the real validator. Install with: npm i -g asciidoc-language-server
+	-- remains the real validator. (No stable npm package ships this binary today; the
+	-- guard keeps the LSP off until one named `asciidoc-language-server` is on PATH.)
 	if vim.fn.executable("asciidoc-language-server") == 1 then
 		vim.lsp.config("asciidoc_ls", {
 			cmd = { "asciidoc-language-server", "--stdio" },

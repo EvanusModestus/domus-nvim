@@ -66,6 +66,7 @@ return {
             require("luasnip.loaders.from_vscode").lazy_load()
             -- Hand-written snippet libraries (single source of truth)
             require("domus.snippets.c")(require("luasnip"))
+            require("domus.snippets.perl")(require("luasnip"))
         end,
     },
 

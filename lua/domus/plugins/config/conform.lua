@@ -25,6 +25,7 @@ function M.setup()
             rust = { "rustfmt" },
             c = { "clang-format" },
             cpp = { "clang-format" },
+            perl = { "perltidy" }, -- needs perltidy on PATH (cpan Perl::Tidy); no-ops if absent
             sql = { "sqlfluff" },
             toml = { "taplo" },
             terraform = { "terraform_fmt" }, -- needs `terraform` CLI (no-ops if absent)

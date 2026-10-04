@@ -23,6 +23,7 @@ add("domus.plugins.specs.debug")      -- DAP stack
 
 -- Language-specific specs
 add("domus.plugins.specs.lang.c")
+add("domus.plugins.specs.lang.perl")
 add("domus.plugins.specs.lang.python")
 add("domus.plugins.specs.lang.asciidoc")
 add("domus.plugins.specs.lang.markdown")

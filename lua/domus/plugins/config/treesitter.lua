@@ -5,7 +5,7 @@ local M = {}
 local ensure_installed = {
     "javascript", "typescript", "c", "lua", "rust", "vim", "vimdoc", "query",
     "markdown", "markdown_inline", "yaml", "xml", "json", "toml", "bash",
-    "python", "dockerfile", "sql", "css", "html", "regex", "http", "csv",
+    "python", "perl", "pod", "dockerfile", "sql", "css", "html", "regex", "http", "csv",
     "htmldjango",  -- Jinja2/Django templates
     -- Note: AsciiDoc has no official treesitter parser
 }
