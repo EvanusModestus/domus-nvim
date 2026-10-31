@@ -15,8 +15,8 @@ return function(ls)
         s("perlscript", {
             t({ "#!/usr/bin/env perl", "use strict;", "use warnings;", "", "" }), i(1),
         }),
-        -- Conway's modern boilerplate: v5.36 turns on strict + warnings + say +
-        -- subroutine signatures in a single line. One pragma instead of four.
+        -- Modern-Perl boilerplate (Perl 5.36, 2022): v5.36 turns on strict +
+        -- warnings + say + subroutine signatures in one line, not four pragmas.
         s("perlmodern", {
             t({ "#!/usr/bin/env perl", "use v5.36;", "", "" }), i(1),
         }),
