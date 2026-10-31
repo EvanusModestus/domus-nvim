@@ -32,7 +32,7 @@ function M.setup()
     -- Mason DAP integration
     pcall(function()
         require("mason-nvim-dap").setup({
-            ensure_installed = { "python", "codelldb" },
+            ensure_installed = { "python", "codelldb", "delve" },
             automatic_installation = true,
         })
     end)
@@ -100,6 +100,40 @@ function M.setup()
     }
 
     dap.configurations.cpp = vim.deepcopy(dap.configurations.c)
+
+    -- Go adapter (delve / dlv in DAP mode). mason installs `dlv`; `dlv dap`
+    -- speaks DAP directly, so no separate server process is needed.
+    dap.adapters.delve = {
+        type = "server",
+        port = "${port}",
+        executable = {
+            command = util.mason_bin("dlv"),
+            args = { "dap", "-l", "127.0.0.1:${port}" },
+        },
+    }
+
+    dap.configurations.go = {
+        {
+            type = "delve",
+            name = "Debug file",
+            request = "launch",
+            program = "${file}",
+        },
+        {
+            type = "delve",
+            name = "Debug test (file)",
+            request = "launch",
+            mode = "test",
+            program = "${file}",
+        },
+        {
+            type = "delve",
+            name = "Debug test (package)",
+            request = "launch",
+            mode = "test",
+            program = "./${relativeFileDirname}",
+        },
+    }
 
     -- Signs
     vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DapBreakpoint" })

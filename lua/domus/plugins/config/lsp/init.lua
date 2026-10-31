@@ -23,6 +23,8 @@ local servers = {
 	"marksman",
 	"taplo",
 	"clangd",
+	"gopls",         -- Go (official; completion, go-to-def, gofumpt, staticcheck)
+	"ruby_lsp",      -- Ruby (Shopify ruby-lsp; mason package: ruby-lsp)
 	"powershell_es", -- PowerShell (needs `pwsh` on PATH; bundle_path set below)
 	"sqlls",         -- SQL (sql-language-server, npm)
 	"terraformls",   -- Terraform / Azure IaC
@@ -176,6 +178,40 @@ function M.setup()
 			clangdFileStatus = true,
 		},
 	})
+
+	-- gopls: enable the analyses + staticcheck pass the default config omits, and
+	-- let gopls format with gofumpt's stricter rules. conform still owns save-time
+	-- formatting (goimports + gofumpt) so import management works outside the LSP;
+	-- these settings mainly widen diagnostics and completion quality.
+	vim.lsp.config("gopls", {
+		settings = {
+			gopls = {
+				gofumpt = true,
+				staticcheck = true,
+				usePlaceholders = true,
+				completeUnimported = true, -- offer + auto-import symbols from unimported packages
+				analyses = {
+					unusedparams = true,
+					unusedwrite = true,
+					nilness = true,
+					shadow = true,
+					useany = true,
+				},
+				hints = {
+					assignVariableTypes = true,
+					compositeLiteralFields = true,
+					constantValues = true,
+					functionTypeParameters = true,
+					parameterNames = true,
+					rangeVariableTypes = true,
+				},
+			},
+		},
+	})
+
+	-- ruby_lsp (Shopify): formatting/diagnostics flow through RuboCop when a
+	-- .rubocop.yml is present; no extra settings needed for the common case.
+	-- Falls back to syntax-tree if rubocop is absent.
 
 	local schemastore_ok, schemastore = pcall(require, "schemastore")
 

@@ -3,9 +3,13 @@
 local M = {}
 
 local ensure_installed = {
-    "javascript", "typescript", "c", "lua", "rust", "vim", "vimdoc", "query",
+    "javascript", "typescript", "c", "cpp", "lua", "rust", "vim", "vimdoc", "query",
     "markdown", "markdown_inline", "yaml", "xml", "json", "toml", "bash",
     "python", "perl", "pod", "dockerfile", "sql", "css", "html", "regex", "http", "csv",
+    "go", "gomod", "gosum", "gowork",  -- Go
+    "ruby",                            -- Ruby
+    "make", "cmake", "ninja",          -- build systems
+    "diff", "gitcommit", "git_rebase", "gitignore",  -- git workflow buffers
     "htmldjango",  -- Jinja2/Django templates
     -- Note: AsciiDoc has no official treesitter parser
 }

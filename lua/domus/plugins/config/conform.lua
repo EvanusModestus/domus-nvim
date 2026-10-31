@@ -25,6 +25,8 @@ function M.setup()
             rust = { "rustfmt" },
             c = { "clang-format" },
             cpp = { "clang-format" },
+            go = { "goimports", "gofumpt" }, -- goimports fixes imports, gofumpt is stricter gofmt
+            ruby = { "rubocop" },            -- needs rubocop on PATH (gem/bundle); no-ops if absent
             perl = { "perltidy" }, -- needs perltidy on PATH (cpan Perl::Tidy); no-ops if absent
             sql = { "sqlfluff" },
             toml = { "taplo" },

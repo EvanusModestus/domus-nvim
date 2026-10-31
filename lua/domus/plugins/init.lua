@@ -25,6 +25,8 @@ add("domus.plugins.specs.debug")      -- DAP stack
 add("domus.plugins.specs.lang.c")
 add("domus.plugins.specs.lang.perl")
 add("domus.plugins.specs.lang.python")
+add("domus.plugins.specs.lang.go")
+add("domus.plugins.specs.lang.ruby")
 add("domus.plugins.specs.lang.asciidoc")
 add("domus.plugins.specs.lang.markdown")
 add("domus.plugins.specs.lang.misc")  -- Cisco, Jinja2, CSV, SQL

@@ -25,12 +25,16 @@ function M.setup()
             "stylua",
             "shfmt",
             "clang-format",
+            "goimports", -- Go import management (conform)
+            "gofumpt",   -- Go stricter gofmt (conform)
+            "rubocop",   -- Ruby format + lint (conform + nvim-lint)
             "sqlfluff",
             "taplo",
 
             -- DAP Adapters
             "debugpy",
             "codelldb",
+            "delve",     -- Go debugger (dlv) for nvim-dap
 
             -- Linters
             "eslint_d",

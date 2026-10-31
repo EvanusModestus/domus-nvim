@@ -15,6 +15,16 @@ return function(ls)
         s("perlscript", {
             t({ "#!/usr/bin/env perl", "use strict;", "use warnings;", "", "" }), i(1),
         }),
+        -- Modern-Perl boilerplate (Perl 5.36, 2022): v5.36 turns on strict +
+        -- warnings + say + subroutine signatures in one line, not four pragmas.
+        s("perlmodern", {
+            t({ "#!/usr/bin/env perl", "use v5.36;", "", "" }), i(1),
+        }),
+        -- Module skeleton: package matches the file, modern pragma, trailing 1;
+        s("perlmod", {
+            t("package "), i(1, "Module::Name"), t({ ";", "use v5.36;", "", "" }),
+            i(2), t({ "", "", "1;" }),
+        }),
         s("use",    { t({ "use strict;", "use warnings;" }) }),
         s("usev",   { t("use v5."), i(1, "36"), t(";") }),
         s("usemod", { t("use "), i(1, "Module::Name"), t(";") }),
