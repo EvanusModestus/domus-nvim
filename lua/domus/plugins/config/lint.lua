@@ -19,6 +19,7 @@ function M.setup()
         json = { "jsonlint" },
         dockerfile = { "hadolint" },
         go = { "golangci-lint" },
+        ruby = { "rubocop" },
         terraform = { "tflint" },
         asciidoc = { "asciidoctor" },
         sql = { "sqlfluff" },
