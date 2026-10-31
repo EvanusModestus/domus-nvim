@@ -129,54 +129,11 @@ return {
         end,
     },
 
-    -- Copilot (Lua-native with chat)
-    {
-        "zbirenbaum/copilot.lua",
-        cmd = "Copilot",
-        event = "InsertEnter",
-        config = function()
-            require("copilot").setup({
-                suggestion = {
-                    enabled = true,
-                    auto_trigger = true,
-                    keymap = {
-                        accept = "<M-l>",
-                        next = "<M-]>",
-                        prev = "<M-[>",
-                        dismiss = "<M-h>",
-                    },
-                },
-                panel = { enabled = false },
-                filetypes = {
-                    ["*"] = true,
-                    gitcommit = false,
-                    noice = false,
-                },
-            })
-        end,
-    },
-    {
-        "CopilotC-Nvim/CopilotChat.nvim",
-        branch = "main",
-        dependencies = { "zbirenbaum/copilot.lua", "nvim-lua/plenary.nvim" },
-        cmd = "CopilotChat",
-        keys = {
-            { "<leader>cc", "<cmd>CopilotChat<CR>", mode = { "n", "v" }, desc = "Copilot chat" },
-            { "<leader>ce", "<cmd>CopilotChatExplain<CR>", mode = { "n", "v" }, desc = "Explain code" },
-            { "<leader>ct", "<cmd>CopilotChatTests<CR>", mode = { "n", "v" }, desc = "Generate tests" },
-            { "<leader>cf", "<cmd>CopilotChatFix<CR>", mode = { "n", "v" }, desc = "Fix code" },
-            { "<leader>cr", "<cmd>CopilotChatReview<CR>", mode = { "n", "v" }, desc = "Review code" },
-            { "<leader>cd", "<cmd>CopilotChatDocs<CR>", mode = { "n", "v" }, desc = "Generate docs" },
-        },
-        config = function()
-            require("CopilotChat").setup({
-                window = {
-                    layout = "vertical",
-                    width = 0.4,
-                },
-            })
-        end,
-    },
+    -- AI inline completion intentionally omitted: hand-typed code is the point
+    -- here (see CLAUDE.md — deliberate difficulty), and AI assist is driven from
+    -- the terminal, not as editor ghost-text. Copilot (copilot.lua + CopilotChat)
+    -- was removed. This frees <leader>cc/ce/ct/cf/cr/cd and the <M-l>/<M-]>/<M-[>
+    -- insert-mode chord.
 
     -- Cloak (hide secrets)
     {
