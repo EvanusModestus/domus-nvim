@@ -315,8 +315,15 @@ function M.setup()
 	-- identical on mason-lspconfig 1.x and 2.x.
 	local mlsp_ok, mlsp = pcall(require, "mason-lspconfig")
 	if mlsp_ok then
+		-- gopls builds via the Go toolchain; drop it from auto-install when `go` is absent so Mason
+		-- does not retry a failing build every startup (the per-server config below still applies if
+		-- gopls is installed by hand later). Same gate as the Go DAP/format/lint tools.
+		local lsp_ensure = servers
+		if vim.fn.executable("go") ~= 1 then
+			lsp_ensure = vim.tbl_filter(function(s) return s ~= "gopls" end, servers)
+		end
 		mlsp.setup({
-			ensure_installed = servers,
+			ensure_installed = lsp_ensure,
 			automatic_enable = false,
 		})
 	end
