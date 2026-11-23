@@ -38,6 +38,7 @@ return {
     ["colorful-winsep.nvim"] = "colored window separators; eye-candy",
     ["screenkey.nvim"] = "on-screen keystrokes; recording tool only",
     ["headlines.nvim"] = "markdown/org header highlight; eye-candy",
+    ["alpha-nvim"] = "start dashboard; disabled so the stock nvim :intro splash shows instead",
     ["zen-mode.nvim"] = "distraction-free mode; keys-lazy, cheap",
     ["auto-session"] = "session auto-restore reopens last file on startup; trial-disabled",
 }
