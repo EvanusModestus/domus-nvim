@@ -40,4 +40,5 @@ return {
     ["headlines.nvim"] = "markdown/org header highlight; eye-candy",
     ["alpha-nvim"] = "start dashboard; startup cost",
     ["zen-mode.nvim"] = "distraction-free mode; keys-lazy, cheap",
+    ["auto-session"] = "session auto-restore reopens last file on startup; trial-disabled",
 }
