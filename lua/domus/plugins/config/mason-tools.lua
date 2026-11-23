@@ -17,30 +17,20 @@ function M.setup()
         return
     end
 
+    -- Curated to the languages actually used in nvim (see journal 2026-11-23). Reinstall anything
+    -- dropped on demand with `:MasonInstall <name>` + a one-line add here.
     local ensure = {
         -- Formatters
         "ruff",
-        "prettier",
         "stylua",
         "shfmt",
         "clang-format",
-        "rubocop",   -- Ruby format + lint (conform + nvim-lint)
-        "sqlfluff",
         "taplo",
 
-        -- DAP Adapters
-        "debugpy",
-        "codelldb",
-
         -- Linters
-        "eslint_d",
-        "jsonlint",
         "shellcheck",
-        "selene",
-        "markdownlint",
+        "markdownlint",   -- Markdown (used heavily at work)
         "yamllint",
-        "hadolint",
-        "tflint",
     }
 
     -- Go tools are built via the Go toolchain; only enqueue them when `go` is on PATH, else
@@ -49,7 +39,6 @@ function M.setup()
         vim.list_extend(ensure, {
             "goimports",     -- Go import management (conform)
             "gofumpt",       -- Go stricter gofmt (conform)
-            "delve",         -- Go debugger (dlv) for nvim-dap
             "golangci-lint", -- Go linter (nvim-lint)
         })
     end

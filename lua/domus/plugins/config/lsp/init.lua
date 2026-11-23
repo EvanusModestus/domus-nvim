@@ -8,26 +8,21 @@
 local M = {}
 
 -- Servers we want installed + enabled. Names match nvim-lspconfig definitions.
+-- Curated to the languages actually used in nvim (see journal 2026-11-23). Dropped servers
+-- (ts_ls, html, cssls, dockerls, ansiblels, ruby_lsp, sqlls, terraformls) install on demand via
+-- `:MasonInstall <name>` + a one-line add here if a need returns.
 local servers = {
 	"lua_ls",
 	"pyright",
 	"rust_analyzer",
-	"ts_ls",
-	"html",
-	"cssls",
 	"jsonls",
 	"yamlls",
 	"bashls",
-	"dockerls",
-	"ansiblels",
-	"marksman",
+	"marksman",      -- Markdown (used heavily at work)
 	"taplo",
 	"clangd",
 	"gopls",         -- Go (official; completion, go-to-def, gofumpt, staticcheck)
-	"ruby_lsp",      -- Ruby (Shopify ruby-lsp; mason package: ruby-lsp)
-	"powershell_es", -- PowerShell (needs `pwsh` on PATH; bundle_path set below)
-	"sqlls",         -- SQL (sql-language-server, npm)
-	"terraformls",   -- Terraform / Azure IaC
+	"powershell_es", -- PowerShell (enabled only when `pwsh` is on PATH -- see the enable loop below)
 	"perlnavigator", -- Perl (node-based; perl -c diagnostics + perlcritic/perltidy if present)
 }
 

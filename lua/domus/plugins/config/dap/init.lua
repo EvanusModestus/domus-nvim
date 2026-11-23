@@ -33,12 +33,11 @@ function M.setup()
     -- when `go` is on PATH -- otherwise Mason retries the failing build on every startup (machines
     -- without Go stay quiet; a box with Go gets it, no per-machine edits).
     pcall(function()
-        local dap_ensure = { "python", "codelldb" }
-        if vim.fn.executable("go") == 1 then
-            table.insert(dap_ensure, "delve")
-        end
+        -- No eager debug-adapter installs (the debugger isn't part of the daily flow).
+        -- automatic_installation still pulls an adapter on demand the first time a debug session
+        -- needs one, so breakpoints still work without pre-provisioning debugpy/codelldb/delve.
         require("mason-nvim-dap").setup({
-            ensure_installed = dap_ensure,
+            ensure_installed = {},
             automatic_installation = true,
         })
     end)
