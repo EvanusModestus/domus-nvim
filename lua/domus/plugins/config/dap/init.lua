@@ -29,10 +29,16 @@ function M.setup()
         require("nvim-dap-virtual-text").setup()
     end)
 
-    -- Mason DAP integration
+    -- Mason DAP integration. delve (Go debugger) is built via the Go toolchain, so only enqueue it
+    -- when `go` is on PATH -- otherwise Mason retries the failing build on every startup (machines
+    -- without Go stay quiet; a box with Go gets it, no per-machine edits).
     pcall(function()
+        local dap_ensure = { "python", "codelldb" }
+        if vim.fn.executable("go") == 1 then
+            table.insert(dap_ensure, "delve")
+        end
         require("mason-nvim-dap").setup({
-            ensure_installed = { "python", "codelldb", "delve" },
+            ensure_installed = dap_ensure,
             automatic_installation = true,
         })
     end)

@@ -17,36 +17,45 @@ function M.setup()
         return
     end
 
+    local ensure = {
+        -- Formatters
+        "ruff",
+        "prettier",
+        "stylua",
+        "shfmt",
+        "clang-format",
+        "rubocop",   -- Ruby format + lint (conform + nvim-lint)
+        "sqlfluff",
+        "taplo",
+
+        -- DAP Adapters
+        "debugpy",
+        "codelldb",
+
+        -- Linters
+        "eslint_d",
+        "jsonlint",
+        "shellcheck",
+        "selene",
+        "markdownlint",
+        "yamllint",
+        "hadolint",
+        "tflint",
+    }
+
+    -- Go tools are built via the Go toolchain; only enqueue them when `go` is on PATH, else
+    -- mason-tool-installer retries the failing build on every startup (run_on_start = true).
+    if vim.fn.executable("go") == 1 then
+        vim.list_extend(ensure, {
+            "goimports",     -- Go import management (conform)
+            "gofumpt",       -- Go stricter gofmt (conform)
+            "delve",         -- Go debugger (dlv) for nvim-dap
+            "golangci-lint", -- Go linter (nvim-lint)
+        })
+    end
+
     mti.setup({
-        ensure_installed = {
-            -- Formatters
-            "ruff",
-            "prettier",
-            "stylua",
-            "shfmt",
-            "clang-format",
-            "goimports", -- Go import management (conform)
-            "gofumpt",   -- Go stricter gofmt (conform)
-            "rubocop",   -- Ruby format + lint (conform + nvim-lint)
-            "sqlfluff",
-            "taplo",
-
-            -- DAP Adapters
-            "debugpy",
-            "codelldb",
-            "delve",     -- Go debugger (dlv) for nvim-dap
-
-            -- Linters
-            "eslint_d",
-            "jsonlint",
-            "shellcheck",
-            "selene",
-            "markdownlint",
-            "yamllint",
-            "hadolint",
-            "golangci-lint",
-            "tflint",
-        },
+        ensure_installed = ensure,
 
         auto_update = false,
         run_on_start = true,
