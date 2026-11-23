@@ -3,11 +3,21 @@
 
 local specs = {}
 
+-- Central disable registry: { ["repo-tail"] = "reason", ... }. Any listed plugin
+-- is stamped enabled=false below, so lazy.nvim skips install + load (true trial removal).
+local disabled = require("domus.plugins.disabled")
+
 -- Helper to merge spec tables
 local function add(spec_module)
     local ok, module = pcall(require, spec_module)
     if ok and type(module) == "table" then
         for _, spec in ipairs(module) do
+            -- Resolve the plugin's registry key: explicit `name`, else the repo tail of "owner/repo".
+            local repo = type(spec) == "table" and (spec.name or spec[1]) or spec
+            local tail = type(repo) == "string" and repo:match("([^/]+)$") or nil
+            if tail and disabled[tail] and type(spec) == "table" then
+                spec.enabled = false
+            end
             table.insert(specs, spec)
         end
     end
